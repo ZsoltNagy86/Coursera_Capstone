@@ -103,16 +103,3 @@ df_n
 
 print(df_n.shape)
 
-
-# In[143]:
-
-
-duplicates = df_n['Postcode'].duplicated()
-duplicates
-
-
-# In[141]:
-
-
-list(df_n['Postcode']).index('M9B')
-
