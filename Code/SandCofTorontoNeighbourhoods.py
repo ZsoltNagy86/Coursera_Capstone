@@ -37,7 +37,7 @@ html = requests.get('https://en.wikipedia.org/wiki/List_of_postal_codes_of_Canad
 bs = BeautifulSoup(html.text, 'lxml')
 
 
-# In[94]:
+# In[164]:
 
 
 #Defining customized replace function
@@ -70,6 +70,27 @@ df_n
 #Dropping those rows where Borough is not Assigned
 df_n = df_n.drop(df_n[df_n['Borough'] == 'Not assigned' ].index)
 
+#Sorting the DataFrame
+df_n.sort_values('Postcode')
+
+#Reindexing the DataFrame
+df_n = df_n.reset_index(drop=True)
+
+#Handling those cases, where we have Borough without Neighbourhood assigned
+for i in range(0,len(df_n['Neighbourhood'])):
+    if df_n['Neighbourhood'][i] == 'Not assigned':
+        df_n['Neighbourhood'][i] = df_n['Borough'][i]
+
+#Combining Neighbourhood into one line that belongs to the same Postcode
+duplicates = df_n['Postcode'].duplicated()
+for i in range(0,len(duplicates)):
+    if duplicates[i] == True:
+        first_index = list(df_n['Postcode']).index(df_n['Postcode'][i])
+        df_n['Neighbourhood'][first_index] += str(', ' + df_n['Neighbourhood'][i])
+
+#Dropping rows that are duplicates in terms of postcodes
+df_n = df_n[(duplicates==False)]
+
 #Reindexing the DataFrame
 df_n = df_n.reset_index(drop=True)
 
@@ -77,14 +98,21 @@ df_n = df_n.reset_index(drop=True)
 df_n
 
 
-# In[66]:
+# In[162]:
 
 
+print(df_n.shape)
 
 
-
-# In[ ]:
-
+# In[143]:
 
 
+duplicates = df_n['Postcode'].duplicated()
+duplicates
+
+
+# In[141]:
+
+
+list(df_n['Postcode']).index('M9B')
 
