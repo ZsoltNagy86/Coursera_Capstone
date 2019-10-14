@@ -5,7 +5,7 @@
 
 # ### <span style="color:darkred">Importing packages</span>
 
-# In[3]:
+# In[17]:
 
 
 # Importing general packages
@@ -29,14 +29,17 @@ import requests
 from bs4 import BeautifulSoup
 
 # Importing packages for handling gespatial data
-get_ipython().system('conda install -c conda-forge geocoder --yes ')
+#!conda install -c conda-forge geocoder --yes 
 import geocoder
 
 # Packages for hiding sensitive data
 from IPython.display import HTML
 
+# Importing k-means from clustering stage
+from sklearn.cluster import KMeans
 
-# In[4]:
+
+# In[2]:
 
 
 html = requests.get('https://en.wikipedia.org/wiki/List_of_postal_codes_of_Canada:_M')
@@ -45,7 +48,7 @@ html = requests.get('https://en.wikipedia.org/wiki/List_of_postal_codes_of_Canad
 bs = BeautifulSoup(html.text, 'lxml')
 
 
-# In[5]:
+# In[3]:
 
 
 #Defining customized replace function
@@ -106,13 +109,13 @@ df_n = df_n.reset_index(drop=True)
 df_n
 
 
-# In[6]:
+# In[4]:
 
 
 print(df_n.shape)
 
 
-# In[7]:
+# In[5]:
 
 
 df_gsp = pd.read_csv('http://cocl.us/Geospatial_data')
@@ -120,7 +123,7 @@ df_gsp = df_gsp.rename(columns={"Postal Code": "Postcode"})
 df_gsp.head()
 
 
-# In[8]:
+# In[6]:
 
 
 df_n = df_n >> left_join(df_gsp, by = "Postcode")
@@ -129,7 +132,7 @@ df_n
 
 # ### <span style="color:darkred"> Adding the most common venue categories in each neighborhood in Toronto </span>
 
-# In[16]:
+# In[7]:
 
 
 import getpass
@@ -139,10 +142,19 @@ CLIENT_SECRET = getpass.getpass('Enter your Foursquare CLIENT_SECRET')
 VERSION = '20180605'
 LIMIT = 100
 
-print('Your credentails are stored')
+print('Your credentials are stored')
 
 
-# In[20]:
+# ### <span style="color:darkred"> Filtering neighbourhoods that belongs to Toronto </span>
+
+# In[8]:
+
+
+df_n_tor = df_n >> mask(X.Borough.str.contains('Toronto') == True)
+df_n_tor
+
+
+# In[9]:
 
 
 def getNearbyVenues(names, latitudes, longitudes, radius=500):
@@ -175,47 +187,108 @@ def getNearbyVenues(names, latitudes, longitudes, radius=500):
             v['venue']['categories'][0]['name']) for v in results])
 
     nearby_venues = pd.DataFrame([item for venue_list in venues_list for item in venue_list])
-    nearby_venues.columns = ['Neighborhood', 
-                  'Neighborhood Latitude', 
-                  'Neighborhood Longitude', 
+    nearby_venues.columns = ['Neighbourhood', 
+                  'Neighbourhood_Latitude', 
+                  'Neighbourhood_Longitude', 
                   'Venue', 
-                  'Venue Latitude', 
-                  'Venue Longitude', 
-                  'Venue Category']
+                  'Venue_Latitude', 
+                  'Venue_Longitude', 
+                  'Venue_Category']
     
     return(nearby_venues)
 
 
-# ### <span style="color:darkred"> Filtering neighbourhoods that belongs to Toronto </span>
+# In[10]:
+
+
+df_Tor_venues = getNearbyVenues(df_n_tor['Neighbourhood'], df_n_tor['Latitude'], df_n_tor['Longitude'], 500)
+
+df_Tor_venues.head(10)
+
 
 # In[11]:
 
 
-df_n_tor = df_n >> mask(X.Borough.str.contains('Toronto') == True)
-df_n_tor
+# One hot encoding for calculating frequency
+toronto_onehot = pd.get_dummies(df_Tor_venues[['Venue_Category']], prefix="", prefix_sep="")
+
+# Adding neighborhood column back to dataframe
+toronto_onehot['Neighbourhood'] = df_Tor_venues['Neighbourhood']
+fixed_columns = [toronto_onehot.columns[-1]] + list(toronto_onehot.columns[:-1])
+toronto_onehot = toronto_onehot[fixed_columns]
+
+#calculating frequencies
+toronto_grouped = toronto_onehot.groupby('Neighbourhood').mean().reset_index()
+toronto_grouped
 
 
-# In[29]:
+# In[105]:
 
 
-df_Tor_venues = getNearbyVenues(df_n_tor['Neighbourhood'], df_n_tor['Latitude'], df_n_tor['Longitude'], 500)
-df_Tor_venues = df_Tor_venues.rename(columns={"Neighborhood Latitude": "Neighborhood_Latitude",
-                                             "Neighborhood Longitude": "Neighborhood_Longitude",
-                                             "Venue Latitude": "Venue_Latitude",
-                                             "Venue Longitude": "Venue_Longitude",
-                                             "Venue Category": "Venue_Category"})
-df_Tor_venues.head(10)
+fuck = pd.DataFrame(toronto_grouped.iloc[0,:])
+fuck = fuck.iloc[1:,:]
+fuck.sort_values(by=0, ascending=False)
 
 
-# In[34]:
+# In[12]:
 
 
-df_Tor_venues >> group_by(X.Neighborhood) >> summarize(Count = X.Venue_Category.count())
+df_Tor_venues_grouped = df_Tor_venues >> group_by(X.Neighbourhood, X.Venue_Category) >> summarize(Count = X.Venue_Category.count()) >> select(X.Neighbourhood, X.Venue_Category, X.Count)
+df_Tor_venues_grouped = df_Tor_venues_grouped.sort_values(by=['Neighbourhood','Count'], ascending=[True, False])
+df_Tor_venues_grouped
 
 
-# In[48]:
+# #### <span style="color:lightgrey"> Selecting the first 10 most frequent Vanue Category by Neighbourhood</span>
+
+# In[14]:
 
 
-df_Tor_venues = df_Tor_venues >> group_by(X.Neighborhood, X.Venue_Category) >> summarize(Count = X.Venue_Category.count()) >> arrange(X.Neighborhood, X.Count, ascending=False) 
-df_Tor_venues
+df_venue = pd.DataFrame() #creates a new dataframe that's empty
+
+for element in df_Tor_venues_grouped.Neighbourhood.unique():
+    df_container = df_Tor_venues_grouped >> mask(X.Neighbourhood == element)
+    if len(df_container) < 10:
+        df_venue = df_venue.append(df_container)
+    if len(df_container) >= 10:
+        df_venue = df_venue.append(df_container.head(10))
+df_venue
+
+
+# In[15]:
+
+
+# Adding geo data to the data frame
+df_venue = df_venue >> left_join(df_n, by="Neighbourhood")
+df_venue
+
+
+# In[32]:
+
+
+# set number of clusters
+kclusters = 6
+
+toronto_grouped_clustering = toronto_grouped.drop('Neighbourhood', 1)
+
+# run k-means clustering
+kmeans = KMeans(n_clusters=kclusters, random_state=0).fit(toronto_grouped_clustering)
+
+# check cluster labels generated for each row in the dataframe
+kmeans.labels_[0:100]
+
+
+# In[38]:
+
+
+# Creating dataframe for storing cluster label of Neighbourhoods
+toronto_clusters = toronto_grouped >> mutate(Clusters = kmeans.labels_) >> select(X.Neighbourhood, X.Clusters)
+toronto_clusters
+
+
+# In[42]:
+
+
+# Adding clusters to Df venue
+df_venue = df_venue >> left_join(toronto_clusters, by="Neighbourhood")
+df_venue
 

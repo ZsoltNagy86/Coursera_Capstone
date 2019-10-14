@@ -13129,7 +13129,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Importing general packages</span>
@@ -13153,43 +13153,24 @@ div#notebook {
 <span class="kn">from</span> <span class="nn">bs4</span> <span class="k">import</span> <span class="n">BeautifulSoup</span>
 
 <span class="c1"># Importing packages for handling gespatial data</span>
-<span class="o">!</span>conda install -c conda-forge geocoder --yes 
+<span class="c1">#!conda install -c conda-forge geocoder --yes </span>
 <span class="kn">import</span> <span class="nn">geocoder</span>
 
 <span class="c1"># Packages for hiding sensitive data</span>
 <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span>
+
+<span class="c1"># Importing k-means from clustering stage</span>
+<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="k">import</span> <span class="n">KMeans</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Collecting package metadata (repodata.json): ...working... done
-Solving environment: ...working... done
-
-# All requested packages already installed.
-
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">html</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://en.wikipedia.org/wiki/List_of_postal_codes_of_Canada:_M&#39;</span><span class="p">)</span>
@@ -13205,7 +13186,7 @@ Solving environment: ...working... done
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Defining customized replace function</span>
@@ -13276,7 +13257,7 @@ Solving environment: ...working... done
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[5]:</div>
+    <div class="prompt output_prompt">Out[3]:</div>
 
 
 
@@ -13685,7 +13666,7 @@ Solving environment: ...working... done
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">df_n</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
@@ -13716,7 +13697,7 @@ Solving environment: ...working... done
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_gsp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;http://cocl.us/Geospatial_data&#39;</span><span class="p">)</span>
@@ -13734,7 +13715,7 @@ Solving environment: ...working... done
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[7]:</div>
+    <div class="prompt output_prompt">Out[5]:</div>
 
 
 
@@ -13806,7 +13787,7 @@ Solving environment: ...working... done
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_n</span> <span class="o">=</span> <span class="n">df_n</span> <span class="o">&gt;&gt;</span> <span class="n">left_join</span><span class="p">(</span><span class="n">df_gsp</span><span class="p">,</span> <span class="n">by</span> <span class="o">=</span> <span class="s2">&quot;Postcode&quot;</span><span class="p">)</span>
@@ -13823,7 +13804,7 @@ Solving environment: ...working... done
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[8]:</div>
+    <div class="prompt output_prompt">Out[6]:</div>
 
 
 
@@ -14363,7 +14344,7 @@ Solving environment: ...working... done
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">getpass</span>
@@ -14373,7 +14354,7 @@ Solving environment: ...working... done
 <span class="n">VERSION</span> <span class="o">=</span> <span class="s1">&#39;20180605&#39;</span>
 <span class="n">LIMIT</span> <span class="o">=</span> <span class="mi">100</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Your credentails are stored&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Your credentials are stored&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14392,62 +14373,11 @@ Solving environment: ...working... done
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Enter your Foursquare CLIENT_ID········
 Enter your Foursquare CLIENT_SECRET········
-Your credentails are stored
+Your credentials are stored
 </pre>
 </div>
 </div>
 
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">getNearbyVenues</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">latitudes</span><span class="p">,</span> <span class="n">longitudes</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
-    
-    <span class="n">venues_list</span><span class="o">=</span><span class="p">[]</span>
-    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lng</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">latitudes</span><span class="p">,</span> <span class="n">longitudes</span><span class="p">):</span>
-        <span class="c1">#print(name)</span>
-            
-        <span class="c1"># create the API request URL</span>
-        <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://api.foursquare.com/v2/venues/explore?&amp;client_id=</span><span class="si">{}</span><span class="s1">&amp;client_secret=</span><span class="si">{}</span><span class="s1">&amp;v=</span><span class="si">{}</span><span class="s1">&amp;ll=</span><span class="si">{}</span><span class="s1">,</span><span class="si">{}</span><span class="s1">&amp;radius=</span><span class="si">{}</span><span class="s1">&amp;limit=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">CLIENT_ID</span><span class="p">,</span> 
-            <span class="n">CLIENT_SECRET</span><span class="p">,</span> 
-            <span class="n">VERSION</span><span class="p">,</span> 
-            <span class="n">lat</span><span class="p">,</span> 
-            <span class="n">lng</span><span class="p">,</span> 
-            <span class="n">radius</span><span class="p">,</span> 
-            <span class="n">LIMIT</span><span class="p">)</span>
-            
-        <span class="c1"># make the GET request</span>
-        <span class="n">results</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;response&quot;</span><span class="p">][</span><span class="s1">&#39;groups&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;items&#39;</span><span class="p">]</span>
-        
-        <span class="c1"># return only relevant information for each nearby venue</span>
-        <span class="n">venues_list</span><span class="o">.</span><span class="n">append</span><span class="p">([(</span>
-            <span class="n">name</span><span class="p">,</span> 
-            <span class="n">lat</span><span class="p">,</span> 
-            <span class="n">lng</span><span class="p">,</span> 
-            <span class="n">v</span><span class="p">[</span><span class="s1">&#39;venue&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> 
-            <span class="n">v</span><span class="p">[</span><span class="s1">&#39;venue&#39;</span><span class="p">][</span><span class="s1">&#39;location&#39;</span><span class="p">][</span><span class="s1">&#39;lat&#39;</span><span class="p">],</span> 
-            <span class="n">v</span><span class="p">[</span><span class="s1">&#39;venue&#39;</span><span class="p">][</span><span class="s1">&#39;location&#39;</span><span class="p">][</span><span class="s1">&#39;lng&#39;</span><span class="p">],</span>  
-            <span class="n">v</span><span class="p">[</span><span class="s1">&#39;venue&#39;</span><span class="p">][</span><span class="s1">&#39;categories&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">results</span><span class="p">])</span>
-
-    <span class="n">nearby_venues</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">item</span> <span class="k">for</span> <span class="n">venue_list</span> <span class="ow">in</span> <span class="n">venues_list</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">venue_list</span><span class="p">])</span>
-    <span class="n">nearby_venues</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Neighborhood&#39;</span><span class="p">,</span> 
-                  <span class="s1">&#39;Neighborhood Latitude&#39;</span><span class="p">,</span> 
-                  <span class="s1">&#39;Neighborhood Longitude&#39;</span><span class="p">,</span> 
-                  <span class="s1">&#39;Venue&#39;</span><span class="p">,</span> 
-                  <span class="s1">&#39;Venue Latitude&#39;</span><span class="p">,</span> 
-                  <span class="s1">&#39;Venue Longitude&#39;</span><span class="p">,</span> 
-                  <span class="s1">&#39;Venue Category&#39;</span><span class="p">]</span>
-    
-    <span class="k">return</span><span class="p">(</span><span class="n">nearby_venues</span><span class="p">)</span>
-</pre></div>
-
-    </div>
 </div>
 </div>
 
@@ -14461,7 +14391,7 @@ Your credentails are stored
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_n_tor</span> <span class="o">=</span> <span class="n">df_n</span> <span class="o">&gt;&gt;</span> <span class="n">mask</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">Borough</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;Toronto&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="kc">True</span><span class="p">)</span>
@@ -14478,7 +14408,7 @@ Your credentails are stored
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[11]:</div>
+    <div class="prompt output_prompt">Out[8]:</div>
 
 
 
@@ -14826,15 +14756,62 @@ Your credentails are stored
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">getNearbyVenues</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">latitudes</span><span class="p">,</span> <span class="n">longitudes</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
+    
+    <span class="n">venues_list</span><span class="o">=</span><span class="p">[]</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lng</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">latitudes</span><span class="p">,</span> <span class="n">longitudes</span><span class="p">):</span>
+        <span class="c1">#print(name)</span>
+            
+        <span class="c1"># create the API request URL</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://api.foursquare.com/v2/venues/explore?&amp;client_id=</span><span class="si">{}</span><span class="s1">&amp;client_secret=</span><span class="si">{}</span><span class="s1">&amp;v=</span><span class="si">{}</span><span class="s1">&amp;ll=</span><span class="si">{}</span><span class="s1">,</span><span class="si">{}</span><span class="s1">&amp;radius=</span><span class="si">{}</span><span class="s1">&amp;limit=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">CLIENT_ID</span><span class="p">,</span> 
+            <span class="n">CLIENT_SECRET</span><span class="p">,</span> 
+            <span class="n">VERSION</span><span class="p">,</span> 
+            <span class="n">lat</span><span class="p">,</span> 
+            <span class="n">lng</span><span class="p">,</span> 
+            <span class="n">radius</span><span class="p">,</span> 
+            <span class="n">LIMIT</span><span class="p">)</span>
+            
+        <span class="c1"># make the GET request</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;response&quot;</span><span class="p">][</span><span class="s1">&#39;groups&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;items&#39;</span><span class="p">]</span>
+        
+        <span class="c1"># return only relevant information for each nearby venue</span>
+        <span class="n">venues_list</span><span class="o">.</span><span class="n">append</span><span class="p">([(</span>
+            <span class="n">name</span><span class="p">,</span> 
+            <span class="n">lat</span><span class="p">,</span> 
+            <span class="n">lng</span><span class="p">,</span> 
+            <span class="n">v</span><span class="p">[</span><span class="s1">&#39;venue&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> 
+            <span class="n">v</span><span class="p">[</span><span class="s1">&#39;venue&#39;</span><span class="p">][</span><span class="s1">&#39;location&#39;</span><span class="p">][</span><span class="s1">&#39;lat&#39;</span><span class="p">],</span> 
+            <span class="n">v</span><span class="p">[</span><span class="s1">&#39;venue&#39;</span><span class="p">][</span><span class="s1">&#39;location&#39;</span><span class="p">][</span><span class="s1">&#39;lng&#39;</span><span class="p">],</span>  
+            <span class="n">v</span><span class="p">[</span><span class="s1">&#39;venue&#39;</span><span class="p">][</span><span class="s1">&#39;categories&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">results</span><span class="p">])</span>
+
+    <span class="n">nearby_venues</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">item</span> <span class="k">for</span> <span class="n">venue_list</span> <span class="ow">in</span> <span class="n">venues_list</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">venue_list</span><span class="p">])</span>
+    <span class="n">nearby_venues</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Neighbourhood&#39;</span><span class="p">,</span> 
+                  <span class="s1">&#39;Neighbourhood_Latitude&#39;</span><span class="p">,</span> 
+                  <span class="s1">&#39;Neighbourhood_Longitude&#39;</span><span class="p">,</span> 
+                  <span class="s1">&#39;Venue&#39;</span><span class="p">,</span> 
+                  <span class="s1">&#39;Venue_Latitude&#39;</span><span class="p">,</span> 
+                  <span class="s1">&#39;Venue_Longitude&#39;</span><span class="p">,</span> 
+                  <span class="s1">&#39;Venue_Category&#39;</span><span class="p">]</span>
+    
+    <span class="k">return</span><span class="p">(</span><span class="n">nearby_venues</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_Tor_venues</span> <span class="o">=</span> <span class="n">getNearbyVenues</span><span class="p">(</span><span class="n">df_n_tor</span><span class="p">[</span><span class="s1">&#39;Neighbourhood&#39;</span><span class="p">],</span> <span class="n">df_n_tor</span><span class="p">[</span><span class="s1">&#39;Latitude&#39;</span><span class="p">],</span> <span class="n">df_n_tor</span><span class="p">[</span><span class="s1">&#39;Longitude&#39;</span><span class="p">],</span> <span class="mi">500</span><span class="p">)</span>
-<span class="n">df_Tor_venues</span> <span class="o">=</span> <span class="n">df_Tor_venues</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Neighborhood Latitude&quot;</span><span class="p">:</span> <span class="s2">&quot;Neighborhood_Latitude&quot;</span><span class="p">,</span>
-                                             <span class="s2">&quot;Neighborhood Longitude&quot;</span><span class="p">:</span> <span class="s2">&quot;Neighborhood_Longitude&quot;</span><span class="p">,</span>
-                                             <span class="s2">&quot;Venue Latitude&quot;</span><span class="p">:</span> <span class="s2">&quot;Venue_Latitude&quot;</span><span class="p">,</span>
-                                             <span class="s2">&quot;Venue Longitude&quot;</span><span class="p">:</span> <span class="s2">&quot;Venue_Longitude&quot;</span><span class="p">,</span>
-                                             <span class="s2">&quot;Venue Category&quot;</span><span class="p">:</span> <span class="s2">&quot;Venue_Category&quot;</span><span class="p">})</span>
+
 <span class="n">df_Tor_venues</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 
@@ -14848,7 +14825,7 @@ Your credentails are stored
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[29]:</div>
+    <div class="prompt output_prompt">Out[10]:</div>
 
 
 
@@ -14871,9 +14848,9 @@ Your credentails are stored
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>Neighborhood</th>
-      <th>Neighborhood_Latitude</th>
-      <th>Neighborhood_Longitude</th>
+      <th>Neighbourhood</th>
+      <th>Neighbourhood_Latitude</th>
+      <th>Neighbourhood_Longitude</th>
       <th>Venue</th>
       <th>Venue_Latitude</th>
       <th>Venue_Longitude</th>
@@ -14956,20 +14933,20 @@ Your credentails are stored
       <td>Harbourfront, Regent Park</td>
       <td>43.65426</td>
       <td>-79.360636</td>
-      <td>Corktown Common</td>
-      <td>43.655618</td>
-      <td>-79.356211</td>
-      <td>Park</td>
+      <td>Dominion Pub and Kitchen</td>
+      <td>43.656919</td>
+      <td>-79.358967</td>
+      <td>Pub</td>
     </tr>
     <tr>
       <th>8</th>
       <td>Harbourfront, Regent Park</td>
       <td>43.65426</td>
       <td>-79.360636</td>
-      <td>Dominion Pub and Kitchen</td>
-      <td>43.656919</td>
-      <td>-79.358967</td>
-      <td>Pub</td>
+      <td>Corktown Common</td>
+      <td>43.655618</td>
+      <td>-79.356211</td>
+      <td>Park</td>
     </tr>
     <tr>
       <th>9</th>
@@ -14994,10 +14971,20 @@ Your credentails are stored
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_Tor_venues</span> <span class="o">&gt;&gt;</span> <span class="n">group_by</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">Neighborhood</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">summarize</span><span class="p">(</span><span class="n">Count</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">Venue_Category</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># One hot encoding for calculating frequency</span>
+<span class="n">toronto_onehot</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">df_Tor_venues</span><span class="p">[[</span><span class="s1">&#39;Venue_Category&#39;</span><span class="p">]],</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">prefix_sep</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+<span class="c1"># Adding neighborhood column back to dataframe</span>
+<span class="n">toronto_onehot</span><span class="p">[</span><span class="s1">&#39;Neighbourhood&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_Tor_venues</span><span class="p">[</span><span class="s1">&#39;Neighbourhood&#39;</span><span class="p">]</span>
+<span class="n">fixed_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">toronto_onehot</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">toronto_onehot</span><span class="o">.</span><span class="n">columns</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">toronto_onehot</span> <span class="o">=</span> <span class="n">toronto_onehot</span><span class="p">[</span><span class="n">fixed_columns</span><span class="p">]</span>
+
+<span class="c1">#calculating frequencies</span>
+<span class="n">toronto_grouped</span> <span class="o">=</span> <span class="n">toronto_onehot</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Neighbourhood&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">toronto_grouped</span>
 </pre></div>
 
     </div>
@@ -15010,7 +14997,7 @@ Your credentails are stored
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[34]:</div>
+    <div class="prompt output_prompt">Out[11]:</div>
 
 
 
@@ -15033,145 +15020,3023 @@ Your credentails are stored
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>Neighborhood</th>
-      <th>Count</th>
+      <th>Neighbourhood</th>
+      <th>Afghan Restaurant</th>
+      <th>Airport</th>
+      <th>Airport Food Court</th>
+      <th>Airport Gate</th>
+      <th>Airport Lounge</th>
+      <th>Airport Service</th>
+      <th>Airport Terminal</th>
+      <th>American Restaurant</th>
+      <th>Antique Shop</th>
+      <th>...</th>
+      <th>Trail</th>
+      <th>Train Station</th>
+      <th>Vegetarian / Vegan Restaurant</th>
+      <th>Video Game Store</th>
+      <th>Video Store</th>
+      <th>Vietnamese Restaurant</th>
+      <th>Wine Bar</th>
+      <th>Wings Joint</th>
+      <th>Women's Store</th>
+      <th>Yoga Studio</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
       <td>Adelaide, King, Richmond</td>
-      <td>100</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.040000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.020000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.010000</td>
+      <td>0.000000</td>
+      <td>0.01</td>
+      <td>0.000000</td>
     </tr>
     <tr>
       <th>1</th>
       <td>Berczy Park</td>
-      <td>57</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.017544</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
     </tr>
     <tr>
       <th>2</th>
       <td>Brockton, Exhibition Place, Parkdale Village</td>
-      <td>24</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
     </tr>
     <tr>
       <th>3</th>
       <td>Business Reply Mail Processing Centre 969 Eastern</td>
-      <td>18</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.058824</td>
     </tr>
     <tr>
       <th>4</th>
       <td>CN Tower, Bathurst Quay, Island airport, Harbo...</td>
-      <td>14</td>
+      <td>0.000000</td>
+      <td>0.058824</td>
+      <td>0.058824</td>
+      <td>0.058824</td>
+      <td>0.117647</td>
+      <td>0.176471</td>
+      <td>0.117647</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
     </tr>
     <tr>
       <th>5</th>
       <td>Cabbagetown, St. James Town</td>
-      <td>41</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.022727</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
     </tr>
     <tr>
       <th>6</th>
       <td>Central Bay Street</td>
-      <td>83</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.011364</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.011364</td>
+      <td>0.000000</td>
+      <td>0.011364</td>
+      <td>0.000000</td>
+      <td>0.011364</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.011364</td>
     </tr>
     <tr>
       <th>7</th>
       <td>Chinatown, Grange Park, Kensington Market</td>
-      <td>100</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.050000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.040000</td>
+      <td>0.010000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
     </tr>
     <tr>
       <th>8</th>
       <td>Christie</td>
-      <td>15</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
     </tr>
     <tr>
       <th>9</th>
       <td>Church and Wellesley</td>
-      <td>88</td>
+      <td>0.011494</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.011494</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+      <td>0.011494</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.011494</td>
+      <td>0.00</td>
+      <td>0.011494</td>
     </tr>
     <tr>
       <th>10</th>
       <td>Commerce Court, Victoria Hotel</td>
-      <td>100</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.040000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.020000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.010000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
     </tr>
     <tr>
       <th>11</th>
       <td>Davisville</td>
-      <td>33</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
     </tr>
     <tr>
       <th>12</th>
       <td>Davisville North</td>
-      <td>9</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
     </tr>
     <tr>
       <th>13</th>
       <td>Deer Park, Forest Hill SE, Rathnelly, South Hi...</td>
-      <td>15</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.062500</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.062500</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
     </tr>
     <tr>
       <th>14</th>
       <td>Design Exchange, Toronto Dominion Centre</td>
-      <td>100</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.020000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.01</td>
+      <td>0.010000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.010000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
     </tr>
     <tr>
       <th>15</th>
       <td>Dovercourt Village, Dufferin</td>
-      <td>14</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
     </tr>
     <tr>
       <th>16</th>
       <td>First Canadian Place, Underground city</td>
-      <td>100</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.030000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.01</td>
+      <td>0.010000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.010000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
     </tr>
     <tr>
       <th>17</th>
       <td>Forest Hill North, Forest Hill West</td>
-      <td>4</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.25000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
     </tr>
     <tr>
       <th>18</th>
       <td>Harbord, University of Toronto</td>
-      <td>35</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+      <td>0.029412</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
     </tr>
     <tr>
       <th>19</th>
       <td>Harbourfront East, Toronto Islands, Union Station</td>
-      <td>100</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.01</td>
+      <td>0.010000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.010000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
     </tr>
     <tr>
       <th>20</th>
       <td>Harbourfront, Regent Park</td>
-      <td>50</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.018868</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
     </tr>
     <tr>
       <th>21</th>
       <td>High Park, The Junction South</td>
-      <td>25</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
     </tr>
     <tr>
       <th>22</th>
       <td>Lawrence Park</td>
-      <td>4</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
     </tr>
     <tr>
       <th>23</th>
       <td>Little Portugal, Trinity</td>
-      <td>68</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.029851</td>
+      <td>0.014925</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.014925</td>
     </tr>
     <tr>
       <th>24</th>
       <td>Moore Park, Summerhill East</td>
-      <td>3</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
     </tr>
     <tr>
       <th>25</th>
       <td>North Toronto West</td>
-      <td>20</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.045455</td>
     </tr>
     <tr>
       <th>26</th>
       <td>Parkdale, Roncesvalles</td>
-      <td>15</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>Rosedale</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.20000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>Roselawn</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>Runnymede, Swansea</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.028571</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>Ryerson, Garden District</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.010000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.010000</td>
+      <td>0.010000</td>
+      <td>0.000000</td>
+      <td>0.010000</td>
+      <td>0.010000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>St. James Town</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.020000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.010000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.010000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>Stn A PO Boxes 25 The Esplanade</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.010101</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.010101</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>Studio District</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.048780</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.024390</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>The Annex, North Midtown, Yorkville</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.047619</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.047619</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>The Beaches</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.25000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.00000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>37</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.023810</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.02381</td>
+      <td>0.00</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.023810</td>
+    </tr>
+  </tbody>
+</table>
+<p>38 rows × 241 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[105]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fuck</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">toronto_grouped</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,:])</span>
+<span class="n">fuck</span> <span class="o">=</span> <span class="n">fuck</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">:,:]</span>
+<span class="n">fuck</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[105]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Coffee Shop</th>
+      <td>0.08</td>
+    </tr>
+    <tr>
+      <th>Café</th>
+      <td>0.05</td>
+    </tr>
+    <tr>
+      <th>Bar</th>
+      <td>0.04</td>
+    </tr>
+    <tr>
+      <th>Thai Restaurant</th>
+      <td>0.04</td>
+    </tr>
+    <tr>
+      <th>American Restaurant</th>
+      <td>0.04</td>
+    </tr>
+    <tr>
+      <th>Asian Restaurant</th>
+      <td>0.03</td>
+    </tr>
+    <tr>
+      <th>Steakhouse</th>
+      <td>0.03</td>
+    </tr>
+    <tr>
+      <th>Restaurant</th>
+      <td>0.03</td>
+    </tr>
+    <tr>
+      <th>Burger Joint</th>
+      <td>0.03</td>
+    </tr>
+    <tr>
+      <th>Sushi Restaurant</th>
+      <td>0.03</td>
+    </tr>
+    <tr>
+      <th>Hotel</th>
+      <td>0.03</td>
+    </tr>
+    <tr>
+      <th>Lounge</th>
+      <td>0.02</td>
+    </tr>
+    <tr>
+      <th>Pizza Place</th>
+      <td>0.02</td>
+    </tr>
+    <tr>
+      <th>Breakfast Spot</th>
+      <td>0.02</td>
+    </tr>
+    <tr>
+      <th>Concert Hall</th>
+      <td>0.02</td>
+    </tr>
+    <tr>
+      <th>Gastropub</th>
+      <td>0.02</td>
+    </tr>
+    <tr>
+      <th>Vegetarian / Vegan Restaurant</th>
+      <td>0.02</td>
+    </tr>
+    <tr>
+      <th>Gym</th>
+      <td>0.02</td>
+    </tr>
+    <tr>
+      <th>Cosmetics Shop</th>
+      <td>0.02</td>
+    </tr>
+    <tr>
+      <th>Jazz Club</th>
+      <td>0.01</td>
+    </tr>
+    <tr>
+      <th>Colombian Restaurant</th>
+      <td>0.01</td>
+    </tr>
+    <tr>
+      <th>Electronics Store</th>
+      <td>0.01</td>
+    </tr>
+    <tr>
+      <th>Deli / Bodega</th>
+      <td>0.01</td>
+    </tr>
+    <tr>
+      <th>Salon / Barbershop</th>
+      <td>0.01</td>
+    </tr>
+    <tr>
+      <th>Salad Place</th>
+      <td>0.01</td>
+    </tr>
+    <tr>
+      <th>Department Store</th>
+      <td>0.01</td>
+    </tr>
+    <tr>
+      <th>Poke Place</th>
+      <td>0.01</td>
+    </tr>
+    <tr>
+      <th>Plaza</th>
+      <td>0.01</td>
+    </tr>
+    <tr>
+      <th>Sandwich Place</th>
+      <td>0.01</td>
+    </tr>
+    <tr>
+      <th>Record Shop</th>
+      <td>0.01</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>Hotel Bar</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Hotpot Restaurant</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Indie Movie Theater</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Fruit &amp; Vegetable Store</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>French Restaurant</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Dance Studio</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Event Space</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Dessert Shop</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Dim Sum Restaurant</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Diner</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Discount Store</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Dog Run</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Doner Restaurant</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Donut Shop</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Dumpling Restaurant</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Eastern European Restaurant</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Ethiopian Restaurant</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Falafel Restaurant</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Fountain</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Farmers Market</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Fast Food Restaurant</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Filipino Restaurant</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Fish &amp; Chips Shop</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Fish Market</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Flea Market</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Flower Shop</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Food</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Food &amp; Drink Shop</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Food Truck</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Yoga Studio</th>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+<p>240 rows × 1 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_Tor_venues_grouped</span> <span class="o">=</span> <span class="n">df_Tor_venues</span> <span class="o">&gt;&gt;</span> <span class="n">group_by</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">Neighbourhood</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">Venue_Category</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">summarize</span><span class="p">(</span><span class="n">Count</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">Venue_Category</span><span class="o">.</span><span class="n">count</span><span class="p">())</span> <span class="o">&gt;&gt;</span> <span class="n">select</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">Neighbourhood</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">Venue_Category</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">Count</span><span class="p">)</span>
+<span class="n">df_Tor_venues_grouped</span> <span class="o">=</span> <span class="n">df_Tor_venues_grouped</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Neighbourhood&#39;</span><span class="p">,</span><span class="s1">&#39;Count&#39;</span><span class="p">],</span> <span class="n">ascending</span><span class="o">=</span><span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">])</span>
+<span class="n">df_Tor_venues_grouped</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[12]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Neighbourhood</th>
+      <th>Venue_Category</th>
+      <th>Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>13</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Coffee Shop</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Café</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>American Restaurant</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Bar</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>57</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Thai Restaurant</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Asian Restaurant</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Burger Joint</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Hotel</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>48</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Restaurant</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>55</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Steakhouse</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>56</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Sushi Restaurant</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Breakfast Spot</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Concert Hall</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Cosmetics Shop</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Gastropub</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Gym</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>44</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Pizza Place</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>59</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Vegetarian / Vegan Restaurant</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Art Gallery</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Art Museum</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Bakery</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Bookstore</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Brazilian Restaurant</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Building</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Burrito Place</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Colombian Restaurant</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Deli / Bodega</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Department Store</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Electronics Store</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Food Court</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>1096</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Pub</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1098</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Steakhouse</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1099</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Sushi Restaurant</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1113</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Greek Restaurant</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>1107</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Coffee Shop</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>1115</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Ice Cream Shop</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>1117</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Italian Restaurant</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>1112</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Furniture / Home Store</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>1100</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>American Restaurant</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1101</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Bakery</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1102</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Bookstore</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1103</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Brewery</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1104</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Bubble Tea Shop</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1105</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Café</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1106</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Caribbean Restaurant</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1108</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Cosmetics Shop</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1109</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Dessert Shop</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1110</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Diner</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1111</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Fruit &amp; Vegetable Store</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1114</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Grocery Store</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1116</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Indian Restaurant</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1118</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Juice Bar</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1119</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Liquor Store</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1120</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Lounge</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1121</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Pizza Place</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1122</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Pub</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1123</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Restaurant</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1124</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Spa</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1125</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Trail</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1126</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Yoga Studio</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+<p>1127 rows × 3 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="-Selecting-the-first-10-most-frequent-Vanue-Category-by-Neighbourhood"><span style="color:lightgrey"> Selecting the first 10 most frequent Vanue Category by Neighbourhood</span><a class="anchor-link" href="#-Selecting-the-first-10-most-frequent-Vanue-Category-by-Neighbourhood">&#182;</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_venue</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span> <span class="c1">#creates a new dataframe that&#39;s empty</span>
+
+<span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">df_Tor_venues_grouped</span><span class="o">.</span><span class="n">Neighbourhood</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+    <span class="n">df_container</span> <span class="o">=</span> <span class="n">df_Tor_venues_grouped</span> <span class="o">&gt;&gt;</span> <span class="n">mask</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">Neighbourhood</span> <span class="o">==</span> <span class="n">element</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_container</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+        <span class="n">df_venue</span> <span class="o">=</span> <span class="n">df_venue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df_container</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_container</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
+        <span class="n">df_venue</span> <span class="o">=</span> <span class="n">df_venue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df_container</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">df_venue</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[14]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Neighbourhood</th>
+      <th>Venue_Category</th>
+      <th>Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>13</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Coffee Shop</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Café</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>American Restaurant</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Bar</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>57</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Thai Restaurant</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Asian Restaurant</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Burger Joint</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Hotel</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>48</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Restaurant</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>55</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Steakhouse</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>76</th>
+      <td>Berczy Park</td>
+      <td>Coffee Shop</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>75</th>
+      <td>Berczy Park</td>
+      <td>Cocktail Bar</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>65</th>
+      <td>Berczy Park</td>
+      <td>Bakery</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>68</th>
+      <td>Berczy Park</td>
+      <td>Beer Bar</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>72</th>
+      <td>Berczy Park</td>
+      <td>Café</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>73</th>
+      <td>Berczy Park</td>
+      <td>Cheese Shop</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>82</th>
+      <td>Berczy Park</td>
+      <td>Farmers Market</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>99</th>
+      <td>Berczy Park</td>
+      <td>Seafood Restaurant</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>102</th>
+      <td>Berczy Park</td>
+      <td>Steakhouse</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>62</th>
+      <td>Berczy Park</td>
+      <td>Art Gallery</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>111</th>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Café</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>109</th>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Breakfast Spot</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>114</th>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Coffee Shop</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>107</th>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Bakery</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>108</th>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Bar</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>110</th>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Burrito Place</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>112</th>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Caribbean Restaurant</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>113</th>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Climbing Gym</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>115</th>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Convenience Store</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>116</th>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Furniture / Home Store</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>1061</th>
+      <td>The Annex, North Midtown, Yorkville</td>
+      <td>BBQ Joint</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1062</th>
+      <td>The Annex, North Midtown, Yorkville</td>
+      <td>Burger Joint</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1065</th>
+      <td>The Annex, North Midtown, Yorkville</td>
+      <td>Cosmetics Shop</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1066</th>
+      <td>The Annex, North Midtown, Yorkville</td>
+      <td>History Museum</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1067</th>
+      <td>The Annex, North Midtown, Yorkville</td>
+      <td>Indian Restaurant</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1068</th>
+      <td>The Annex, North Midtown, Yorkville</td>
+      <td>Jewish Restaurant</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1076</th>
+      <td>The Beaches</td>
+      <td>Health Food Store</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1077</th>
+      <td>The Beaches</td>
+      <td>Neighborhood</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1078</th>
+      <td>The Beaches</td>
+      <td>Pub</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1079</th>
+      <td>The Beaches</td>
+      <td>Trail</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1093</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Park</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>1097</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Sandwich Place</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>1080</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Brewery</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1081</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Burger Joint</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1082</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Burrito Place</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1083</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Coffee Shop</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1084</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Fast Food Restaurant</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1085</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Fish &amp; Chips Shop</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1086</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Food &amp; Drink Shop</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1087</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Gym</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1113</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Greek Restaurant</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>1107</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Coffee Shop</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>1115</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Ice Cream Shop</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>1117</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Italian Restaurant</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>1112</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Furniture / Home Store</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>1100</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>American Restaurant</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1101</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Bakery</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1102</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Bookstore</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1103</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Brewery</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1104</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Bubble Tea Shop</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+<p>339 rows × 3 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Adding geo data to the data frame</span>
+<span class="n">df_venue</span> <span class="o">=</span> <span class="n">df_venue</span> <span class="o">&gt;&gt;</span> <span class="n">left_join</span><span class="p">(</span><span class="n">df_n</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="s2">&quot;Neighbourhood&quot;</span><span class="p">)</span>
+<span class="n">df_venue</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[15]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Neighbourhood</th>
+      <th>Venue_Category</th>
+      <th>Count</th>
+      <th>Postcode</th>
+      <th>Borough</th>
+      <th>Latitude</th>
+      <th>Longitude</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Coffee Shop</td>
+      <td>7</td>
+      <td>M5H</td>
+      <td>Downtown Toronto</td>
+      <td>43.650571</td>
+      <td>-79.384568</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Café</td>
+      <td>5</td>
+      <td>M5H</td>
+      <td>Downtown Toronto</td>
+      <td>43.650571</td>
+      <td>-79.384568</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>American Restaurant</td>
+      <td>4</td>
+      <td>M5H</td>
+      <td>Downtown Toronto</td>
+      <td>43.650571</td>
+      <td>-79.384568</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Bar</td>
+      <td>4</td>
+      <td>M5H</td>
+      <td>Downtown Toronto</td>
+      <td>43.650571</td>
+      <td>-79.384568</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Thai Restaurant</td>
+      <td>4</td>
+      <td>M5H</td>
+      <td>Downtown Toronto</td>
+      <td>43.650571</td>
+      <td>-79.384568</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Asian Restaurant</td>
+      <td>3</td>
+      <td>M5H</td>
+      <td>Downtown Toronto</td>
+      <td>43.650571</td>
+      <td>-79.384568</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Burger Joint</td>
+      <td>3</td>
+      <td>M5H</td>
+      <td>Downtown Toronto</td>
+      <td>43.650571</td>
+      <td>-79.384568</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Hotel</td>
+      <td>3</td>
+      <td>M5H</td>
+      <td>Downtown Toronto</td>
+      <td>43.650571</td>
+      <td>-79.384568</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Restaurant</td>
+      <td>3</td>
+      <td>M5H</td>
+      <td>Downtown Toronto</td>
+      <td>43.650571</td>
+      <td>-79.384568</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>Steakhouse</td>
+      <td>3</td>
+      <td>M5H</td>
+      <td>Downtown Toronto</td>
+      <td>43.650571</td>
+      <td>-79.384568</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Berczy Park</td>
+      <td>Coffee Shop</td>
+      <td>4</td>
+      <td>M5E</td>
+      <td>Downtown Toronto</td>
+      <td>43.644771</td>
+      <td>-79.373306</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Berczy Park</td>
+      <td>Cocktail Bar</td>
+      <td>3</td>
+      <td>M5E</td>
+      <td>Downtown Toronto</td>
+      <td>43.644771</td>
+      <td>-79.373306</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Berczy Park</td>
+      <td>Bakery</td>
+      <td>2</td>
+      <td>M5E</td>
+      <td>Downtown Toronto</td>
+      <td>43.644771</td>
+      <td>-79.373306</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Berczy Park</td>
+      <td>Beer Bar</td>
+      <td>2</td>
+      <td>M5E</td>
+      <td>Downtown Toronto</td>
+      <td>43.644771</td>
+      <td>-79.373306</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Berczy Park</td>
+      <td>Café</td>
+      <td>2</td>
+      <td>M5E</td>
+      <td>Downtown Toronto</td>
+      <td>43.644771</td>
+      <td>-79.373306</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Berczy Park</td>
+      <td>Cheese Shop</td>
+      <td>2</td>
+      <td>M5E</td>
+      <td>Downtown Toronto</td>
+      <td>43.644771</td>
+      <td>-79.373306</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Berczy Park</td>
+      <td>Farmers Market</td>
+      <td>2</td>
+      <td>M5E</td>
+      <td>Downtown Toronto</td>
+      <td>43.644771</td>
+      <td>-79.373306</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Berczy Park</td>
+      <td>Seafood Restaurant</td>
+      <td>2</td>
+      <td>M5E</td>
+      <td>Downtown Toronto</td>
+      <td>43.644771</td>
+      <td>-79.373306</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>Berczy Park</td>
+      <td>Steakhouse</td>
+      <td>2</td>
+      <td>M5E</td>
+      <td>Downtown Toronto</td>
+      <td>43.644771</td>
+      <td>-79.373306</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>Berczy Park</td>
+      <td>Art Gallery</td>
+      <td>1</td>
+      <td>M5E</td>
+      <td>Downtown Toronto</td>
+      <td>43.644771</td>
+      <td>-79.373306</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Café</td>
+      <td>3</td>
+      <td>M6K</td>
+      <td>West Toronto</td>
+      <td>43.636847</td>
+      <td>-79.428191</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Breakfast Spot</td>
+      <td>2</td>
+      <td>M6K</td>
+      <td>West Toronto</td>
+      <td>43.636847</td>
+      <td>-79.428191</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Coffee Shop</td>
+      <td>2</td>
+      <td>M6K</td>
+      <td>West Toronto</td>
+      <td>43.636847</td>
+      <td>-79.428191</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Bakery</td>
+      <td>1</td>
+      <td>M6K</td>
+      <td>West Toronto</td>
+      <td>43.636847</td>
+      <td>-79.428191</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Bar</td>
+      <td>1</td>
+      <td>M6K</td>
+      <td>West Toronto</td>
+      <td>43.636847</td>
+      <td>-79.428191</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Burrito Place</td>
+      <td>1</td>
+      <td>M6K</td>
+      <td>West Toronto</td>
+      <td>43.636847</td>
+      <td>-79.428191</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Caribbean Restaurant</td>
+      <td>1</td>
+      <td>M6K</td>
+      <td>West Toronto</td>
+      <td>43.636847</td>
+      <td>-79.428191</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Climbing Gym</td>
+      <td>1</td>
+      <td>M6K</td>
+      <td>West Toronto</td>
+      <td>43.636847</td>
+      <td>-79.428191</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Convenience Store</td>
+      <td>1</td>
+      <td>M6K</td>
+      <td>West Toronto</td>
+      <td>43.636847</td>
+      <td>-79.428191</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Furniture / Home Store</td>
+      <td>1</td>
+      <td>M6K</td>
+      <td>West Toronto</td>
+      <td>43.636847</td>
+      <td>-79.428191</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>309</th>
+      <td>The Annex, North Midtown, Yorkville</td>
+      <td>BBQ Joint</td>
+      <td>1</td>
+      <td>M5R</td>
+      <td>Central Toronto</td>
+      <td>43.672710</td>
+      <td>-79.405678</td>
+    </tr>
+    <tr>
+      <th>310</th>
+      <td>The Annex, North Midtown, Yorkville</td>
+      <td>Burger Joint</td>
+      <td>1</td>
+      <td>M5R</td>
+      <td>Central Toronto</td>
+      <td>43.672710</td>
+      <td>-79.405678</td>
+    </tr>
+    <tr>
+      <th>311</th>
+      <td>The Annex, North Midtown, Yorkville</td>
+      <td>Cosmetics Shop</td>
+      <td>1</td>
+      <td>M5R</td>
+      <td>Central Toronto</td>
+      <td>43.672710</td>
+      <td>-79.405678</td>
+    </tr>
+    <tr>
+      <th>312</th>
+      <td>The Annex, North Midtown, Yorkville</td>
+      <td>History Museum</td>
+      <td>1</td>
+      <td>M5R</td>
+      <td>Central Toronto</td>
+      <td>43.672710</td>
+      <td>-79.405678</td>
+    </tr>
+    <tr>
+      <th>313</th>
+      <td>The Annex, North Midtown, Yorkville</td>
+      <td>Indian Restaurant</td>
+      <td>1</td>
+      <td>M5R</td>
+      <td>Central Toronto</td>
+      <td>43.672710</td>
+      <td>-79.405678</td>
+    </tr>
+    <tr>
+      <th>314</th>
+      <td>The Annex, North Midtown, Yorkville</td>
+      <td>Jewish Restaurant</td>
+      <td>1</td>
+      <td>M5R</td>
+      <td>Central Toronto</td>
+      <td>43.672710</td>
+      <td>-79.405678</td>
+    </tr>
+    <tr>
+      <th>315</th>
+      <td>The Beaches</td>
+      <td>Health Food Store</td>
+      <td>1</td>
+      <td>M4E</td>
+      <td>East Toronto</td>
+      <td>43.676357</td>
+      <td>-79.293031</td>
+    </tr>
+    <tr>
+      <th>316</th>
+      <td>The Beaches</td>
+      <td>Neighborhood</td>
+      <td>1</td>
+      <td>M4E</td>
+      <td>East Toronto</td>
+      <td>43.676357</td>
+      <td>-79.293031</td>
+    </tr>
+    <tr>
+      <th>317</th>
+      <td>The Beaches</td>
+      <td>Pub</td>
+      <td>1</td>
+      <td>M4E</td>
+      <td>East Toronto</td>
+      <td>43.676357</td>
+      <td>-79.293031</td>
+    </tr>
+    <tr>
+      <th>318</th>
+      <td>The Beaches</td>
+      <td>Trail</td>
+      <td>1</td>
+      <td>M4E</td>
+      <td>East Toronto</td>
+      <td>43.676357</td>
+      <td>-79.293031</td>
+    </tr>
+    <tr>
+      <th>319</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Park</td>
+      <td>2</td>
+      <td>M4L</td>
+      <td>East Toronto</td>
+      <td>43.668999</td>
+      <td>-79.315572</td>
+    </tr>
+    <tr>
+      <th>320</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Sandwich Place</td>
+      <td>2</td>
+      <td>M4L</td>
+      <td>East Toronto</td>
+      <td>43.668999</td>
+      <td>-79.315572</td>
+    </tr>
+    <tr>
+      <th>321</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Brewery</td>
+      <td>1</td>
+      <td>M4L</td>
+      <td>East Toronto</td>
+      <td>43.668999</td>
+      <td>-79.315572</td>
+    </tr>
+    <tr>
+      <th>322</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Burger Joint</td>
+      <td>1</td>
+      <td>M4L</td>
+      <td>East Toronto</td>
+      <td>43.668999</td>
+      <td>-79.315572</td>
+    </tr>
+    <tr>
+      <th>323</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Burrito Place</td>
+      <td>1</td>
+      <td>M4L</td>
+      <td>East Toronto</td>
+      <td>43.668999</td>
+      <td>-79.315572</td>
+    </tr>
+    <tr>
+      <th>324</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Coffee Shop</td>
+      <td>1</td>
+      <td>M4L</td>
+      <td>East Toronto</td>
+      <td>43.668999</td>
+      <td>-79.315572</td>
+    </tr>
+    <tr>
+      <th>325</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Fast Food Restaurant</td>
+      <td>1</td>
+      <td>M4L</td>
+      <td>East Toronto</td>
+      <td>43.668999</td>
+      <td>-79.315572</td>
+    </tr>
+    <tr>
+      <th>326</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Fish &amp; Chips Shop</td>
+      <td>1</td>
+      <td>M4L</td>
+      <td>East Toronto</td>
+      <td>43.668999</td>
+      <td>-79.315572</td>
+    </tr>
+    <tr>
+      <th>327</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Food &amp; Drink Shop</td>
+      <td>1</td>
+      <td>M4L</td>
+      <td>East Toronto</td>
+      <td>43.668999</td>
+      <td>-79.315572</td>
+    </tr>
+    <tr>
+      <th>328</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Gym</td>
+      <td>1</td>
+      <td>M4L</td>
+      <td>East Toronto</td>
+      <td>43.668999</td>
+      <td>-79.315572</td>
+    </tr>
+    <tr>
+      <th>329</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Greek Restaurant</td>
+      <td>8</td>
+      <td>M4K</td>
+      <td>East Toronto</td>
+      <td>43.679557</td>
+      <td>-79.352188</td>
+    </tr>
+    <tr>
+      <th>330</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Coffee Shop</td>
+      <td>4</td>
+      <td>M4K</td>
+      <td>East Toronto</td>
+      <td>43.679557</td>
+      <td>-79.352188</td>
+    </tr>
+    <tr>
+      <th>331</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Ice Cream Shop</td>
+      <td>3</td>
+      <td>M4K</td>
+      <td>East Toronto</td>
+      <td>43.679557</td>
+      <td>-79.352188</td>
+    </tr>
+    <tr>
+      <th>332</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Italian Restaurant</td>
+      <td>3</td>
+      <td>M4K</td>
+      <td>East Toronto</td>
+      <td>43.679557</td>
+      <td>-79.352188</td>
+    </tr>
+    <tr>
+      <th>333</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Furniture / Home Store</td>
+      <td>2</td>
+      <td>M4K</td>
+      <td>East Toronto</td>
+      <td>43.679557</td>
+      <td>-79.352188</td>
+    </tr>
+    <tr>
+      <th>334</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>American Restaurant</td>
+      <td>1</td>
+      <td>M4K</td>
+      <td>East Toronto</td>
+      <td>43.679557</td>
+      <td>-79.352188</td>
+    </tr>
+    <tr>
+      <th>335</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Bakery</td>
+      <td>1</td>
+      <td>M4K</td>
+      <td>East Toronto</td>
+      <td>43.679557</td>
+      <td>-79.352188</td>
+    </tr>
+    <tr>
+      <th>336</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Bookstore</td>
+      <td>1</td>
+      <td>M4K</td>
+      <td>East Toronto</td>
+      <td>43.679557</td>
+      <td>-79.352188</td>
+    </tr>
+    <tr>
+      <th>337</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Brewery</td>
+      <td>1</td>
+      <td>M4K</td>
+      <td>East Toronto</td>
+      <td>43.679557</td>
+      <td>-79.352188</td>
+    </tr>
+    <tr>
+      <th>338</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Bubble Tea Shop</td>
+      <td>1</td>
+      <td>M4K</td>
+      <td>East Toronto</td>
+      <td>43.679557</td>
+      <td>-79.352188</td>
+    </tr>
+  </tbody>
+</table>
+<p>339 rows × 7 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># set number of clusters</span>
+<span class="n">kclusters</span> <span class="o">=</span> <span class="mi">6</span>
+
+<span class="n">toronto_grouped_clustering</span> <span class="o">=</span> <span class="n">toronto_grouped</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;Neighbourhood&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># run k-means clustering</span>
+<span class="n">kmeans</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="n">kclusters</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">toronto_grouped_clustering</span><span class="p">)</span>
+
+<span class="c1"># check cluster labels generated for each row in the dataframe</span>
+<span class="n">kmeans</span><span class="o">.</span><span class="n">labels_</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">100</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[32]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>38</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[38]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Creating dataframe for storing cluster label of Neighbourhoods</span>
+<span class="n">toronto_clusters</span> <span class="o">=</span> <span class="n">toronto_grouped</span> <span class="o">&gt;&gt;</span> <span class="n">mutate</span><span class="p">(</span><span class="n">Clusters</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">labels_</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">select</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">Neighbourhood</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">Clusters</span><span class="p">)</span>
+<span class="n">toronto_clusters</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[38]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Neighbourhood</th>
+      <th>Clusters</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Berczy Park</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Business Reply Mail Processing Centre 969 Eastern</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>CN Tower, Bathurst Quay, Island airport, Harbo...</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Cabbagetown, St. James Town</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Central Bay Street</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Chinatown, Grange Park, Kensington Market</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Christie</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Church and Wellesley</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Commerce Court, Victoria Hotel</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Davisville</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Davisville North</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Deer Park, Forest Hill SE, Rathnelly, South Hi...</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Design Exchange, Toronto Dominion Centre</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Dovercourt Village, Dufferin</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>First Canadian Place, Underground city</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Forest Hill North, Forest Hill West</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>Harbord, University of Toronto</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>Harbourfront East, Toronto Islands, Union Station</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>Harbourfront, Regent Park</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>High Park, The Junction South</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>Lawrence Park</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>Little Portugal, Trinity</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>Moore Park, Summerhill East</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>North Toronto West</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>Parkdale, Roncesvalles</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>27</th>
@@ -15186,47 +18051,47 @@ Your credentails are stored
     <tr>
       <th>29</th>
       <td>Runnymede, Swansea</td>
-      <td>36</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>30</th>
       <td>Ryerson, Garden District</td>
-      <td>100</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>31</th>
       <td>St. James Town</td>
-      <td>100</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>32</th>
       <td>Stn A PO Boxes 25 The Esplanade</td>
-      <td>100</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>33</th>
       <td>Studio District</td>
-      <td>38</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>34</th>
       <td>The Annex, North Midtown, Yorkville</td>
-      <td>23</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>35</th>
       <td>The Beaches</td>
-      <td>5</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>36</th>
       <td>The Beaches West, India Bazaar</td>
-      <td>21</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>37</th>
       <td>The Danforth West, Riverdale</td>
-      <td>42</td>
+      <td>3</td>
     </tr>
   </tbody>
 </table>
@@ -15241,11 +18106,12 @@ Your credentails are stored
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[48]:</div>
+<div class="prompt input_prompt">In&nbsp;[42]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_Tor_venues</span> <span class="o">=</span> <span class="n">df_Tor_venues</span> <span class="o">&gt;&gt;</span> <span class="n">group_by</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">Neighborhood</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">Venue_Category</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">summarize</span><span class="p">(</span><span class="n">Count</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">Venue_Category</span><span class="o">.</span><span class="n">count</span><span class="p">())</span> <span class="o">&gt;&gt;</span> <span class="n">arrange</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">Neighborhood</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">Count</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> 
-<span class="n">df_Tor_venues</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Adding clusters to Df venue</span>
+<span class="n">df_venue</span> <span class="o">=</span> <span class="n">df_venue</span> <span class="o">&gt;&gt;</span> <span class="n">left_join</span><span class="p">(</span><span class="n">toronto_clusters</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="s2">&quot;Neighbourhood&quot;</span><span class="p">)</span>
+<span class="n">df_venue</span>
 </pre></div>
 
     </div>
@@ -15258,7 +18124,7 @@ Your credentails are stored
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[48]:</div>
+    <div class="prompt output_prompt">Out[42]:</div>
 
 
 
@@ -15281,381 +18147,691 @@ Your credentails are stored
   <thead>
     <tr style="text-align: right;">
       <th></th>
+      <th>Neighbourhood</th>
       <th>Venue_Category</th>
-      <th>Neighborhood</th>
       <th>Count</th>
+      <th>Postcode</th>
+      <th>Borough</th>
+      <th>Latitude</th>
+      <th>Longitude</th>
+      <th>Clusters</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>American Restaurant</td>
       <td>Adelaide, King, Richmond</td>
-      <td>1</td>
+      <td>Coffee Shop</td>
+      <td>7</td>
+      <td>M5H</td>
+      <td>Downtown Toronto</td>
+      <td>43.650571</td>
+      <td>-79.384568</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>Art Gallery</td>
       <td>Adelaide, King, Richmond</td>
-      <td>1</td>
+      <td>Café</td>
+      <td>5</td>
+      <td>M5H</td>
+      <td>Downtown Toronto</td>
+      <td>43.650571</td>
+      <td>-79.384568</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>Art Museum</td>
       <td>Adelaide, King, Richmond</td>
-      <td>1</td>
+      <td>American Restaurant</td>
+      <td>4</td>
+      <td>M5H</td>
+      <td>Downtown Toronto</td>
+      <td>43.650571</td>
+      <td>-79.384568</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>Asian Restaurant</td>
       <td>Adelaide, King, Richmond</td>
-      <td>1</td>
+      <td>Bar</td>
+      <td>4</td>
+      <td>M5H</td>
+      <td>Downtown Toronto</td>
+      <td>43.650571</td>
+      <td>-79.384568</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>Bakery</td>
       <td>Adelaide, King, Richmond</td>
-      <td>1</td>
+      <td>Thai Restaurant</td>
+      <td>4</td>
+      <td>M5H</td>
+      <td>Downtown Toronto</td>
+      <td>43.650571</td>
+      <td>-79.384568</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>5</th>
-      <td>Bar</td>
       <td>Adelaide, King, Richmond</td>
-      <td>1</td>
+      <td>Asian Restaurant</td>
+      <td>3</td>
+      <td>M5H</td>
+      <td>Downtown Toronto</td>
+      <td>43.650571</td>
+      <td>-79.384568</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>6</th>
-      <td>Bookstore</td>
       <td>Adelaide, King, Richmond</td>
-      <td>1</td>
+      <td>Burger Joint</td>
+      <td>3</td>
+      <td>M5H</td>
+      <td>Downtown Toronto</td>
+      <td>43.650571</td>
+      <td>-79.384568</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>7</th>
-      <td>Brazilian Restaurant</td>
       <td>Adelaide, King, Richmond</td>
-      <td>1</td>
+      <td>Hotel</td>
+      <td>3</td>
+      <td>M5H</td>
+      <td>Downtown Toronto</td>
+      <td>43.650571</td>
+      <td>-79.384568</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>8</th>
-      <td>Breakfast Spot</td>
       <td>Adelaide, King, Richmond</td>
-      <td>1</td>
+      <td>Restaurant</td>
+      <td>3</td>
+      <td>M5H</td>
+      <td>Downtown Toronto</td>
+      <td>43.650571</td>
+      <td>-79.384568</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>9</th>
-      <td>Building</td>
       <td>Adelaide, King, Richmond</td>
-      <td>1</td>
+      <td>Steakhouse</td>
+      <td>3</td>
+      <td>M5H</td>
+      <td>Downtown Toronto</td>
+      <td>43.650571</td>
+      <td>-79.384568</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>10</th>
-      <td>Burger Joint</td>
-      <td>Adelaide, King, Richmond</td>
-      <td>1</td>
+      <td>Berczy Park</td>
+      <td>Coffee Shop</td>
+      <td>4</td>
+      <td>M5E</td>
+      <td>Downtown Toronto</td>
+      <td>43.644771</td>
+      <td>-79.373306</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>11</th>
-      <td>Burrito Place</td>
-      <td>Adelaide, King, Richmond</td>
-      <td>1</td>
+      <td>Berczy Park</td>
+      <td>Cocktail Bar</td>
+      <td>3</td>
+      <td>M5E</td>
+      <td>Downtown Toronto</td>
+      <td>43.644771</td>
+      <td>-79.373306</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>12</th>
-      <td>Café</td>
-      <td>Adelaide, King, Richmond</td>
-      <td>1</td>
+      <td>Berczy Park</td>
+      <td>Bakery</td>
+      <td>2</td>
+      <td>M5E</td>
+      <td>Downtown Toronto</td>
+      <td>43.644771</td>
+      <td>-79.373306</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>13</th>
-      <td>Clothing Store</td>
-      <td>Adelaide, King, Richmond</td>
-      <td>1</td>
+      <td>Berczy Park</td>
+      <td>Beer Bar</td>
+      <td>2</td>
+      <td>M5E</td>
+      <td>Downtown Toronto</td>
+      <td>43.644771</td>
+      <td>-79.373306</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>14</th>
-      <td>Coffee Shop</td>
-      <td>Adelaide, King, Richmond</td>
-      <td>1</td>
+      <td>Berczy Park</td>
+      <td>Café</td>
+      <td>2</td>
+      <td>M5E</td>
+      <td>Downtown Toronto</td>
+      <td>43.644771</td>
+      <td>-79.373306</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>15</th>
-      <td>Colombian Restaurant</td>
-      <td>Adelaide, King, Richmond</td>
-      <td>1</td>
+      <td>Berczy Park</td>
+      <td>Cheese Shop</td>
+      <td>2</td>
+      <td>M5E</td>
+      <td>Downtown Toronto</td>
+      <td>43.644771</td>
+      <td>-79.373306</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>16</th>
-      <td>Concert Hall</td>
-      <td>Adelaide, King, Richmond</td>
-      <td>1</td>
+      <td>Berczy Park</td>
+      <td>Farmers Market</td>
+      <td>2</td>
+      <td>M5E</td>
+      <td>Downtown Toronto</td>
+      <td>43.644771</td>
+      <td>-79.373306</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>17</th>
-      <td>Cosmetics Shop</td>
-      <td>Adelaide, King, Richmond</td>
-      <td>1</td>
+      <td>Berczy Park</td>
+      <td>Seafood Restaurant</td>
+      <td>2</td>
+      <td>M5E</td>
+      <td>Downtown Toronto</td>
+      <td>43.644771</td>
+      <td>-79.373306</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>18</th>
-      <td>Deli / Bodega</td>
-      <td>Adelaide, King, Richmond</td>
-      <td>1</td>
+      <td>Berczy Park</td>
+      <td>Steakhouse</td>
+      <td>2</td>
+      <td>M5E</td>
+      <td>Downtown Toronto</td>
+      <td>43.644771</td>
+      <td>-79.373306</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>19</th>
-      <td>Department Store</td>
-      <td>Adelaide, King, Richmond</td>
+      <td>Berczy Park</td>
+      <td>Art Gallery</td>
       <td>1</td>
+      <td>M5E</td>
+      <td>Downtown Toronto</td>
+      <td>43.644771</td>
+      <td>-79.373306</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>20</th>
-      <td>Electronics Store</td>
-      <td>Adelaide, King, Richmond</td>
-      <td>1</td>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Café</td>
+      <td>3</td>
+      <td>M6K</td>
+      <td>West Toronto</td>
+      <td>43.636847</td>
+      <td>-79.428191</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>21</th>
-      <td>Food Court</td>
-      <td>Adelaide, King, Richmond</td>
-      <td>1</td>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Breakfast Spot</td>
+      <td>2</td>
+      <td>M6K</td>
+      <td>West Toronto</td>
+      <td>43.636847</td>
+      <td>-79.428191</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>22</th>
-      <td>Gastropub</td>
-      <td>Adelaide, King, Richmond</td>
-      <td>1</td>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Coffee Shop</td>
+      <td>2</td>
+      <td>M6K</td>
+      <td>West Toronto</td>
+      <td>43.636847</td>
+      <td>-79.428191</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>23</th>
-      <td>General Travel</td>
-      <td>Adelaide, King, Richmond</td>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Bakery</td>
       <td>1</td>
+      <td>M6K</td>
+      <td>West Toronto</td>
+      <td>43.636847</td>
+      <td>-79.428191</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>24</th>
-      <td>Gluten-free Restaurant</td>
-      <td>Adelaide, King, Richmond</td>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Bar</td>
       <td>1</td>
+      <td>M6K</td>
+      <td>West Toronto</td>
+      <td>43.636847</td>
+      <td>-79.428191</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>25</th>
-      <td>Greek Restaurant</td>
-      <td>Adelaide, King, Richmond</td>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Burrito Place</td>
       <td>1</td>
+      <td>M6K</td>
+      <td>West Toronto</td>
+      <td>43.636847</td>
+      <td>-79.428191</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>26</th>
-      <td>Gym</td>
-      <td>Adelaide, King, Richmond</td>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Caribbean Restaurant</td>
       <td>1</td>
+      <td>M6K</td>
+      <td>West Toronto</td>
+      <td>43.636847</td>
+      <td>-79.428191</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>27</th>
-      <td>Gym / Fitness Center</td>
-      <td>Adelaide, King, Richmond</td>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Climbing Gym</td>
       <td>1</td>
+      <td>M6K</td>
+      <td>West Toronto</td>
+      <td>43.636847</td>
+      <td>-79.428191</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>28</th>
-      <td>Hotel</td>
-      <td>Adelaide, King, Richmond</td>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Convenience Store</td>
       <td>1</td>
+      <td>M6K</td>
+      <td>West Toronto</td>
+      <td>43.636847</td>
+      <td>-79.428191</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>29</th>
-      <td>Ice Cream Shop</td>
-      <td>Adelaide, King, Richmond</td>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Furniture / Home Store</td>
       <td>1</td>
+      <td>M6K</td>
+      <td>West Toronto</td>
+      <td>43.636847</td>
+      <td>-79.428191</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>...</th>
       <td>...</td>
       <td>...</td>
       <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
     </tr>
     <tr>
-      <th>1088</th>
-      <td>Sandwich Place</td>
-      <td>The Beaches West, India Bazaar</td>
+      <th>309</th>
+      <td>The Annex, North Midtown, Yorkville</td>
+      <td>BBQ Joint</td>
       <td>1</td>
+      <td>M5R</td>
+      <td>Central Toronto</td>
+      <td>43.672710</td>
+      <td>-79.405678</td>
+      <td>0</td>
     </tr>
     <tr>
-      <th>1089</th>
-      <td>Steakhouse</td>
-      <td>The Beaches West, India Bazaar</td>
+      <th>310</th>
+      <td>The Annex, North Midtown, Yorkville</td>
+      <td>Burger Joint</td>
       <td>1</td>
+      <td>M5R</td>
+      <td>Central Toronto</td>
+      <td>43.672710</td>
+      <td>-79.405678</td>
+      <td>0</td>
     </tr>
     <tr>
-      <th>1090</th>
-      <td>Sushi Restaurant</td>
-      <td>The Beaches West, India Bazaar</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1091</th>
-      <td>American Restaurant</td>
-      <td>The Danforth West, Riverdale</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1092</th>
-      <td>Bakery</td>
-      <td>The Danforth West, Riverdale</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1093</th>
-      <td>Bookstore</td>
-      <td>The Danforth West, Riverdale</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1094</th>
-      <td>Brewery</td>
-      <td>The Danforth West, Riverdale</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1095</th>
-      <td>Bubble Tea Shop</td>
-      <td>The Danforth West, Riverdale</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1096</th>
-      <td>Café</td>
-      <td>The Danforth West, Riverdale</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1097</th>
-      <td>Caribbean Restaurant</td>
-      <td>The Danforth West, Riverdale</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1098</th>
-      <td>Coffee Shop</td>
-      <td>The Danforth West, Riverdale</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1099</th>
+      <th>311</th>
+      <td>The Annex, North Midtown, Yorkville</td>
       <td>Cosmetics Shop</td>
-      <td>The Danforth West, Riverdale</td>
       <td>1</td>
+      <td>M5R</td>
+      <td>Central Toronto</td>
+      <td>43.672710</td>
+      <td>-79.405678</td>
+      <td>0</td>
     </tr>
     <tr>
-      <th>1100</th>
-      <td>Dessert Shop</td>
-      <td>The Danforth West, Riverdale</td>
+      <th>312</th>
+      <td>The Annex, North Midtown, Yorkville</td>
+      <td>History Museum</td>
       <td>1</td>
+      <td>M5R</td>
+      <td>Central Toronto</td>
+      <td>43.672710</td>
+      <td>-79.405678</td>
+      <td>0</td>
     </tr>
     <tr>
-      <th>1101</th>
-      <td>Diner</td>
-      <td>The Danforth West, Riverdale</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1102</th>
-      <td>Fruit &amp; Vegetable Store</td>
-      <td>The Danforth West, Riverdale</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1103</th>
-      <td>Furniture / Home Store</td>
-      <td>The Danforth West, Riverdale</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1104</th>
-      <td>Greek Restaurant</td>
-      <td>The Danforth West, Riverdale</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1105</th>
-      <td>Grocery Store</td>
-      <td>The Danforth West, Riverdale</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1106</th>
-      <td>Ice Cream Shop</td>
-      <td>The Danforth West, Riverdale</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1107</th>
+      <th>313</th>
+      <td>The Annex, North Midtown, Yorkville</td>
       <td>Indian Restaurant</td>
-      <td>The Danforth West, Riverdale</td>
       <td>1</td>
+      <td>M5R</td>
+      <td>Central Toronto</td>
+      <td>43.672710</td>
+      <td>-79.405678</td>
+      <td>0</td>
     </tr>
     <tr>
-      <th>1108</th>
-      <td>Italian Restaurant</td>
-      <td>The Danforth West, Riverdale</td>
+      <th>314</th>
+      <td>The Annex, North Midtown, Yorkville</td>
+      <td>Jewish Restaurant</td>
       <td>1</td>
+      <td>M5R</td>
+      <td>Central Toronto</td>
+      <td>43.672710</td>
+      <td>-79.405678</td>
+      <td>0</td>
     </tr>
     <tr>
-      <th>1109</th>
-      <td>Juice Bar</td>
-      <td>The Danforth West, Riverdale</td>
+      <th>315</th>
+      <td>The Beaches</td>
+      <td>Health Food Store</td>
       <td>1</td>
+      <td>M4E</td>
+      <td>East Toronto</td>
+      <td>43.676357</td>
+      <td>-79.293031</td>
+      <td>0</td>
     </tr>
     <tr>
-      <th>1110</th>
-      <td>Liquor Store</td>
-      <td>The Danforth West, Riverdale</td>
+      <th>316</th>
+      <td>The Beaches</td>
+      <td>Neighborhood</td>
       <td>1</td>
+      <td>M4E</td>
+      <td>East Toronto</td>
+      <td>43.676357</td>
+      <td>-79.293031</td>
+      <td>0</td>
     </tr>
     <tr>
-      <th>1111</th>
-      <td>Pizza Place</td>
-      <td>The Danforth West, Riverdale</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1112</th>
+      <th>317</th>
+      <td>The Beaches</td>
       <td>Pub</td>
-      <td>The Danforth West, Riverdale</td>
       <td>1</td>
+      <td>M4E</td>
+      <td>East Toronto</td>
+      <td>43.676357</td>
+      <td>-79.293031</td>
+      <td>0</td>
     </tr>
     <tr>
-      <th>1113</th>
-      <td>Restaurant</td>
-      <td>The Danforth West, Riverdale</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1114</th>
-      <td>Spa</td>
-      <td>The Danforth West, Riverdale</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1115</th>
-      <td>Sports Bar</td>
-      <td>The Danforth West, Riverdale</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1116</th>
+      <th>318</th>
+      <td>The Beaches</td>
       <td>Trail</td>
-      <td>The Danforth West, Riverdale</td>
       <td>1</td>
+      <td>M4E</td>
+      <td>East Toronto</td>
+      <td>43.676357</td>
+      <td>-79.293031</td>
+      <td>0</td>
     </tr>
     <tr>
-      <th>1117</th>
-      <td>Yoga Studio</td>
-      <td>The Danforth West, Riverdale</td>
+      <th>319</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Park</td>
+      <td>2</td>
+      <td>M4L</td>
+      <td>East Toronto</td>
+      <td>43.668999</td>
+      <td>-79.315572</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>320</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Sandwich Place</td>
+      <td>2</td>
+      <td>M4L</td>
+      <td>East Toronto</td>
+      <td>43.668999</td>
+      <td>-79.315572</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>321</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Brewery</td>
       <td>1</td>
+      <td>M4L</td>
+      <td>East Toronto</td>
+      <td>43.668999</td>
+      <td>-79.315572</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>322</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Burger Joint</td>
+      <td>1</td>
+      <td>M4L</td>
+      <td>East Toronto</td>
+      <td>43.668999</td>
+      <td>-79.315572</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>323</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Burrito Place</td>
+      <td>1</td>
+      <td>M4L</td>
+      <td>East Toronto</td>
+      <td>43.668999</td>
+      <td>-79.315572</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>324</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Coffee Shop</td>
+      <td>1</td>
+      <td>M4L</td>
+      <td>East Toronto</td>
+      <td>43.668999</td>
+      <td>-79.315572</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>325</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Fast Food Restaurant</td>
+      <td>1</td>
+      <td>M4L</td>
+      <td>East Toronto</td>
+      <td>43.668999</td>
+      <td>-79.315572</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>326</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Fish &amp; Chips Shop</td>
+      <td>1</td>
+      <td>M4L</td>
+      <td>East Toronto</td>
+      <td>43.668999</td>
+      <td>-79.315572</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>327</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Food &amp; Drink Shop</td>
+      <td>1</td>
+      <td>M4L</td>
+      <td>East Toronto</td>
+      <td>43.668999</td>
+      <td>-79.315572</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>328</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Gym</td>
+      <td>1</td>
+      <td>M4L</td>
+      <td>East Toronto</td>
+      <td>43.668999</td>
+      <td>-79.315572</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>329</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Greek Restaurant</td>
+      <td>8</td>
+      <td>M4K</td>
+      <td>East Toronto</td>
+      <td>43.679557</td>
+      <td>-79.352188</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>330</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Coffee Shop</td>
+      <td>4</td>
+      <td>M4K</td>
+      <td>East Toronto</td>
+      <td>43.679557</td>
+      <td>-79.352188</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>331</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Ice Cream Shop</td>
+      <td>3</td>
+      <td>M4K</td>
+      <td>East Toronto</td>
+      <td>43.679557</td>
+      <td>-79.352188</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>332</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Italian Restaurant</td>
+      <td>3</td>
+      <td>M4K</td>
+      <td>East Toronto</td>
+      <td>43.679557</td>
+      <td>-79.352188</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>333</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Furniture / Home Store</td>
+      <td>2</td>
+      <td>M4K</td>
+      <td>East Toronto</td>
+      <td>43.679557</td>
+      <td>-79.352188</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>334</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>American Restaurant</td>
+      <td>1</td>
+      <td>M4K</td>
+      <td>East Toronto</td>
+      <td>43.679557</td>
+      <td>-79.352188</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>335</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Bakery</td>
+      <td>1</td>
+      <td>M4K</td>
+      <td>East Toronto</td>
+      <td>43.679557</td>
+      <td>-79.352188</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>336</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Bookstore</td>
+      <td>1</td>
+      <td>M4K</td>
+      <td>East Toronto</td>
+      <td>43.679557</td>
+      <td>-79.352188</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>337</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Brewery</td>
+      <td>1</td>
+      <td>M4K</td>
+      <td>East Toronto</td>
+      <td>43.679557</td>
+      <td>-79.352188</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>338</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Bubble Tea Shop</td>
+      <td>1</td>
+      <td>M4K</td>
+      <td>East Toronto</td>
+      <td>43.679557</td>
+      <td>-79.352188</td>
+      <td>3</td>
     </tr>
   </tbody>
 </table>
-<p>1118 rows × 3 columns</p>
+<p>339 rows × 8 columns</p>
 </div>
 </div>
 
