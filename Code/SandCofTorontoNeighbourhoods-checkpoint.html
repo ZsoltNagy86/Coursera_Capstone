@@ -13129,7 +13129,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Importing general packages</span>
@@ -13141,6 +13141,8 @@ div#notebook {
 
 <span class="c1"># Importing packages for vizualization</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.cm</span> <span class="k">as</span> <span class="nn">cm</span>
+<span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="k">as</span> <span class="nn">colors</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 
@@ -13155,6 +13157,9 @@ div#notebook {
 <span class="c1"># Importing packages for handling gespatial data</span>
 <span class="c1">#!conda install -c conda-forge geocoder --yes </span>
 <span class="kn">import</span> <span class="nn">geocoder</span>
+<span class="c1">#!conda install -c conda-forge geopy --yes </span>
+<span class="kn">from</span> <span class="nn">geopy.geocoders</span> <span class="k">import</span> <span class="n">Nominatim</span>
+<span class="kn">import</span> <span class="nn">folium</span> <span class="c1"># map rendering library</span>
 
 <span class="c1"># Packages for hiding sensitive data</span>
 <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span>
@@ -13167,6 +13172,14 @@ div#notebook {
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3><span style="color:darkred">Scraping wiki page for data about Canada's Borough/span&gt;</h3>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -13695,12 +13708,20 @@ div#notebook {
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Adding-geospatial-data"><span style="color:darkred">Adding geospatial data</span><a class="anchor-link" href="#Adding-geospatial-data">&#182;</a></h3>
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_gsp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;http://cocl.us/Geospatial_data&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Reading Lat and Long for Postcodes</span>
+<span class="n">df_gsp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;http://cocl.us/Geospatial_data&#39;</span><span class="p">)</span>
 <span class="n">df_gsp</span> <span class="o">=</span> <span class="n">df_gsp</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Postal Code&quot;</span><span class="p">:</span> <span class="s2">&quot;Postcode&quot;</span><span class="p">})</span>
 <span class="n">df_gsp</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
@@ -13790,7 +13811,8 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_n</span> <span class="o">=</span> <span class="n">df_n</span> <span class="o">&gt;&gt;</span> <span class="n">left_join</span><span class="p">(</span><span class="n">df_gsp</span><span class="p">,</span> <span class="n">by</span> <span class="o">=</span> <span class="s2">&quot;Postcode&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Adding Lat and Long to df</span>
+<span class="n">df_n</span> <span class="o">=</span> <span class="n">df_n</span> <span class="o">&gt;&gt;</span> <span class="n">left_join</span><span class="p">(</span><span class="n">df_gsp</span><span class="p">,</span> <span class="n">by</span> <span class="o">=</span> <span class="s2">&quot;Postcode&quot;</span><span class="p">)</span>
 <span class="n">df_n</span>
 </pre></div>
 
@@ -14347,7 +14369,8 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">getpass</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Adding credentials for using Foursquare</span>
+<span class="kn">import</span> <span class="nn">getpass</span>
 
 <span class="n">CLIENT_ID</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getpass</span><span class="p">(</span><span class="s1">&#39;Enter your Foursquare CLIENT_ID&#39;</span><span class="p">)</span>
 <span class="n">CLIENT_SECRET</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getpass</span><span class="p">(</span><span class="s1">&#39;Enter your Foursquare CLIENT_SECRET&#39;</span><span class="p">)</span>
@@ -14394,7 +14417,8 @@ Your credentials are stored
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_n_tor</span> <span class="o">=</span> <span class="n">df_n</span> <span class="o">&gt;&gt;</span> <span class="n">mask</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">Borough</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;Toronto&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="kc">True</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### &lt;span style=&quot;color:darkred&quot;&gt; Filtering neighbourhoods that belongs to Toronto &lt;/span&gt;# Filtering neighbourhoods</span>
+<span class="n">df_n_tor</span> <span class="o">=</span> <span class="n">df_n</span> <span class="o">&gt;&gt;</span> <span class="n">mask</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">Borough</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;Toronto&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="kc">True</span><span class="p">)</span>
 <span class="n">df_n_tor</span>
 </pre></div>
 
@@ -14759,7 +14783,8 @@ Your credentials are stored
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">getNearbyVenues</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">latitudes</span><span class="p">,</span> <span class="n">longitudes</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Definging function for using API of Foursquare</span>
+<span class="k">def</span> <span class="nf">getNearbyVenues</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">latitudes</span><span class="p">,</span> <span class="n">longitudes</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
     
     <span class="n">venues_list</span><span class="o">=</span><span class="p">[]</span>
     <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lng</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">latitudes</span><span class="p">,</span> <span class="n">longitudes</span><span class="p">):</span>
@@ -14810,7 +14835,8 @@ Your credentials are stored
 <div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_Tor_venues</span> <span class="o">=</span> <span class="n">getNearbyVenues</span><span class="p">(</span><span class="n">df_n_tor</span><span class="p">[</span><span class="s1">&#39;Neighbourhood&#39;</span><span class="p">],</span> <span class="n">df_n_tor</span><span class="p">[</span><span class="s1">&#39;Latitude&#39;</span><span class="p">],</span> <span class="n">df_n_tor</span><span class="p">[</span><span class="s1">&#39;Longitude&#39;</span><span class="p">],</span> <span class="mi">500</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Creating Df by adding vanues to df of Toronto&#39;s Boroughs</span>
+<span class="n">df_Tor_venues</span> <span class="o">=</span> <span class="n">getNearbyVenues</span><span class="p">(</span><span class="n">df_n_tor</span><span class="p">[</span><span class="s1">&#39;Neighbourhood&#39;</span><span class="p">],</span> <span class="n">df_n_tor</span><span class="p">[</span><span class="s1">&#39;Latitude&#39;</span><span class="p">],</span> <span class="n">df_n_tor</span><span class="p">[</span><span class="s1">&#39;Longitude&#39;</span><span class="p">],</span> <span class="mi">500</span><span class="p">)</span>
 
 <span class="n">df_Tor_venues</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
@@ -14969,9 +14995,16 @@ Your credentials are stored
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="-Encoding-df-containing-info-about-nearby-venues-"><span style="color:darkred"> Encoding df containing info about nearby venues </span><a class="anchor-link" href="#-Encoding-df-containing-info-about-nearby-venues-">&#182;</a></h3>
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[89]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># One hot encoding for calculating frequency</span>
@@ -14997,7 +15030,7 @@ Your credentials are stored
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[11]:</div>
+    <div class="prompt output_prompt">Out[89]:</div>
 
 
 
@@ -15031,11 +15064,11 @@ Your credentials are stored
       <th>American Restaurant</th>
       <th>Antique Shop</th>
       <th>...</th>
+      <th>Toy / Game Store</th>
       <th>Trail</th>
       <th>Train Station</th>
       <th>Vegetarian / Vegan Restaurant</th>
       <th>Video Game Store</th>
-      <th>Video Store</th>
       <th>Vietnamese Restaurant</th>
       <th>Wine Bar</th>
       <th>Wings Joint</th>
@@ -15054,13 +15087,13 @@ Your credentials are stored
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
-      <td>0.040000</td>
+      <td>0.030000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
       <td>0.00</td>
       <td>0.020000</td>
-      <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.010000</td>
@@ -15081,10 +15114,10 @@ Your credentials are stored
       <td>0.000000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
-      <td>0.00</td>
-      <td>0.017544</td>
       <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.017857</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
@@ -15105,16 +15138,16 @@ Your credentials are stored
       <td>0.000000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
-      <td>0.00</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.00</td>
       <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.074074</td>
     </tr>
     <tr>
       <th>3</th>
@@ -15129,33 +15162,33 @@ Your credentials are stored
       <td>0.000000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
-      <td>0.00</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.00</td>
-      <td>0.058824</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.052632</td>
     </tr>
     <tr>
       <th>4</th>
       <td>CN Tower, Bathurst Quay, Island airport, Harbo...</td>
       <td>0.000000</td>
-      <td>0.058824</td>
-      <td>0.058824</td>
-      <td>0.058824</td>
-      <td>0.117647</td>
-      <td>0.176471</td>
-      <td>0.117647</td>
+      <td>0.066667</td>
+      <td>0.066667</td>
+      <td>0.066667</td>
+      <td>0.133333</td>
+      <td>0.133333</td>
+      <td>0.133333</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
-      <td>0.00</td>
       <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
@@ -15174,12 +15207,12 @@ Your credentials are stored
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
-      <td>0.022727</td>
+      <td>0.000000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
-      <td>0.00</td>
       <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
@@ -15198,19 +15231,19 @@ Your credentials are stored
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
-      <td>0.011364</td>
+      <td>0.011628</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
-      <td>0.00</td>
-      <td>0.011364</td>
       <td>0.000000</td>
-      <td>0.011364</td>
-      <td>0.000000</td>
-      <td>0.011364</td>
       <td>0.000000</td>
       <td>0.00</td>
-      <td>0.011364</td>
+      <td>0.011628</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.011628</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.011628</td>
     </tr>
     <tr>
       <th>7</th>
@@ -15225,10 +15258,10 @@ Your credentials are stored
       <td>0.000000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
-      <td>0.00</td>
-      <td>0.050000</td>
       <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.060000</td>
       <td>0.000000</td>
       <td>0.040000</td>
       <td>0.010000</td>
@@ -15249,9 +15282,9 @@ Your credentials are stored
       <td>0.000000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
-      <td>0.00</td>
       <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
@@ -15273,16 +15306,16 @@ Your credentials are stored
       <td>0.011494</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
       <td>0.00</td>
       <td>0.000000</td>
       <td>0.011494</td>
       <td>0.000000</td>
       <td>0.000000</td>
-      <td>0.000000</td>
       <td>0.011494</td>
       <td>0.00</td>
-      <td>0.011494</td>
+      <td>0.022989</td>
     </tr>
     <tr>
       <th>10</th>
@@ -15297,10 +15330,10 @@ Your credentials are stored
       <td>0.040000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
       <td>0.00</td>
       <td>0.020000</td>
-      <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.010000</td>
@@ -15321,9 +15354,9 @@ Your credentials are stored
       <td>0.000000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
-      <td>0.00</td>
+      <td>0.030303</td>
       <td>0.000000</td>
+      <td>0.00</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
@@ -15345,9 +15378,9 @@ Your credentials are stored
       <td>0.000000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
-      <td>0.00</td>
       <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
@@ -15369,9 +15402,9 @@ Your credentials are stored
       <td>0.062500</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
-      <td>0.00</td>
       <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.062500</td>
@@ -15393,10 +15426,10 @@ Your credentials are stored
       <td>0.020000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
       <td>0.01</td>
       <td>0.010000</td>
-      <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.010000</td>
@@ -15417,9 +15450,9 @@ Your credentials are stored
       <td>0.000000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
-      <td>0.00</td>
       <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
@@ -15441,10 +15474,10 @@ Your credentials are stored
       <td>0.030000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
       <td>0.01</td>
       <td>0.010000</td>
-      <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.010000</td>
@@ -15465,9 +15498,9 @@ Your credentials are stored
       <td>0.000000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.25000</td>
-      <td>0.00</td>
       <td>0.000000</td>
+      <td>0.200000</td>
+      <td>0.00</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
@@ -15489,16 +15522,16 @@ Your credentials are stored
       <td>0.000000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
-      <td>0.00</td>
-      <td>0.000000</td>
-      <td>0.029412</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.00</td>
       <td>0.000000</td>
+      <td>0.027778</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.027778</td>
     </tr>
     <tr>
       <th>19</th>
@@ -15513,10 +15546,10 @@ Your credentials are stored
       <td>0.000000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
       <td>0.01</td>
       <td>0.010000</td>
-      <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.010000</td>
@@ -15535,11 +15568,11 @@ Your credentials are stored
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
-      <td>0.018868</td>
+      <td>0.019231</td>
       <td>...</td>
-      <td>0.00000</td>
-      <td>0.00</td>
       <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
@@ -15561,9 +15594,9 @@ Your credentials are stored
       <td>0.000000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
-      <td>0.00</td>
       <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
@@ -15585,9 +15618,9 @@ Your credentials are stored
       <td>0.000000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
-      <td>0.00</td>
       <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
@@ -15609,9 +15642,9 @@ Your credentials are stored
       <td>0.000000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
-      <td>0.00</td>
       <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.029851</td>
@@ -15633,9 +15666,9 @@ Your credentials are stored
       <td>0.000000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
-      <td>0.00</td>
       <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
@@ -15657,16 +15690,16 @@ Your credentials are stored
       <td>0.000000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
-      <td>0.00</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.00</td>
-      <td>0.045455</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.052632</td>
     </tr>
     <tr>
       <th>26</th>
@@ -15681,9 +15714,9 @@ Your credentials are stored
       <td>0.000000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
-      <td>0.00</td>
       <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
@@ -15705,9 +15738,9 @@ Your credentials are stored
       <td>0.000000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.20000</td>
-      <td>0.00</td>
       <td>0.000000</td>
+      <td>0.200000</td>
+      <td>0.00</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
@@ -15729,9 +15762,9 @@ Your credentials are stored
       <td>0.000000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
-      <td>0.00</td>
       <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
@@ -15753,10 +15786,10 @@ Your credentials are stored
       <td>0.000000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
-      <td>0.00</td>
-      <td>0.028571</td>
       <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.027778</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
@@ -15777,11 +15810,11 @@ Your credentials are stored
       <td>0.010000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
+      <td>0.010000</td>
+      <td>0.000000</td>
       <td>0.00</td>
       <td>0.010000</td>
       <td>0.010000</td>
-      <td>0.000000</td>
       <td>0.010000</td>
       <td>0.010000</td>
       <td>0.000000</td>
@@ -15801,10 +15834,10 @@ Your credentials are stored
       <td>0.020000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
       <td>0.00</td>
       <td>0.010000</td>
-      <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.010000</td>
@@ -15823,12 +15856,12 @@ Your credentials are stored
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
-      <td>0.010101</td>
+      <td>0.010204</td>
       <td>...</td>
-      <td>0.00000</td>
-      <td>0.00</td>
-      <td>0.010101</td>
       <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.010204</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
@@ -15846,19 +15879,19 @@ Your credentials are stored
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
-      <td>0.048780</td>
+      <td>0.051282</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
-      <td>0.00</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.00</td>
-      <td>0.024390</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
+      <td>0.025641</td>
     </tr>
     <tr>
       <th>34</th>
@@ -15873,10 +15906,10 @@ Your credentials are stored
       <td>0.047619</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
       <td>0.00</td>
       <td>0.047619</td>
-      <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
@@ -15897,9 +15930,9 @@ Your credentials are stored
       <td>0.000000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.25000</td>
-      <td>0.00</td>
       <td>0.000000</td>
+      <td>0.200000</td>
+      <td>0.00</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
@@ -15921,9 +15954,9 @@ Your credentials are stored
       <td>0.000000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.00000</td>
-      <td>0.00</td>
       <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
@@ -15942,19 +15975,19 @@ Your credentials are stored
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
-      <td>0.023810</td>
+      <td>0.023256</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.02381</td>
+      <td>0.000000</td>
+      <td>0.023256</td>
       <td>0.00</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
-      <td>0.000000</td>
       <td>0.00</td>
-      <td>0.023810</td>
+      <td>0.023256</td>
     </tr>
   </tbody>
 </table>
@@ -15968,312 +16001,16 @@ Your credentials are stored
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[105]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fuck</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">toronto_grouped</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,:])</span>
-<span class="n">fuck</span> <span class="o">=</span> <span class="n">fuck</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">:,:]</span>
-<span class="n">fuck</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</pre></div>
-
-    </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="-Checking-the-most-frequent-venues-by-Neigbourhoods-"><span style="color:darkred"> Checking the most frequent venues by Neigbourhoods </span><a class="anchor-link" href="#-Checking-the-most-frequent-venues-by-Neigbourhoods-">&#182;</a></h3>
 </div>
 </div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[105]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>0</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Coffee Shop</th>
-      <td>0.08</td>
-    </tr>
-    <tr>
-      <th>Café</th>
-      <td>0.05</td>
-    </tr>
-    <tr>
-      <th>Bar</th>
-      <td>0.04</td>
-    </tr>
-    <tr>
-      <th>Thai Restaurant</th>
-      <td>0.04</td>
-    </tr>
-    <tr>
-      <th>American Restaurant</th>
-      <td>0.04</td>
-    </tr>
-    <tr>
-      <th>Asian Restaurant</th>
-      <td>0.03</td>
-    </tr>
-    <tr>
-      <th>Steakhouse</th>
-      <td>0.03</td>
-    </tr>
-    <tr>
-      <th>Restaurant</th>
-      <td>0.03</td>
-    </tr>
-    <tr>
-      <th>Burger Joint</th>
-      <td>0.03</td>
-    </tr>
-    <tr>
-      <th>Sushi Restaurant</th>
-      <td>0.03</td>
-    </tr>
-    <tr>
-      <th>Hotel</th>
-      <td>0.03</td>
-    </tr>
-    <tr>
-      <th>Lounge</th>
-      <td>0.02</td>
-    </tr>
-    <tr>
-      <th>Pizza Place</th>
-      <td>0.02</td>
-    </tr>
-    <tr>
-      <th>Breakfast Spot</th>
-      <td>0.02</td>
-    </tr>
-    <tr>
-      <th>Concert Hall</th>
-      <td>0.02</td>
-    </tr>
-    <tr>
-      <th>Gastropub</th>
-      <td>0.02</td>
-    </tr>
-    <tr>
-      <th>Vegetarian / Vegan Restaurant</th>
-      <td>0.02</td>
-    </tr>
-    <tr>
-      <th>Gym</th>
-      <td>0.02</td>
-    </tr>
-    <tr>
-      <th>Cosmetics Shop</th>
-      <td>0.02</td>
-    </tr>
-    <tr>
-      <th>Jazz Club</th>
-      <td>0.01</td>
-    </tr>
-    <tr>
-      <th>Colombian Restaurant</th>
-      <td>0.01</td>
-    </tr>
-    <tr>
-      <th>Electronics Store</th>
-      <td>0.01</td>
-    </tr>
-    <tr>
-      <th>Deli / Bodega</th>
-      <td>0.01</td>
-    </tr>
-    <tr>
-      <th>Salon / Barbershop</th>
-      <td>0.01</td>
-    </tr>
-    <tr>
-      <th>Salad Place</th>
-      <td>0.01</td>
-    </tr>
-    <tr>
-      <th>Department Store</th>
-      <td>0.01</td>
-    </tr>
-    <tr>
-      <th>Poke Place</th>
-      <td>0.01</td>
-    </tr>
-    <tr>
-      <th>Plaza</th>
-      <td>0.01</td>
-    </tr>
-    <tr>
-      <th>Sandwich Place</th>
-      <td>0.01</td>
-    </tr>
-    <tr>
-      <th>Record Shop</th>
-      <td>0.01</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>Hotel Bar</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Hotpot Restaurant</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Indie Movie Theater</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Fruit &amp; Vegetable Store</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>French Restaurant</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Dance Studio</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Event Space</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Dessert Shop</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Dim Sum Restaurant</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Diner</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Discount Store</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Dog Run</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Doner Restaurant</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Donut Shop</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Dumpling Restaurant</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Eastern European Restaurant</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Ethiopian Restaurant</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Falafel Restaurant</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Fountain</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Farmers Market</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Fast Food Restaurant</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Filipino Restaurant</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Fish &amp; Chips Shop</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Fish Market</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Flea Market</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Flower Shop</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Food</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Food &amp; Drink Shop</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Food Truck</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Yoga Studio</th>
-      <td>0</td>
-    </tr>
-  </tbody>
-</table>
-<p>240 rows × 1 columns</p>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[90]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_Tor_venues_grouped</span> <span class="o">=</span> <span class="n">df_Tor_venues</span> <span class="o">&gt;&gt;</span> <span class="n">group_by</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">Neighbourhood</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">Venue_Category</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">summarize</span><span class="p">(</span><span class="n">Count</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">Venue_Category</span><span class="o">.</span><span class="n">count</span><span class="p">())</span> <span class="o">&gt;&gt;</span> <span class="n">select</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">Neighbourhood</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">Venue_Category</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">Count</span><span class="p">)</span>
@@ -16291,7 +16028,7 @@ Your credentials are stored
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[12]:</div>
+    <div class="prompt output_prompt">Out[90]:</div>
 
 
 
@@ -16333,22 +16070,22 @@ Your credentials are stored
       <td>5</td>
     </tr>
     <tr>
-      <th>0</th>
-      <td>Adelaide, King, Richmond</td>
-      <td>American Restaurant</td>
-      <td>4</td>
-    </tr>
-    <tr>
       <th>5</th>
       <td>Adelaide, King, Richmond</td>
       <td>Bar</td>
       <td>4</td>
     </tr>
     <tr>
-      <th>57</th>
+      <th>58</th>
       <td>Adelaide, King, Richmond</td>
       <td>Thai Restaurant</td>
       <td>4</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>American Restaurant</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>3</th>
@@ -16375,13 +16112,13 @@ Your credentials are stored
       <td>3</td>
     </tr>
     <tr>
-      <th>55</th>
+      <th>56</th>
       <td>Adelaide, King, Richmond</td>
       <td>Steakhouse</td>
       <td>3</td>
     </tr>
     <tr>
-      <th>56</th>
+      <th>57</th>
       <td>Adelaide, King, Richmond</td>
       <td>Sushi Restaurant</td>
       <td>3</td>
@@ -16423,7 +16160,7 @@ Your credentials are stored
       <td>2</td>
     </tr>
     <tr>
-      <th>59</th>
+      <th>60</th>
       <td>Adelaide, King, Richmond</td>
       <td>Vegetarian / Vegan Restaurant</td>
       <td>2</td>
@@ -16507,188 +16244,188 @@ Your credentials are stored
       <td>...</td>
     </tr>
     <tr>
-      <th>1096</th>
-      <td>The Beaches West, India Bazaar</td>
-      <td>Pub</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1098</th>
+      <th>1094</th>
       <td>The Beaches West, India Bazaar</td>
       <td>Steakhouse</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1099</th>
+      <th>1095</th>
       <td>The Beaches West, India Bazaar</td>
       <td>Sushi Restaurant</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1113</th>
+      <th>1109</th>
       <td>The Danforth West, Riverdale</td>
       <td>Greek Restaurant</td>
       <td>8</td>
     </tr>
     <tr>
-      <th>1107</th>
+      <th>1103</th>
       <td>The Danforth West, Riverdale</td>
       <td>Coffee Shop</td>
       <td>4</td>
     </tr>
     <tr>
-      <th>1115</th>
+      <th>1111</th>
       <td>The Danforth West, Riverdale</td>
       <td>Ice Cream Shop</td>
       <td>3</td>
     </tr>
     <tr>
-      <th>1117</th>
+      <th>1113</th>
       <td>The Danforth West, Riverdale</td>
       <td>Italian Restaurant</td>
       <td>3</td>
     </tr>
     <tr>
-      <th>1112</th>
+      <th>1108</th>
       <td>The Danforth West, Riverdale</td>
       <td>Furniture / Home Store</td>
       <td>2</td>
     </tr>
     <tr>
-      <th>1100</th>
+      <th>1096</th>
       <td>The Danforth West, Riverdale</td>
       <td>American Restaurant</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1101</th>
+      <th>1097</th>
       <td>The Danforth West, Riverdale</td>
       <td>Bakery</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1102</th>
+      <th>1098</th>
       <td>The Danforth West, Riverdale</td>
       <td>Bookstore</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1103</th>
+      <th>1099</th>
       <td>The Danforth West, Riverdale</td>
       <td>Brewery</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1104</th>
+      <th>1100</th>
       <td>The Danforth West, Riverdale</td>
       <td>Bubble Tea Shop</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1105</th>
+      <th>1101</th>
       <td>The Danforth West, Riverdale</td>
       <td>Café</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1106</th>
+      <th>1102</th>
       <td>The Danforth West, Riverdale</td>
       <td>Caribbean Restaurant</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1108</th>
+      <th>1104</th>
       <td>The Danforth West, Riverdale</td>
       <td>Cosmetics Shop</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1109</th>
+      <th>1105</th>
       <td>The Danforth West, Riverdale</td>
       <td>Dessert Shop</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1110</th>
+      <th>1106</th>
       <td>The Danforth West, Riverdale</td>
       <td>Diner</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1111</th>
+      <th>1107</th>
       <td>The Danforth West, Riverdale</td>
       <td>Fruit &amp; Vegetable Store</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1114</th>
+      <th>1110</th>
       <td>The Danforth West, Riverdale</td>
       <td>Grocery Store</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1116</th>
+      <th>1112</th>
       <td>The Danforth West, Riverdale</td>
       <td>Indian Restaurant</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1118</th>
+      <th>1114</th>
       <td>The Danforth West, Riverdale</td>
       <td>Juice Bar</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1119</th>
+      <th>1115</th>
       <td>The Danforth West, Riverdale</td>
       <td>Liquor Store</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1120</th>
+      <th>1116</th>
       <td>The Danforth West, Riverdale</td>
       <td>Lounge</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1121</th>
+      <th>1117</th>
       <td>The Danforth West, Riverdale</td>
       <td>Pizza Place</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1122</th>
+      <th>1118</th>
       <td>The Danforth West, Riverdale</td>
       <td>Pub</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1123</th>
+      <th>1119</th>
       <td>The Danforth West, Riverdale</td>
       <td>Restaurant</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1124</th>
+      <th>1120</th>
       <td>The Danforth West, Riverdale</td>
       <td>Spa</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1125</th>
+      <th>1121</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>Sports Bar</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1122</th>
       <td>The Danforth West, Riverdale</td>
       <td>Trail</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1126</th>
+      <th>1123</th>
       <td>The Danforth West, Riverdale</td>
       <td>Yoga Studio</td>
       <td>1</td>
     </tr>
   </tbody>
 </table>
-<p>1127 rows × 3 columns</p>
+<p>1124 rows × 3 columns</p>
 </div>
 </div>
 
@@ -16697,20 +16434,14 @@ Your credentials are stored
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="-Selecting-the-first-10-most-frequent-Vanue-Category-by-Neighbourhood"><span style="color:lightgrey"> Selecting the first 10 most frequent Vanue Category by Neighbourhood</span><a class="anchor-link" href="#-Selecting-the-first-10-most-frequent-Vanue-Category-by-Neighbourhood">&#182;</a></h4>
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[91]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_venue</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span> <span class="c1">#creates a new dataframe that&#39;s empty</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Selecting the first 10 most frequent Vanue Category by Neighbourhood</span>
+<span class="n">df_venue</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span> <span class="c1">#creates a new dataframe that&#39;s empty</span>
 
 <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">df_Tor_venues_grouped</span><span class="o">.</span><span class="n">Neighbourhood</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
     <span class="n">df_container</span> <span class="o">=</span> <span class="n">df_Tor_venues_grouped</span> <span class="o">&gt;&gt;</span> <span class="n">mask</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">Neighbourhood</span> <span class="o">==</span> <span class="n">element</span><span class="p">)</span>
@@ -16731,7 +16462,7 @@ Your credentials are stored
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[14]:</div>
+    <div class="prompt output_prompt">Out[91]:</div>
 
 
 
@@ -16773,22 +16504,22 @@ Your credentials are stored
       <td>5</td>
     </tr>
     <tr>
-      <th>0</th>
-      <td>Adelaide, King, Richmond</td>
-      <td>American Restaurant</td>
-      <td>4</td>
-    </tr>
-    <tr>
       <th>5</th>
       <td>Adelaide, King, Richmond</td>
       <td>Bar</td>
       <td>4</td>
     </tr>
     <tr>
-      <th>57</th>
+      <th>58</th>
       <td>Adelaide, King, Richmond</td>
       <td>Thai Restaurant</td>
       <td>4</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>American Restaurant</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>3</th>
@@ -16815,7 +16546,7 @@ Your credentials are stored
       <td>3</td>
     </tr>
     <tr>
-      <th>55</th>
+      <th>56</th>
       <td>Adelaide, King, Richmond</td>
       <td>Steakhouse</td>
       <td>3</td>
@@ -16833,13 +16564,13 @@ Your credentials are stored
       <td>3</td>
     </tr>
     <tr>
-      <th>65</th>
+      <th>66</th>
       <td>Berczy Park</td>
       <td>Bakery</td>
       <td>2</td>
     </tr>
     <tr>
-      <th>68</th>
+      <th>69</th>
       <td>Berczy Park</td>
       <td>Beer Bar</td>
       <td>2</td>
@@ -16875,7 +16606,7 @@ Your credentials are stored
       <td>2</td>
     </tr>
     <tr>
-      <th>62</th>
+      <th>63</th>
       <td>Berczy Park</td>
       <td>Art Gallery</td>
       <td>1</td>
@@ -16885,6 +16616,12 @@ Your credentials are stored
       <td>Brockton, Exhibition Place, Parkdale Village</td>
       <td>Café</td>
       <td>3</td>
+    </tr>
+    <tr>
+      <th>107</th>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Bakery</td>
+      <td>2</td>
     </tr>
     <tr>
       <th>109</th>
@@ -16899,10 +16636,10 @@ Your credentials are stored
       <td>2</td>
     </tr>
     <tr>
-      <th>107</th>
+      <th>127</th>
       <td>Brockton, Exhibition Place, Parkdale Village</td>
-      <td>Bakery</td>
-      <td>1</td>
+      <td>Yoga Studio</td>
+      <td>2</td>
     </tr>
     <tr>
       <th>108</th>
@@ -16935,200 +16672,194 @@ Your credentials are stored
       <td>1</td>
     </tr>
     <tr>
-      <th>116</th>
-      <td>Brockton, Exhibition Place, Parkdale Village</td>
-      <td>Furniture / Home Store</td>
-      <td>1</td>
-    </tr>
-    <tr>
       <th>...</th>
       <td>...</td>
       <td>...</td>
       <td>...</td>
     </tr>
     <tr>
-      <th>1061</th>
+      <th>1059</th>
       <td>The Annex, North Midtown, Yorkville</td>
-      <td>BBQ Joint</td>
+      <td>Burger Joint</td>
       <td>1</td>
     </tr>
     <tr>
       <th>1062</th>
       <td>The Annex, North Midtown, Yorkville</td>
-      <td>Burger Joint</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1065</th>
-      <td>The Annex, North Midtown, Yorkville</td>
       <td>Cosmetics Shop</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1066</th>
+      <th>1063</th>
       <td>The Annex, North Midtown, Yorkville</td>
       <td>History Museum</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1067</th>
+      <th>1064</th>
       <td>The Annex, North Midtown, Yorkville</td>
       <td>Indian Restaurant</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1068</th>
+      <th>1065</th>
       <td>The Annex, North Midtown, Yorkville</td>
       <td>Jewish Restaurant</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1076</th>
+      <th>1073</th>
       <td>The Beaches</td>
       <td>Health Food Store</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1077</th>
+      <th>1074</th>
       <td>The Beaches</td>
       <td>Neighborhood</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1078</th>
+      <th>1075</th>
+      <td>The Beaches</td>
+      <td>Other Great Outdoors</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1076</th>
       <td>The Beaches</td>
       <td>Pub</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1079</th>
+      <th>1077</th>
       <td>The Beaches</td>
       <td>Trail</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1093</th>
-      <td>The Beaches West, India Bazaar</td>
-      <td>Park</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>1097</th>
-      <td>The Beaches West, India Bazaar</td>
-      <td>Sandwich Place</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>1080</th>
+      <th>1078</th>
       <td>The Beaches West, India Bazaar</td>
       <td>Brewery</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1081</th>
+      <th>1079</th>
       <td>The Beaches West, India Bazaar</td>
       <td>Burger Joint</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1082</th>
+      <th>1080</th>
       <td>The Beaches West, India Bazaar</td>
       <td>Burrito Place</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1083</th>
+      <th>1081</th>
       <td>The Beaches West, India Bazaar</td>
       <td>Coffee Shop</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1084</th>
+      <th>1082</th>
       <td>The Beaches West, India Bazaar</td>
       <td>Fast Food Restaurant</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1085</th>
+      <th>1083</th>
       <td>The Beaches West, India Bazaar</td>
       <td>Fish &amp; Chips Shop</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1086</th>
-      <td>The Beaches West, India Bazaar</td>
-      <td>Food &amp; Drink Shop</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1087</th>
+      <th>1084</th>
       <td>The Beaches West, India Bazaar</td>
       <td>Gym</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1113</th>
+      <th>1085</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Ice Cream Shop</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1086</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Italian Restaurant</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1087</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Liquor Store</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1109</th>
       <td>The Danforth West, Riverdale</td>
       <td>Greek Restaurant</td>
       <td>8</td>
     </tr>
     <tr>
-      <th>1107</th>
+      <th>1103</th>
       <td>The Danforth West, Riverdale</td>
       <td>Coffee Shop</td>
       <td>4</td>
     </tr>
     <tr>
-      <th>1115</th>
+      <th>1111</th>
       <td>The Danforth West, Riverdale</td>
       <td>Ice Cream Shop</td>
       <td>3</td>
     </tr>
     <tr>
-      <th>1117</th>
+      <th>1113</th>
       <td>The Danforth West, Riverdale</td>
       <td>Italian Restaurant</td>
       <td>3</td>
     </tr>
     <tr>
-      <th>1112</th>
+      <th>1108</th>
       <td>The Danforth West, Riverdale</td>
       <td>Furniture / Home Store</td>
       <td>2</td>
     </tr>
     <tr>
-      <th>1100</th>
+      <th>1096</th>
       <td>The Danforth West, Riverdale</td>
       <td>American Restaurant</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1101</th>
+      <th>1097</th>
       <td>The Danforth West, Riverdale</td>
       <td>Bakery</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1102</th>
+      <th>1098</th>
       <td>The Danforth West, Riverdale</td>
       <td>Bookstore</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1103</th>
+      <th>1099</th>
       <td>The Danforth West, Riverdale</td>
       <td>Brewery</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>1104</th>
+      <th>1100</th>
       <td>The Danforth West, Riverdale</td>
       <td>Bubble Tea Shop</td>
       <td>1</td>
     </tr>
   </tbody>
 </table>
-<p>339 rows × 3 columns</p>
+<p>343 rows × 3 columns</p>
 </div>
 </div>
 
@@ -17140,7 +16871,7 @@ Your credentials are stored
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[92]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Adding geo data to the data frame</span>
@@ -17158,7 +16889,7 @@ Your credentials are stored
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[15]:</div>
+    <div class="prompt output_prompt">Out[92]:</div>
 
 
 
@@ -17214,7 +16945,7 @@ Your credentials are stored
     <tr>
       <th>2</th>
       <td>Adelaide, King, Richmond</td>
-      <td>American Restaurant</td>
+      <td>Bar</td>
       <td>4</td>
       <td>M5H</td>
       <td>Downtown Toronto</td>
@@ -17224,7 +16955,7 @@ Your credentials are stored
     <tr>
       <th>3</th>
       <td>Adelaide, King, Richmond</td>
-      <td>Bar</td>
+      <td>Thai Restaurant</td>
       <td>4</td>
       <td>M5H</td>
       <td>Downtown Toronto</td>
@@ -17234,8 +16965,8 @@ Your credentials are stored
     <tr>
       <th>4</th>
       <td>Adelaide, King, Richmond</td>
-      <td>Thai Restaurant</td>
-      <td>4</td>
+      <td>American Restaurant</td>
+      <td>3</td>
       <td>M5H</td>
       <td>Downtown Toronto</td>
       <td>43.650571</td>
@@ -17404,7 +17135,7 @@ Your credentials are stored
     <tr>
       <th>21</th>
       <td>Brockton, Exhibition Place, Parkdale Village</td>
-      <td>Breakfast Spot</td>
+      <td>Bakery</td>
       <td>2</td>
       <td>M6K</td>
       <td>West Toronto</td>
@@ -17414,7 +17145,7 @@ Your credentials are stored
     <tr>
       <th>22</th>
       <td>Brockton, Exhibition Place, Parkdale Village</td>
-      <td>Coffee Shop</td>
+      <td>Breakfast Spot</td>
       <td>2</td>
       <td>M6K</td>
       <td>West Toronto</td>
@@ -17424,8 +17155,8 @@ Your credentials are stored
     <tr>
       <th>23</th>
       <td>Brockton, Exhibition Place, Parkdale Village</td>
-      <td>Bakery</td>
-      <td>1</td>
+      <td>Coffee Shop</td>
+      <td>2</td>
       <td>M6K</td>
       <td>West Toronto</td>
       <td>43.636847</td>
@@ -17433,6 +17164,16 @@ Your credentials are stored
     </tr>
     <tr>
       <th>24</th>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Yoga Studio</td>
+      <td>2</td>
+      <td>M6K</td>
+      <td>West Toronto</td>
+      <td>43.636847</td>
+      <td>-79.428191</td>
+    </tr>
+    <tr>
+      <th>25</th>
       <td>Brockton, Exhibition Place, Parkdale Village</td>
       <td>Bar</td>
       <td>1</td>
@@ -17442,7 +17183,7 @@ Your credentials are stored
       <td>-79.428191</td>
     </tr>
     <tr>
-      <th>25</th>
+      <th>26</th>
       <td>Brockton, Exhibition Place, Parkdale Village</td>
       <td>Burrito Place</td>
       <td>1</td>
@@ -17452,7 +17193,7 @@ Your credentials are stored
       <td>-79.428191</td>
     </tr>
     <tr>
-      <th>26</th>
+      <th>27</th>
       <td>Brockton, Exhibition Place, Parkdale Village</td>
       <td>Caribbean Restaurant</td>
       <td>1</td>
@@ -17462,7 +17203,7 @@ Your credentials are stored
       <td>-79.428191</td>
     </tr>
     <tr>
-      <th>27</th>
+      <th>28</th>
       <td>Brockton, Exhibition Place, Parkdale Village</td>
       <td>Climbing Gym</td>
       <td>1</td>
@@ -17472,19 +17213,9 @@ Your credentials are stored
       <td>-79.428191</td>
     </tr>
     <tr>
-      <th>28</th>
-      <td>Brockton, Exhibition Place, Parkdale Village</td>
-      <td>Convenience Store</td>
-      <td>1</td>
-      <td>M6K</td>
-      <td>West Toronto</td>
-      <td>43.636847</td>
-      <td>-79.428191</td>
-    </tr>
-    <tr>
       <th>29</th>
       <td>Brockton, Exhibition Place, Parkdale Village</td>
-      <td>Furniture / Home Store</td>
+      <td>Convenience Store</td>
       <td>1</td>
       <td>M6K</td>
       <td>West Toronto</td>
@@ -17502,49 +17233,9 @@ Your credentials are stored
       <td>...</td>
     </tr>
     <tr>
-      <th>309</th>
-      <td>The Annex, North Midtown, Yorkville</td>
-      <td>BBQ Joint</td>
-      <td>1</td>
-      <td>M5R</td>
-      <td>Central Toronto</td>
-      <td>43.672710</td>
-      <td>-79.405678</td>
-    </tr>
-    <tr>
-      <th>310</th>
-      <td>The Annex, North Midtown, Yorkville</td>
-      <td>Burger Joint</td>
-      <td>1</td>
-      <td>M5R</td>
-      <td>Central Toronto</td>
-      <td>43.672710</td>
-      <td>-79.405678</td>
-    </tr>
-    <tr>
-      <th>311</th>
-      <td>The Annex, North Midtown, Yorkville</td>
-      <td>Cosmetics Shop</td>
-      <td>1</td>
-      <td>M5R</td>
-      <td>Central Toronto</td>
-      <td>43.672710</td>
-      <td>-79.405678</td>
-    </tr>
-    <tr>
-      <th>312</th>
-      <td>The Annex, North Midtown, Yorkville</td>
-      <td>History Museum</td>
-      <td>1</td>
-      <td>M5R</td>
-      <td>Central Toronto</td>
-      <td>43.672710</td>
-      <td>-79.405678</td>
-    </tr>
-    <tr>
       <th>313</th>
       <td>The Annex, North Midtown, Yorkville</td>
-      <td>Indian Restaurant</td>
+      <td>Burger Joint</td>
       <td>1</td>
       <td>M5R</td>
       <td>Central Toronto</td>
@@ -17554,7 +17245,7 @@ Your credentials are stored
     <tr>
       <th>314</th>
       <td>The Annex, North Midtown, Yorkville</td>
-      <td>Jewish Restaurant</td>
+      <td>Cosmetics Shop</td>
       <td>1</td>
       <td>M5R</td>
       <td>Central Toronto</td>
@@ -17563,6 +17254,36 @@ Your credentials are stored
     </tr>
     <tr>
       <th>315</th>
+      <td>The Annex, North Midtown, Yorkville</td>
+      <td>History Museum</td>
+      <td>1</td>
+      <td>M5R</td>
+      <td>Central Toronto</td>
+      <td>43.672710</td>
+      <td>-79.405678</td>
+    </tr>
+    <tr>
+      <th>316</th>
+      <td>The Annex, North Midtown, Yorkville</td>
+      <td>Indian Restaurant</td>
+      <td>1</td>
+      <td>M5R</td>
+      <td>Central Toronto</td>
+      <td>43.672710</td>
+      <td>-79.405678</td>
+    </tr>
+    <tr>
+      <th>317</th>
+      <td>The Annex, North Midtown, Yorkville</td>
+      <td>Jewish Restaurant</td>
+      <td>1</td>
+      <td>M5R</td>
+      <td>Central Toronto</td>
+      <td>43.672710</td>
+      <td>-79.405678</td>
+    </tr>
+    <tr>
+      <th>318</th>
       <td>The Beaches</td>
       <td>Health Food Store</td>
       <td>1</td>
@@ -17572,7 +17293,7 @@ Your credentials are stored
       <td>-79.293031</td>
     </tr>
     <tr>
-      <th>316</th>
+      <th>319</th>
       <td>The Beaches</td>
       <td>Neighborhood</td>
       <td>1</td>
@@ -17582,7 +17303,17 @@ Your credentials are stored
       <td>-79.293031</td>
     </tr>
     <tr>
-      <th>317</th>
+      <th>320</th>
+      <td>The Beaches</td>
+      <td>Other Great Outdoors</td>
+      <td>1</td>
+      <td>M4E</td>
+      <td>East Toronto</td>
+      <td>43.676357</td>
+      <td>-79.293031</td>
+    </tr>
+    <tr>
+      <th>321</th>
       <td>The Beaches</td>
       <td>Pub</td>
       <td>1</td>
@@ -17592,7 +17323,7 @@ Your credentials are stored
       <td>-79.293031</td>
     </tr>
     <tr>
-      <th>318</th>
+      <th>322</th>
       <td>The Beaches</td>
       <td>Trail</td>
       <td>1</td>
@@ -17602,49 +17333,9 @@ Your credentials are stored
       <td>-79.293031</td>
     </tr>
     <tr>
-      <th>319</th>
-      <td>The Beaches West, India Bazaar</td>
-      <td>Park</td>
-      <td>2</td>
-      <td>M4L</td>
-      <td>East Toronto</td>
-      <td>43.668999</td>
-      <td>-79.315572</td>
-    </tr>
-    <tr>
-      <th>320</th>
-      <td>The Beaches West, India Bazaar</td>
-      <td>Sandwich Place</td>
-      <td>2</td>
-      <td>M4L</td>
-      <td>East Toronto</td>
-      <td>43.668999</td>
-      <td>-79.315572</td>
-    </tr>
-    <tr>
-      <th>321</th>
-      <td>The Beaches West, India Bazaar</td>
-      <td>Brewery</td>
-      <td>1</td>
-      <td>M4L</td>
-      <td>East Toronto</td>
-      <td>43.668999</td>
-      <td>-79.315572</td>
-    </tr>
-    <tr>
-      <th>322</th>
-      <td>The Beaches West, India Bazaar</td>
-      <td>Burger Joint</td>
-      <td>1</td>
-      <td>M4L</td>
-      <td>East Toronto</td>
-      <td>43.668999</td>
-      <td>-79.315572</td>
-    </tr>
-    <tr>
       <th>323</th>
       <td>The Beaches West, India Bazaar</td>
-      <td>Burrito Place</td>
+      <td>Brewery</td>
       <td>1</td>
       <td>M4L</td>
       <td>East Toronto</td>
@@ -17654,7 +17345,7 @@ Your credentials are stored
     <tr>
       <th>324</th>
       <td>The Beaches West, India Bazaar</td>
-      <td>Coffee Shop</td>
+      <td>Burger Joint</td>
       <td>1</td>
       <td>M4L</td>
       <td>East Toronto</td>
@@ -17664,7 +17355,7 @@ Your credentials are stored
     <tr>
       <th>325</th>
       <td>The Beaches West, India Bazaar</td>
-      <td>Fast Food Restaurant</td>
+      <td>Burrito Place</td>
       <td>1</td>
       <td>M4L</td>
       <td>East Toronto</td>
@@ -17674,7 +17365,7 @@ Your credentials are stored
     <tr>
       <th>326</th>
       <td>The Beaches West, India Bazaar</td>
-      <td>Fish &amp; Chips Shop</td>
+      <td>Coffee Shop</td>
       <td>1</td>
       <td>M4L</td>
       <td>East Toronto</td>
@@ -17684,7 +17375,7 @@ Your credentials are stored
     <tr>
       <th>327</th>
       <td>The Beaches West, India Bazaar</td>
-      <td>Food &amp; Drink Shop</td>
+      <td>Fast Food Restaurant</td>
       <td>1</td>
       <td>M4L</td>
       <td>East Toronto</td>
@@ -17694,7 +17385,7 @@ Your credentials are stored
     <tr>
       <th>328</th>
       <td>The Beaches West, India Bazaar</td>
-      <td>Gym</td>
+      <td>Fish &amp; Chips Shop</td>
       <td>1</td>
       <td>M4L</td>
       <td>East Toronto</td>
@@ -17703,6 +17394,46 @@ Your credentials are stored
     </tr>
     <tr>
       <th>329</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Gym</td>
+      <td>1</td>
+      <td>M4L</td>
+      <td>East Toronto</td>
+      <td>43.668999</td>
+      <td>-79.315572</td>
+    </tr>
+    <tr>
+      <th>330</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Ice Cream Shop</td>
+      <td>1</td>
+      <td>M4L</td>
+      <td>East Toronto</td>
+      <td>43.668999</td>
+      <td>-79.315572</td>
+    </tr>
+    <tr>
+      <th>331</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Italian Restaurant</td>
+      <td>1</td>
+      <td>M4L</td>
+      <td>East Toronto</td>
+      <td>43.668999</td>
+      <td>-79.315572</td>
+    </tr>
+    <tr>
+      <th>332</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Liquor Store</td>
+      <td>1</td>
+      <td>M4L</td>
+      <td>East Toronto</td>
+      <td>43.668999</td>
+      <td>-79.315572</td>
+    </tr>
+    <tr>
+      <th>333</th>
       <td>The Danforth West, Riverdale</td>
       <td>Greek Restaurant</td>
       <td>8</td>
@@ -17712,7 +17443,7 @@ Your credentials are stored
       <td>-79.352188</td>
     </tr>
     <tr>
-      <th>330</th>
+      <th>334</th>
       <td>The Danforth West, Riverdale</td>
       <td>Coffee Shop</td>
       <td>4</td>
@@ -17722,7 +17453,7 @@ Your credentials are stored
       <td>-79.352188</td>
     </tr>
     <tr>
-      <th>331</th>
+      <th>335</th>
       <td>The Danforth West, Riverdale</td>
       <td>Ice Cream Shop</td>
       <td>3</td>
@@ -17732,7 +17463,7 @@ Your credentials are stored
       <td>-79.352188</td>
     </tr>
     <tr>
-      <th>332</th>
+      <th>336</th>
       <td>The Danforth West, Riverdale</td>
       <td>Italian Restaurant</td>
       <td>3</td>
@@ -17742,7 +17473,7 @@ Your credentials are stored
       <td>-79.352188</td>
     </tr>
     <tr>
-      <th>333</th>
+      <th>337</th>
       <td>The Danforth West, Riverdale</td>
       <td>Furniture / Home Store</td>
       <td>2</td>
@@ -17752,7 +17483,7 @@ Your credentials are stored
       <td>-79.352188</td>
     </tr>
     <tr>
-      <th>334</th>
+      <th>338</th>
       <td>The Danforth West, Riverdale</td>
       <td>American Restaurant</td>
       <td>1</td>
@@ -17762,7 +17493,7 @@ Your credentials are stored
       <td>-79.352188</td>
     </tr>
     <tr>
-      <th>335</th>
+      <th>339</th>
       <td>The Danforth West, Riverdale</td>
       <td>Bakery</td>
       <td>1</td>
@@ -17772,7 +17503,7 @@ Your credentials are stored
       <td>-79.352188</td>
     </tr>
     <tr>
-      <th>336</th>
+      <th>340</th>
       <td>The Danforth West, Riverdale</td>
       <td>Bookstore</td>
       <td>1</td>
@@ -17782,7 +17513,7 @@ Your credentials are stored
       <td>-79.352188</td>
     </tr>
     <tr>
-      <th>337</th>
+      <th>341</th>
       <td>The Danforth West, Riverdale</td>
       <td>Brewery</td>
       <td>1</td>
@@ -17792,7 +17523,7 @@ Your credentials are stored
       <td>-79.352188</td>
     </tr>
     <tr>
-      <th>338</th>
+      <th>342</th>
       <td>The Danforth West, Riverdale</td>
       <td>Bubble Tea Shop</td>
       <td>1</td>
@@ -17803,7 +17534,7 @@ Your credentials are stored
     </tr>
   </tbody>
 </table>
-<p>339 rows × 7 columns</p>
+<p>343 rows × 7 columns</p>
 </div>
 </div>
 
@@ -17815,11 +17546,24 @@ Your credentials are stored
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="prompt input_prompt">In&nbsp;[93]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### &lt;span style=&quot;color:darkred&quot;&gt; Clustering neighbourhoods based on most frequent venue types &lt;/span&gt;</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[94]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># set number of clusters</span>
-<span class="n">kclusters</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="n">kclusters</span> <span class="o">=</span> <span class="mi">4</span>
 
 <span class="n">toronto_grouped_clustering</span> <span class="o">=</span> <span class="n">toronto_grouped</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;Neighbourhood&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
@@ -17840,13 +17584,14 @@ Your credentials are stored
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[32]:</div>
+    <div class="prompt output_prompt">Out[94]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>38</pre>
+<pre>array([3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 3, 3, 3, 3,
+       0, 3, 3, 3, 3, 1, 2, 3, 3, 3, 3, 3, 3, 1, 3, 3])</pre>
 </div>
 
 </div>
@@ -17857,7 +17602,7 @@ Your credentials are stored
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[38]:</div>
+<div class="prompt input_prompt">In&nbsp;[95]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Creating dataframe for storing cluster label of Neighbourhoods</span>
@@ -17875,7 +17620,7 @@ Your credentials are stored
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[38]:</div>
+    <div class="prompt output_prompt">Out[95]:</div>
 
 
 
@@ -17916,12 +17661,12 @@ Your credentials are stored
     <tr>
       <th>2</th>
       <td>Brockton, Exhibition Place, Parkdale Village</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>3</th>
       <td>Business Reply Mail Processing Centre 969 Eastern</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>4</th>
@@ -17931,7 +17676,7 @@ Your credentials are stored
     <tr>
       <th>5</th>
       <td>Cabbagetown, St. James Town</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>6</th>
@@ -17941,12 +17686,12 @@ Your credentials are stored
     <tr>
       <th>7</th>
       <td>Chinatown, Grange Park, Kensington Market</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>8</th>
       <td>Christie</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>9</th>
@@ -17961,12 +17706,12 @@ Your credentials are stored
     <tr>
       <th>11</th>
       <td>Davisville</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>12</th>
       <td>Davisville North</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>13</th>
@@ -17981,7 +17726,7 @@ Your credentials are stored
     <tr>
       <th>15</th>
       <td>Dovercourt Village, Dufferin</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>16</th>
@@ -17991,12 +17736,12 @@ Your credentials are stored
     <tr>
       <th>17</th>
       <td>Forest Hill North, Forest Hill West</td>
-      <td>5</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>18</th>
       <td>Harbord, University of Toronto</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>19</th>
@@ -18011,12 +17756,12 @@ Your credentials are stored
     <tr>
       <th>21</th>
       <td>High Park, The Junction South</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>22</th>
       <td>Lawrence Park</td>
-      <td>2</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>23</th>
@@ -18026,7 +17771,7 @@ Your credentials are stored
     <tr>
       <th>24</th>
       <td>Moore Park, Summerhill East</td>
-      <td>4</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>25</th>
@@ -18036,17 +17781,17 @@ Your credentials are stored
     <tr>
       <th>26</th>
       <td>Parkdale, Roncesvalles</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>27</th>
       <td>Rosedale</td>
-      <td>5</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>28</th>
       <td>Roselawn</td>
-      <td>1</td>
+      <td>2</td>
     </tr>
     <tr>
       <th>29</th>
@@ -18076,17 +17821,17 @@ Your credentials are stored
     <tr>
       <th>34</th>
       <td>The Annex, North Midtown, Yorkville</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>35</th>
       <td>The Beaches</td>
-      <td>0</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>36</th>
       <td>The Beaches West, India Bazaar</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>37</th>
@@ -18106,7 +17851,7 @@ Your credentials are stored
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[42]:</div>
+<div class="prompt input_prompt">In&nbsp;[96]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Adding clusters to Df venue</span>
@@ -18124,7 +17869,7 @@ Your credentials are stored
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[42]:</div>
+    <div class="prompt output_prompt">Out[96]:</div>
 
 
 
@@ -18183,7 +17928,7 @@ Your credentials are stored
     <tr>
       <th>2</th>
       <td>Adelaide, King, Richmond</td>
-      <td>American Restaurant</td>
+      <td>Bar</td>
       <td>4</td>
       <td>M5H</td>
       <td>Downtown Toronto</td>
@@ -18194,7 +17939,7 @@ Your credentials are stored
     <tr>
       <th>3</th>
       <td>Adelaide, King, Richmond</td>
-      <td>Bar</td>
+      <td>Thai Restaurant</td>
       <td>4</td>
       <td>M5H</td>
       <td>Downtown Toronto</td>
@@ -18205,8 +17950,8 @@ Your credentials are stored
     <tr>
       <th>4</th>
       <td>Adelaide, King, Richmond</td>
-      <td>Thai Restaurant</td>
-      <td>4</td>
+      <td>American Restaurant</td>
+      <td>3</td>
       <td>M5H</td>
       <td>Downtown Toronto</td>
       <td>43.650571</td>
@@ -18387,10 +18132,21 @@ Your credentials are stored
       <td>West Toronto</td>
       <td>43.636847</td>
       <td>-79.428191</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>21</th>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>Bakery</td>
+      <td>2</td>
+      <td>M6K</td>
+      <td>West Toronto</td>
+      <td>43.636847</td>
+      <td>-79.428191</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>22</th>
       <td>Brockton, Exhibition Place, Parkdale Village</td>
       <td>Breakfast Spot</td>
       <td>2</td>
@@ -18398,10 +18154,10 @@ Your credentials are stored
       <td>West Toronto</td>
       <td>43.636847</td>
       <td>-79.428191</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
-      <th>22</th>
+      <th>23</th>
       <td>Brockton, Exhibition Place, Parkdale Village</td>
       <td>Coffee Shop</td>
       <td>2</td>
@@ -18409,21 +18165,21 @@ Your credentials are stored
       <td>West Toronto</td>
       <td>43.636847</td>
       <td>-79.428191</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
-      <th>23</th>
+      <th>24</th>
       <td>Brockton, Exhibition Place, Parkdale Village</td>
-      <td>Bakery</td>
-      <td>1</td>
+      <td>Yoga Studio</td>
+      <td>2</td>
       <td>M6K</td>
       <td>West Toronto</td>
       <td>43.636847</td>
       <td>-79.428191</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
-      <th>24</th>
+      <th>25</th>
       <td>Brockton, Exhibition Place, Parkdale Village</td>
       <td>Bar</td>
       <td>1</td>
@@ -18431,10 +18187,10 @@ Your credentials are stored
       <td>West Toronto</td>
       <td>43.636847</td>
       <td>-79.428191</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
-      <th>25</th>
+      <th>26</th>
       <td>Brockton, Exhibition Place, Parkdale Village</td>
       <td>Burrito Place</td>
       <td>1</td>
@@ -18442,10 +18198,10 @@ Your credentials are stored
       <td>West Toronto</td>
       <td>43.636847</td>
       <td>-79.428191</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
-      <th>26</th>
+      <th>27</th>
       <td>Brockton, Exhibition Place, Parkdale Village</td>
       <td>Caribbean Restaurant</td>
       <td>1</td>
@@ -18453,10 +18209,10 @@ Your credentials are stored
       <td>West Toronto</td>
       <td>43.636847</td>
       <td>-79.428191</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
-      <th>27</th>
+      <th>28</th>
       <td>Brockton, Exhibition Place, Parkdale Village</td>
       <td>Climbing Gym</td>
       <td>1</td>
@@ -18464,10 +18220,10 @@ Your credentials are stored
       <td>West Toronto</td>
       <td>43.636847</td>
       <td>-79.428191</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
-      <th>28</th>
+      <th>29</th>
       <td>Brockton, Exhibition Place, Parkdale Village</td>
       <td>Convenience Store</td>
       <td>1</td>
@@ -18475,18 +18231,7 @@ Your credentials are stored
       <td>West Toronto</td>
       <td>43.636847</td>
       <td>-79.428191</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>29</th>
-      <td>Brockton, Exhibition Place, Parkdale Village</td>
-      <td>Furniture / Home Store</td>
-      <td>1</td>
-      <td>M6K</td>
-      <td>West Toronto</td>
-      <td>43.636847</td>
-      <td>-79.428191</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>...</th>
@@ -18500,18 +18245,7 @@ Your credentials are stored
       <td>...</td>
     </tr>
     <tr>
-      <th>309</th>
-      <td>The Annex, North Midtown, Yorkville</td>
-      <td>BBQ Joint</td>
-      <td>1</td>
-      <td>M5R</td>
-      <td>Central Toronto</td>
-      <td>43.672710</td>
-      <td>-79.405678</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>310</th>
+      <th>313</th>
       <td>The Annex, North Midtown, Yorkville</td>
       <td>Burger Joint</td>
       <td>1</td>
@@ -18519,10 +18253,10 @@ Your credentials are stored
       <td>Central Toronto</td>
       <td>43.672710</td>
       <td>-79.405678</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
-      <th>311</th>
+      <th>314</th>
       <td>The Annex, North Midtown, Yorkville</td>
       <td>Cosmetics Shop</td>
       <td>1</td>
@@ -18530,10 +18264,10 @@ Your credentials are stored
       <td>Central Toronto</td>
       <td>43.672710</td>
       <td>-79.405678</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
-      <th>312</th>
+      <th>315</th>
       <td>The Annex, North Midtown, Yorkville</td>
       <td>History Museum</td>
       <td>1</td>
@@ -18541,10 +18275,10 @@ Your credentials are stored
       <td>Central Toronto</td>
       <td>43.672710</td>
       <td>-79.405678</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
-      <th>313</th>
+      <th>316</th>
       <td>The Annex, North Midtown, Yorkville</td>
       <td>Indian Restaurant</td>
       <td>1</td>
@@ -18552,10 +18286,10 @@ Your credentials are stored
       <td>Central Toronto</td>
       <td>43.672710</td>
       <td>-79.405678</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
-      <th>314</th>
+      <th>317</th>
       <td>The Annex, North Midtown, Yorkville</td>
       <td>Jewish Restaurant</td>
       <td>1</td>
@@ -18563,10 +18297,10 @@ Your credentials are stored
       <td>Central Toronto</td>
       <td>43.672710</td>
       <td>-79.405678</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
-      <th>315</th>
+      <th>318</th>
       <td>The Beaches</td>
       <td>Health Food Store</td>
       <td>1</td>
@@ -18574,10 +18308,10 @@ Your credentials are stored
       <td>East Toronto</td>
       <td>43.676357</td>
       <td>-79.293031</td>
-      <td>0</td>
+      <td>1</td>
     </tr>
     <tr>
-      <th>316</th>
+      <th>319</th>
       <td>The Beaches</td>
       <td>Neighborhood</td>
       <td>1</td>
@@ -18585,10 +18319,21 @@ Your credentials are stored
       <td>East Toronto</td>
       <td>43.676357</td>
       <td>-79.293031</td>
-      <td>0</td>
+      <td>1</td>
     </tr>
     <tr>
-      <th>317</th>
+      <th>320</th>
+      <td>The Beaches</td>
+      <td>Other Great Outdoors</td>
+      <td>1</td>
+      <td>M4E</td>
+      <td>East Toronto</td>
+      <td>43.676357</td>
+      <td>-79.293031</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>321</th>
       <td>The Beaches</td>
       <td>Pub</td>
       <td>1</td>
@@ -18596,10 +18341,10 @@ Your credentials are stored
       <td>East Toronto</td>
       <td>43.676357</td>
       <td>-79.293031</td>
-      <td>0</td>
+      <td>1</td>
     </tr>
     <tr>
-      <th>318</th>
+      <th>322</th>
       <td>The Beaches</td>
       <td>Trail</td>
       <td>1</td>
@@ -18607,32 +18352,10 @@ Your credentials are stored
       <td>East Toronto</td>
       <td>43.676357</td>
       <td>-79.293031</td>
-      <td>0</td>
+      <td>1</td>
     </tr>
     <tr>
-      <th>319</th>
-      <td>The Beaches West, India Bazaar</td>
-      <td>Park</td>
-      <td>2</td>
-      <td>M4L</td>
-      <td>East Toronto</td>
-      <td>43.668999</td>
-      <td>-79.315572</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>320</th>
-      <td>The Beaches West, India Bazaar</td>
-      <td>Sandwich Place</td>
-      <td>2</td>
-      <td>M4L</td>
-      <td>East Toronto</td>
-      <td>43.668999</td>
-      <td>-79.315572</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>321</th>
+      <th>323</th>
       <td>The Beaches West, India Bazaar</td>
       <td>Brewery</td>
       <td>1</td>
@@ -18640,10 +18363,10 @@ Your credentials are stored
       <td>East Toronto</td>
       <td>43.668999</td>
       <td>-79.315572</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
-      <th>322</th>
+      <th>324</th>
       <td>The Beaches West, India Bazaar</td>
       <td>Burger Joint</td>
       <td>1</td>
@@ -18651,10 +18374,10 @@ Your credentials are stored
       <td>East Toronto</td>
       <td>43.668999</td>
       <td>-79.315572</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
-      <th>323</th>
+      <th>325</th>
       <td>The Beaches West, India Bazaar</td>
       <td>Burrito Place</td>
       <td>1</td>
@@ -18662,10 +18385,10 @@ Your credentials are stored
       <td>East Toronto</td>
       <td>43.668999</td>
       <td>-79.315572</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
-      <th>324</th>
+      <th>326</th>
       <td>The Beaches West, India Bazaar</td>
       <td>Coffee Shop</td>
       <td>1</td>
@@ -18673,10 +18396,10 @@ Your credentials are stored
       <td>East Toronto</td>
       <td>43.668999</td>
       <td>-79.315572</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
-      <th>325</th>
+      <th>327</th>
       <td>The Beaches West, India Bazaar</td>
       <td>Fast Food Restaurant</td>
       <td>1</td>
@@ -18684,10 +18407,10 @@ Your credentials are stored
       <td>East Toronto</td>
       <td>43.668999</td>
       <td>-79.315572</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
-      <th>326</th>
+      <th>328</th>
       <td>The Beaches West, India Bazaar</td>
       <td>Fish &amp; Chips Shop</td>
       <td>1</td>
@@ -18695,21 +18418,10 @@ Your credentials are stored
       <td>East Toronto</td>
       <td>43.668999</td>
       <td>-79.315572</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
-      <th>327</th>
-      <td>The Beaches West, India Bazaar</td>
-      <td>Food &amp; Drink Shop</td>
-      <td>1</td>
-      <td>M4L</td>
-      <td>East Toronto</td>
-      <td>43.668999</td>
-      <td>-79.315572</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>328</th>
+      <th>329</th>
       <td>The Beaches West, India Bazaar</td>
       <td>Gym</td>
       <td>1</td>
@@ -18717,10 +18429,43 @@ Your credentials are stored
       <td>East Toronto</td>
       <td>43.668999</td>
       <td>-79.315572</td>
-      <td>0</td>
+      <td>3</td>
     </tr>
     <tr>
-      <th>329</th>
+      <th>330</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Ice Cream Shop</td>
+      <td>1</td>
+      <td>M4L</td>
+      <td>East Toronto</td>
+      <td>43.668999</td>
+      <td>-79.315572</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>331</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Italian Restaurant</td>
+      <td>1</td>
+      <td>M4L</td>
+      <td>East Toronto</td>
+      <td>43.668999</td>
+      <td>-79.315572</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>332</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>Liquor Store</td>
+      <td>1</td>
+      <td>M4L</td>
+      <td>East Toronto</td>
+      <td>43.668999</td>
+      <td>-79.315572</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>333</th>
       <td>The Danforth West, Riverdale</td>
       <td>Greek Restaurant</td>
       <td>8</td>
@@ -18731,7 +18476,7 @@ Your credentials are stored
       <td>3</td>
     </tr>
     <tr>
-      <th>330</th>
+      <th>334</th>
       <td>The Danforth West, Riverdale</td>
       <td>Coffee Shop</td>
       <td>4</td>
@@ -18742,7 +18487,7 @@ Your credentials are stored
       <td>3</td>
     </tr>
     <tr>
-      <th>331</th>
+      <th>335</th>
       <td>The Danforth West, Riverdale</td>
       <td>Ice Cream Shop</td>
       <td>3</td>
@@ -18753,7 +18498,7 @@ Your credentials are stored
       <td>3</td>
     </tr>
     <tr>
-      <th>332</th>
+      <th>336</th>
       <td>The Danforth West, Riverdale</td>
       <td>Italian Restaurant</td>
       <td>3</td>
@@ -18764,7 +18509,7 @@ Your credentials are stored
       <td>3</td>
     </tr>
     <tr>
-      <th>333</th>
+      <th>337</th>
       <td>The Danforth West, Riverdale</td>
       <td>Furniture / Home Store</td>
       <td>2</td>
@@ -18775,7 +18520,7 @@ Your credentials are stored
       <td>3</td>
     </tr>
     <tr>
-      <th>334</th>
+      <th>338</th>
       <td>The Danforth West, Riverdale</td>
       <td>American Restaurant</td>
       <td>1</td>
@@ -18786,7 +18531,7 @@ Your credentials are stored
       <td>3</td>
     </tr>
     <tr>
-      <th>335</th>
+      <th>339</th>
       <td>The Danforth West, Riverdale</td>
       <td>Bakery</td>
       <td>1</td>
@@ -18797,7 +18542,7 @@ Your credentials are stored
       <td>3</td>
     </tr>
     <tr>
-      <th>336</th>
+      <th>340</th>
       <td>The Danforth West, Riverdale</td>
       <td>Bookstore</td>
       <td>1</td>
@@ -18808,7 +18553,7 @@ Your credentials are stored
       <td>3</td>
     </tr>
     <tr>
-      <th>337</th>
+      <th>341</th>
       <td>The Danforth West, Riverdale</td>
       <td>Brewery</td>
       <td>1</td>
@@ -18819,7 +18564,7 @@ Your credentials are stored
       <td>3</td>
     </tr>
     <tr>
-      <th>338</th>
+      <th>342</th>
       <td>The Danforth West, Riverdale</td>
       <td>Bubble Tea Shop</td>
       <td>1</td>
@@ -18831,7 +18576,1056 @@ Your credentials are stored
     </tr>
   </tbody>
 </table>
-<p>339 rows × 8 columns</p>
+<p>343 rows × 8 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[97]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Creating data_frame for mapping</span>
+<span class="n">df_toronto</span> <span class="o">=</span> <span class="n">df_venue</span> <span class="o">&gt;&gt;</span> <span class="n">drop</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">Venue_Category</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">Count</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">distinct</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">Neighbourhood</span><span class="p">)</span>
+<span class="n">df_toronto</span> <span class="o">=</span> <span class="n">df_toronto</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df_toronto</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[97]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Neighbourhood</th>
+      <th>Postcode</th>
+      <th>Borough</th>
+      <th>Latitude</th>
+      <th>Longitude</th>
+      <th>Clusters</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Adelaide, King, Richmond</td>
+      <td>M5H</td>
+      <td>Downtown Toronto</td>
+      <td>43.650571</td>
+      <td>-79.384568</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Berczy Park</td>
+      <td>M5E</td>
+      <td>Downtown Toronto</td>
+      <td>43.644771</td>
+      <td>-79.373306</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Brockton, Exhibition Place, Parkdale Village</td>
+      <td>M6K</td>
+      <td>West Toronto</td>
+      <td>43.636847</td>
+      <td>-79.428191</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Business Reply Mail Processing Centre 969 Eastern</td>
+      <td>M7Y</td>
+      <td>East Toronto</td>
+      <td>43.662744</td>
+      <td>-79.321558</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>CN Tower, Bathurst Quay, Island airport, Harbo...</td>
+      <td>M5V</td>
+      <td>Downtown Toronto</td>
+      <td>43.628947</td>
+      <td>-79.394420</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Cabbagetown, St. James Town</td>
+      <td>M4X</td>
+      <td>Downtown Toronto</td>
+      <td>43.667967</td>
+      <td>-79.367675</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Central Bay Street</td>
+      <td>M5G</td>
+      <td>Downtown Toronto</td>
+      <td>43.657952</td>
+      <td>-79.387383</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Chinatown, Grange Park, Kensington Market</td>
+      <td>M5T</td>
+      <td>Downtown Toronto</td>
+      <td>43.653206</td>
+      <td>-79.400049</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Christie</td>
+      <td>M6G</td>
+      <td>Downtown Toronto</td>
+      <td>43.669542</td>
+      <td>-79.422564</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Church and Wellesley</td>
+      <td>M4Y</td>
+      <td>Downtown Toronto</td>
+      <td>43.665860</td>
+      <td>-79.383160</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Commerce Court, Victoria Hotel</td>
+      <td>M5L</td>
+      <td>Downtown Toronto</td>
+      <td>43.648198</td>
+      <td>-79.379817</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Davisville</td>
+      <td>M4S</td>
+      <td>Central Toronto</td>
+      <td>43.704324</td>
+      <td>-79.388790</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Davisville North</td>
+      <td>M4P</td>
+      <td>Central Toronto</td>
+      <td>43.712751</td>
+      <td>-79.390197</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Deer Park, Forest Hill SE, Rathnelly, South Hi...</td>
+      <td>M4V</td>
+      <td>Central Toronto</td>
+      <td>43.686412</td>
+      <td>-79.400049</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Design Exchange, Toronto Dominion Centre</td>
+      <td>M5K</td>
+      <td>Downtown Toronto</td>
+      <td>43.647177</td>
+      <td>-79.381576</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Dovercourt Village, Dufferin</td>
+      <td>M6H</td>
+      <td>West Toronto</td>
+      <td>43.669005</td>
+      <td>-79.442259</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>First Canadian Place, Underground city</td>
+      <td>M5X</td>
+      <td>Downtown Toronto</td>
+      <td>43.648429</td>
+      <td>-79.382280</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Forest Hill North, Forest Hill West</td>
+      <td>M5P</td>
+      <td>Central Toronto</td>
+      <td>43.696948</td>
+      <td>-79.411307</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>Harbord, University of Toronto</td>
+      <td>M5S</td>
+      <td>Downtown Toronto</td>
+      <td>43.662696</td>
+      <td>-79.400049</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>Harbourfront East, Toronto Islands, Union Station</td>
+      <td>M5J</td>
+      <td>Downtown Toronto</td>
+      <td>43.640816</td>
+      <td>-79.381752</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>Harbourfront, Regent Park</td>
+      <td>M5A</td>
+      <td>Downtown Toronto</td>
+      <td>43.654260</td>
+      <td>-79.360636</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>High Park, The Junction South</td>
+      <td>M6P</td>
+      <td>West Toronto</td>
+      <td>43.661608</td>
+      <td>-79.464763</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>Lawrence Park</td>
+      <td>M4N</td>
+      <td>Central Toronto</td>
+      <td>43.728020</td>
+      <td>-79.388790</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>Little Portugal, Trinity</td>
+      <td>M6J</td>
+      <td>West Toronto</td>
+      <td>43.647927</td>
+      <td>-79.419750</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>Moore Park, Summerhill East</td>
+      <td>M4T</td>
+      <td>Central Toronto</td>
+      <td>43.689574</td>
+      <td>-79.383160</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>North Toronto West</td>
+      <td>M4R</td>
+      <td>Central Toronto</td>
+      <td>43.715383</td>
+      <td>-79.405678</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>Parkdale, Roncesvalles</td>
+      <td>M6R</td>
+      <td>West Toronto</td>
+      <td>43.648960</td>
+      <td>-79.456325</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>Rosedale</td>
+      <td>M4W</td>
+      <td>Downtown Toronto</td>
+      <td>43.679563</td>
+      <td>-79.377529</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>Roselawn</td>
+      <td>M5N</td>
+      <td>Central Toronto</td>
+      <td>43.711695</td>
+      <td>-79.416936</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>Runnymede, Swansea</td>
+      <td>M6S</td>
+      <td>West Toronto</td>
+      <td>43.651571</td>
+      <td>-79.484450</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>Ryerson, Garden District</td>
+      <td>M5B</td>
+      <td>Downtown Toronto</td>
+      <td>43.657162</td>
+      <td>-79.378937</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>St. James Town</td>
+      <td>M5C</td>
+      <td>Downtown Toronto</td>
+      <td>43.651494</td>
+      <td>-79.375418</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>Stn A PO Boxes 25 The Esplanade</td>
+      <td>M5W</td>
+      <td>Downtown Toronto</td>
+      <td>43.646435</td>
+      <td>-79.374846</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>Studio District</td>
+      <td>M4M</td>
+      <td>East Toronto</td>
+      <td>43.659526</td>
+      <td>-79.340923</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>The Annex, North Midtown, Yorkville</td>
+      <td>M5R</td>
+      <td>Central Toronto</td>
+      <td>43.672710</td>
+      <td>-79.405678</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>The Beaches</td>
+      <td>M4E</td>
+      <td>East Toronto</td>
+      <td>43.676357</td>
+      <td>-79.293031</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>The Beaches West, India Bazaar</td>
+      <td>M4L</td>
+      <td>East Toronto</td>
+      <td>43.668999</td>
+      <td>-79.315572</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>37</th>
+      <td>The Danforth West, Riverdale</td>
+      <td>M4K</td>
+      <td>East Toronto</td>
+      <td>43.679557</td>
+      <td>-79.352188</td>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="-Mapping-clusters-"><span style="color:darkred"> Mapping clusters </span><a class="anchor-link" href="#-Mapping-clusters-">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[98]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Finding geospatial data of Toronto</span>
+<span class="n">address</span> <span class="o">=</span> <span class="s1">&#39;Toronto, CA&#39;</span>
+
+<span class="n">geolocator</span> <span class="o">=</span> <span class="n">Nominatim</span><span class="p">(</span><span class="n">user_agent</span><span class="o">=</span><span class="s2">&quot;tor_explorer&quot;</span><span class="p">)</span>
+<span class="n">location</span> <span class="o">=</span> <span class="n">geolocator</span><span class="o">.</span><span class="n">geocode</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
+<span class="n">latitude</span> <span class="o">=</span> <span class="n">location</span><span class="o">.</span><span class="n">latitude</span>
+<span class="n">longitude</span> <span class="o">=</span> <span class="n">location</span><span class="o">.</span><span class="n">longitude</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The geograpical coordinate of Toronot are </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>The geograpical coordinate of Toronot are 43.653963, -79.387207.
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[99]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># create map</span>
+<span class="n">map_clusters</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span><span class="p">],</span> <span class="n">zoom_start</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+
+<span class="c1"># set color scheme for the clusters</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">kclusters</span><span class="p">)</span>
+<span class="n">ys</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">x</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="n">x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">kclusters</span><span class="p">)]</span>
+<span class="n">colors_array</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">rainbow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ys</span><span class="p">)))</span>
+<span class="n">rainbow</span> <span class="o">=</span> <span class="p">[</span><span class="n">colors</span><span class="o">.</span><span class="n">rgb2hex</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">colors_array</span><span class="p">]</span>
+
+<span class="c1"># add markers to the map</span>
+<span class="n">markers_colors</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">poi</span><span class="p">,</span> <span class="n">cluster</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">df_toronto</span><span class="p">[</span><span class="s1">&#39;Latitude&#39;</span><span class="p">],</span> <span class="n">df_toronto</span><span class="p">[</span><span class="s1">&#39;Longitude&#39;</span><span class="p">],</span> <span class="n">df_toronto</span><span class="p">[</span><span class="s1">&#39;Neighbourhood&#39;</span><span class="p">],</span> <span class="n">df_toronto</span><span class="p">[</span><span class="s1">&#39;Clusters&#39;</span><span class="p">]):</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Popup</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">poi</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; Cluster &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">cluster</span><span class="p">),</span> <span class="n">parse_html</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">folium</span><span class="o">.</span><span class="n">CircleMarker</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">],</span>
+        <span class="n">radius</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+        <span class="n">popup</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">rainbow</span><span class="p">[</span><span class="n">cluster</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">fill</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">fill_color</span><span class="o">=</span><span class="n">rainbow</span><span class="p">[</span><span class="n">cluster</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">fill_opacity</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">map_clusters</span><span class="p">)</span>
+       
+<span class="n">map_clusters</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[99]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><iframe src="data:text/html;charset=utf-8;base64,PCFET0NUWVBFIGh0bWw+CjxoZWFkPiAgICAKICAgIDxtZXRhIGh0dHAtZXF1aXY9ImNvbnRlbnQtdHlwZSIgY29udGVudD0idGV4dC9odG1sOyBjaGFyc2V0PVVURi04IiAvPgogICAgCiAgICAgICAgPHNjcmlwdD4KICAgICAgICAgICAgTF9OT19UT1VDSCA9IGZhbHNlOwogICAgICAgICAgICBMX0RJU0FCTEVfM0QgPSBmYWxzZTsKICAgICAgICA8L3NjcmlwdD4KICAgIAogICAgPHNjcmlwdCBzcmM9Imh0dHBzOi8vY2RuLmpzZGVsaXZyLm5ldC9ucG0vbGVhZmxldEAxLjUuMS9kaXN0L2xlYWZsZXQuanMiPjwvc2NyaXB0PgogICAgPHNjcmlwdCBzcmM9Imh0dHBzOi8vY29kZS5qcXVlcnkuY29tL2pxdWVyeS0xLjEyLjQubWluLmpzIj48L3NjcmlwdD4KICAgIDxzY3JpcHQgc3JjPSJodHRwczovL21heGNkbi5ib290c3RyYXBjZG4uY29tL2Jvb3RzdHJhcC8zLjIuMC9qcy9ib290c3RyYXAubWluLmpzIj48L3NjcmlwdD4KICAgIDxzY3JpcHQgc3JjPSJodHRwczovL2NkbmpzLmNsb3VkZmxhcmUuY29tL2FqYXgvbGlicy9MZWFmbGV0LmF3ZXNvbWUtbWFya2Vycy8yLjAuMi9sZWFmbGV0LmF3ZXNvbWUtbWFya2Vycy5qcyI+PC9zY3JpcHQ+CiAgICA8bGluayByZWw9InN0eWxlc2hlZXQiIGhyZWY9Imh0dHBzOi8vY2RuLmpzZGVsaXZyLm5ldC9ucG0vbGVhZmxldEAxLjUuMS9kaXN0L2xlYWZsZXQuY3NzIi8+CiAgICA8bGluayByZWw9InN0eWxlc2hlZXQiIGhyZWY9Imh0dHBzOi8vbWF4Y2RuLmJvb3RzdHJhcGNkbi5jb20vYm9vdHN0cmFwLzMuMi4wL2Nzcy9ib290c3RyYXAubWluLmNzcyIvPgogICAgPGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJodHRwczovL21heGNkbi5ib290c3RyYXBjZG4uY29tL2Jvb3RzdHJhcC8zLjIuMC9jc3MvYm9vdHN0cmFwLXRoZW1lLm1pbi5jc3MiLz4KICAgIDxsaW5rIHJlbD0ic3R5bGVzaGVldCIgaHJlZj0iaHR0cHM6Ly9tYXhjZG4uYm9vdHN0cmFwY2RuLmNvbS9mb250LWF3ZXNvbWUvNC42LjMvY3NzL2ZvbnQtYXdlc29tZS5taW4uY3NzIi8+CiAgICA8bGluayByZWw9InN0eWxlc2hlZXQiIGhyZWY9Imh0dHBzOi8vY2RuanMuY2xvdWRmbGFyZS5jb20vYWpheC9saWJzL0xlYWZsZXQuYXdlc29tZS1tYXJrZXJzLzIuMC4yL2xlYWZsZXQuYXdlc29tZS1tYXJrZXJzLmNzcyIvPgogICAgPGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJodHRwczovL3Jhd2Nkbi5naXRoYWNrLmNvbS9weXRob24tdmlzdWFsaXphdGlvbi9mb2xpdW0vbWFzdGVyL2ZvbGl1bS90ZW1wbGF0ZXMvbGVhZmxldC5hd2Vzb21lLnJvdGF0ZS5jc3MiLz4KICAgIDxzdHlsZT5odG1sLCBib2R5IHt3aWR0aDogMTAwJTtoZWlnaHQ6IDEwMCU7bWFyZ2luOiAwO3BhZGRpbmc6IDA7fTwvc3R5bGU+CiAgICA8c3R5bGU+I21hcCB7cG9zaXRpb246YWJzb2x1dGU7dG9wOjA7Ym90dG9tOjA7cmlnaHQ6MDtsZWZ0OjA7fTwvc3R5bGU+CiAgICAKICAgICAgICAgICAgPG1ldGEgbmFtZT0idmlld3BvcnQiIGNvbnRlbnQ9IndpZHRoPWRldmljZS13aWR0aCwKICAgICAgICAgICAgICAgIGluaXRpYWwtc2NhbGU9MS4wLCBtYXhpbXVtLXNjYWxlPTEuMCwgdXNlci1zY2FsYWJsZT1ubyIgLz4KICAgICAgICAgICAgPHN0eWxlPgogICAgICAgICAgICAgICAgI21hcF9hMGE1MGRmYjZlMmY0MzNkOTA3MjdlNTVlMmJhMzUxZCB7CiAgICAgICAgICAgICAgICAgICAgcG9zaXRpb246IHJlbGF0aXZlOwogICAgICAgICAgICAgICAgICAgIHdpZHRoOiAxMDAuMCU7CiAgICAgICAgICAgICAgICAgICAgaGVpZ2h0OiAxMDAuMCU7CiAgICAgICAgICAgICAgICAgICAgbGVmdDogMC4wJTsKICAgICAgICAgICAgICAgICAgICB0b3A6IDAuMCU7CiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIDwvc3R5bGU+CiAgICAgICAgCjwvaGVhZD4KPGJvZHk+ICAgIAogICAgCiAgICAgICAgICAgIDxkaXYgY2xhc3M9ImZvbGl1bS1tYXAiIGlkPSJtYXBfYTBhNTBkZmI2ZTJmNDMzZDkwNzI3ZTU1ZTJiYTM1MWQiID48L2Rpdj4KICAgICAgICAKPC9ib2R5Pgo8c2NyaXB0PiAgICAKICAgIAogICAgICAgICAgICB2YXIgbWFwX2EwYTUwZGZiNmUyZjQzM2Q5MDcyN2U1NWUyYmEzNTFkID0gTC5tYXAoCiAgICAgICAgICAgICAgICAibWFwX2EwYTUwZGZiNmUyZjQzM2Q5MDcyN2U1NWUyYmEzNTFkIiwKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICBjZW50ZXI6IFs0My42NTM5NjMsIC03OS4zODcyMDddLAogICAgICAgICAgICAgICAgICAgIGNyczogTC5DUlMuRVBTRzM4NTcsCiAgICAgICAgICAgICAgICAgICAgem9vbTogMTEsCiAgICAgICAgICAgICAgICAgICAgem9vbUNvbnRyb2w6IHRydWUsCiAgICAgICAgICAgICAgICAgICAgcHJlZmVyQ2FudmFzOiBmYWxzZSwKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgKTsKCiAgICAgICAgICAgIAoKICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgdGlsZV9sYXllcl85YmNiOTc2YzUyODY0M2FjYTMwYjYwN2I0ZjI3ZWY0MCA9IEwudGlsZUxheWVyKAogICAgICAgICAgICAgICAgImh0dHBzOi8ve3N9LnRpbGUub3BlbnN0cmVldG1hcC5vcmcve3p9L3t4fS97eX0ucG5nIiwKICAgICAgICAgICAgICAgIHsiYXR0cmlidXRpb24iOiAiRGF0YSBieSBcdTAwMjZjb3B5OyBcdTAwM2NhIGhyZWY9XCJodHRwOi8vb3BlbnN0cmVldG1hcC5vcmdcIlx1MDAzZU9wZW5TdHJlZXRNYXBcdTAwM2MvYVx1MDAzZSwgdW5kZXIgXHUwMDNjYSBocmVmPVwiaHR0cDovL3d3dy5vcGVuc3RyZWV0bWFwLm9yZy9jb3B5cmlnaHRcIlx1MDAzZU9EYkxcdTAwM2MvYVx1MDAzZS4iLCAiZGV0ZWN0UmV0aW5hIjogZmFsc2UsICJtYXhOYXRpdmVab29tIjogMTgsICJtYXhab29tIjogMTgsICJtaW5ab29tIjogMCwgIm5vV3JhcCI6IGZhbHNlLCAib3BhY2l0eSI6IDEsICJzdWJkb21haW5zIjogImFiYyIsICJ0bXMiOiBmYWxzZX0KICAgICAgICAgICAgKS5hZGRUbyhtYXBfYTBhNTBkZmI2ZTJmNDMzZDkwNzI3ZTU1ZTJiYTM1MWQpOwogICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciBjaXJjbGVfbWFya2VyXzU4OTc3OTUxMTQ0YjQyNmNhNGFlZDczYjlhY2I3ODE0ID0gTC5jaXJjbGVNYXJrZXIoCiAgICAgICAgICAgICAgICBbNDMuNjUwNTcxMjAwMDAwMDEsIC03OS4zODQ1Njc1XSwKICAgICAgICAgICAgICAgIHsiYnViYmxpbmdNb3VzZUV2ZW50cyI6IHRydWUsICJjb2xvciI6ICIjZDRkZDgwIiwgImRhc2hBcnJheSI6IG51bGwsICJkYXNoT2Zmc2V0IjogbnVsbCwgImZpbGwiOiB0cnVlLCAiZmlsbENvbG9yIjogIiNkNGRkODAiLCAiZmlsbE9wYWNpdHkiOiAwLjcsICJmaWxsUnVsZSI6ICJldmVub2RkIiwgImxpbmVDYXAiOiAicm91bmQiLCAibGluZUpvaW4iOiAicm91bmQiLCAib3BhY2l0eSI6IDEuMCwgInJhZGl1cyI6IDUsICJzdHJva2UiOiB0cnVlLCAid2VpZ2h0IjogM30KICAgICAgICAgICAgKS5hZGRUbyhtYXBfYTBhNTBkZmI2ZTJmNDMzZDkwNzI3ZTU1ZTJiYTM1MWQpOwogICAgICAgIAogICAgCiAgICAgICAgdmFyIHBvcHVwXzY1YTEwZDQzMTMyMzQ2OTY4ZjMwYTNhZGU1ZTc5YzY5ID0gTC5wb3B1cCh7Im1heFdpZHRoIjogIjEwMCUifSk7CgogICAgICAgIAogICAgICAgICAgICB2YXIgaHRtbF8zM2FkMjlhZGFjNDg0NDJhYWQyMjgzYWNiNjkxNjVkMyA9ICQoYDxkaXYgaWQ9Imh0bWxfMzNhZDI5YWRhYzQ4NDQyYWFkMjI4M2FjYjY5MTY1ZDMiIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPkFkZWxhaWRlLCBLaW5nLCBSaWNobW9uZCBDbHVzdGVyIDM8L2Rpdj5gKVswXTsKICAgICAgICAgICAgcG9wdXBfNjVhMTBkNDMxMzIzNDY5NjhmMzBhM2FkZTVlNzljNjkuc2V0Q29udGVudChodG1sXzMzYWQyOWFkYWM0ODQ0MmFhZDIyODNhY2I2OTE2NWQzKTsKICAgICAgICAKCiAgICAgICAgY2lyY2xlX21hcmtlcl81ODk3Nzk1MTE0NGI0MjZjYTRhZWQ3M2I5YWNiNzgxNC5iaW5kUG9wdXAocG9wdXBfNjVhMTBkNDMxMzIzNDY5NjhmMzBhM2FkZTVlNzljNjkpCiAgICAgICAgOwoKICAgICAgICAKICAgIAogICAgCiAgICAgICAgICAgIHZhciBjaXJjbGVfbWFya2VyXzZkNWVmZmUxMmVkNTQ0N2ZiODM1NWZmOTliNTAwNWU5ID0gTC5jaXJjbGVNYXJrZXIoCiAgICAgICAgICAgICAgICBbNDMuNjQ0NzcwNzk5OTk5OTk2LCAtNzkuMzczMzA2NF0sCiAgICAgICAgICAgICAgICB7ImJ1YmJsaW5nTW91c2VFdmVudHMiOiB0cnVlLCAiY29sb3IiOiAiI2Q0ZGQ4MCIsICJkYXNoQXJyYXkiOiBudWxsLCAiZGFzaE9mZnNldCI6IG51bGwsICJmaWxsIjogdHJ1ZSwgImZpbGxDb2xvciI6ICIjZDRkZDgwIiwgImZpbGxPcGFjaXR5IjogMC43LCAiZmlsbFJ1bGUiOiAiZXZlbm9kZCIsICJsaW5lQ2FwIjogInJvdW5kIiwgImxpbmVKb2luIjogInJvdW5kIiwgIm9wYWNpdHkiOiAxLjAsICJyYWRpdXMiOiA1LCAic3Ryb2tlIjogdHJ1ZSwgIndlaWdodCI6IDN9CiAgICAgICAgICAgICkuYWRkVG8obWFwX2EwYTUwZGZiNmUyZjQzM2Q5MDcyN2U1NWUyYmEzNTFkKTsKICAgICAgICAKICAgIAogICAgICAgIHZhciBwb3B1cF9mOTYwNmU2MTkzYmQ0ZTU0YmExZjc2MTEyNWYyNWE5YiA9IEwucG9wdXAoeyJtYXhXaWR0aCI6ICIxMDAlIn0pOwoKICAgICAgICAKICAgICAgICAgICAgdmFyIGh0bWxfN2EzZDgwYjI2M2I2NDc5YjlkMTA3YmUyMzI2MjFhMjcgPSAkKGA8ZGl2IGlkPSJodG1sXzdhM2Q4MGIyNjNiNjQ3OWI5ZDEwN2JlMjMyNjIxYTI3IiBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij5CZXJjenkgUGFyayBDbHVzdGVyIDM8L2Rpdj5gKVswXTsKICAgICAgICAgICAgcG9wdXBfZjk2MDZlNjE5M2JkNGU1NGJhMWY3NjExMjVmMjVhOWIuc2V0Q29udGVudChodG1sXzdhM2Q4MGIyNjNiNjQ3OWI5ZDEwN2JlMjMyNjIxYTI3KTsKICAgICAgICAKCiAgICAgICAgY2lyY2xlX21hcmtlcl82ZDVlZmZlMTJlZDU0NDdmYjgzNTVmZjk5YjUwMDVlOS5iaW5kUG9wdXAocG9wdXBfZjk2MDZlNjE5M2JkNGU1NGJhMWY3NjExMjVmMjVhOWIpCiAgICAgICAgOwoKICAgICAgICAKICAgIAogICAgCiAgICAgICAgICAgIHZhciBjaXJjbGVfbWFya2VyXzI2MTU0MWUzOGE3OTRiOWE5MDkxY2Y0ZTMyMTliNDYzID0gTC5jaXJjbGVNYXJrZXIoCiAgICAgICAgICAgICAgICBbNDMuNjM2ODQ3MiwgLTc5LjQyODE5MTQwMDAwMDAyXSwKICAgICAgICAgICAgICAgIHsiYnViYmxpbmdNb3VzZUV2ZW50cyI6IHRydWUsICJjb2xvciI6ICIjZDRkZDgwIiwgImRhc2hBcnJheSI6IG51bGwsICJkYXNoT2Zmc2V0IjogbnVsbCwgImZpbGwiOiB0cnVlLCAiZmlsbENvbG9yIjogIiNkNGRkODAiLCAiZmlsbE9wYWNpdHkiOiAwLjcsICJmaWxsUnVsZSI6ICJldmVub2RkIiwgImxpbmVDYXAiOiAicm91bmQiLCAibGluZUpvaW4iOiAicm91bmQiLCAib3BhY2l0eSI6IDEuMCwgInJhZGl1cyI6IDUsICJzdHJva2UiOiB0cnVlLCAid2VpZ2h0IjogM30KICAgICAgICAgICAgKS5hZGRUbyhtYXBfYTBhNTBkZmI2ZTJmNDMzZDkwNzI3ZTU1ZTJiYTM1MWQpOwogICAgICAgIAogICAgCiAgICAgICAgdmFyIHBvcHVwX2RkOGI2ZTA4OTkzOTQ5YThhYmYxNGRmNDAwMDkwODI4ID0gTC5wb3B1cCh7Im1heFdpZHRoIjogIjEwMCUifSk7CgogICAgICAgIAogICAgICAgICAgICB2YXIgaHRtbF80OGI0MDMxNGMwNjE0NmE4YjYzOGJiZjRmNWU2MmU2OSA9ICQoYDxkaXYgaWQ9Imh0bWxfNDhiNDAzMTRjMDYxNDZhOGI2MzhiYmY0ZjVlNjJlNjkiIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPkJyb2NrdG9uLCBFeGhpYml0aW9uIFBsYWNlLCBQYXJrZGFsZSBWaWxsYWdlIENsdXN0ZXIgMzwvZGl2PmApWzBdOwogICAgICAgICAgICBwb3B1cF9kZDhiNmUwODk5Mzk0OWE4YWJmMTRkZjQwMDA5MDgyOC5zZXRDb250ZW50KGh0bWxfNDhiNDAzMTRjMDYxNDZhOGI2MzhiYmY0ZjVlNjJlNjkpOwogICAgICAgIAoKICAgICAgICBjaXJjbGVfbWFya2VyXzI2MTU0MWUzOGE3OTRiOWE5MDkxY2Y0ZTMyMTliNDYzLmJpbmRQb3B1cChwb3B1cF9kZDhiNmUwODk5Mzk0OWE4YWJmMTRkZjQwMDA5MDgyOCkKICAgICAgICA7CgogICAgICAgIAogICAgCiAgICAKICAgICAgICAgICAgdmFyIGNpcmNsZV9tYXJrZXJfODJjMWJmZjM1ZjUxNDFlYTlkYzQ4ZjQ4NWFjYjkxOTAgPSBMLmNpcmNsZU1hcmtlcigKICAgICAgICAgICAgICAgIFs0My42NjI3NDM5LCAtNzkuMzIxNTU4XSwKICAgICAgICAgICAgICAgIHsiYnViYmxpbmdNb3VzZUV2ZW50cyI6IHRydWUsICJjb2xvciI6ICIjZDRkZDgwIiwgImRhc2hBcnJheSI6IG51bGwsICJkYXNoT2Zmc2V0IjogbnVsbCwgImZpbGwiOiB0cnVlLCAiZmlsbENvbG9yIjogIiNkNGRkODAiLCAiZmlsbE9wYWNpdHkiOiAwLjcsICJmaWxsUnVsZSI6ICJldmVub2RkIiwgImxpbmVDYXAiOiAicm91bmQiLCAibGluZUpvaW4iOiAicm91bmQiLCAib3BhY2l0eSI6IDEuMCwgInJhZGl1cyI6IDUsICJzdHJva2UiOiB0cnVlLCAid2VpZ2h0IjogM30KICAgICAgICAgICAgKS5hZGRUbyhtYXBfYTBhNTBkZmI2ZTJmNDMzZDkwNzI3ZTU1ZTJiYTM1MWQpOwogICAgICAgIAogICAgCiAgICAgICAgdmFyIHBvcHVwX2RmYzU3ZWFhMjM1ZTQyY2RiZDA5M2IzZmQ5ZjFmODJlID0gTC5wb3B1cCh7Im1heFdpZHRoIjogIjEwMCUifSk7CgogICAgICAgIAogICAgICAgICAgICB2YXIgaHRtbF83ODE3Mjk2OGVmYzY0Zjg5YmNmZTg3OGU4MDcxMjg1MyA9ICQoYDxkaXYgaWQ9Imh0bWxfNzgxNzI5NjhlZmM2NGY4OWJjZmU4NzhlODA3MTI4NTMiIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPkJ1c2luZXNzIFJlcGx5IE1haWwgUHJvY2Vzc2luZyBDZW50cmUgOTY5IEVhc3Rlcm4gQ2x1c3RlciAzPC9kaXY+YClbMF07CiAgICAgICAgICAgIHBvcHVwX2RmYzU3ZWFhMjM1ZTQyY2RiZDA5M2IzZmQ5ZjFmODJlLnNldENvbnRlbnQoaHRtbF83ODE3Mjk2OGVmYzY0Zjg5YmNmZTg3OGU4MDcxMjg1Myk7CiAgICAgICAgCgogICAgICAgIGNpcmNsZV9tYXJrZXJfODJjMWJmZjM1ZjUxNDFlYTlkYzQ4ZjQ4NWFjYjkxOTAuYmluZFBvcHVwKHBvcHVwX2RmYzU3ZWFhMjM1ZTQyY2RiZDA5M2IzZmQ5ZjFmODJlKQogICAgICAgIDsKCiAgICAgICAgCiAgICAKICAgIAogICAgICAgICAgICB2YXIgY2lyY2xlX21hcmtlcl80OWI0ZGRhZTNhZDM0YzVjYWRlY2JjOGUwMTBmMjZhOCA9IEwuY2lyY2xlTWFya2VyKAogICAgICAgICAgICAgICAgWzQzLjYyODk0NjcsIC03OS4zOTQ0MTk5XSwKICAgICAgICAgICAgICAgIHsiYnViYmxpbmdNb3VzZUV2ZW50cyI6IHRydWUsICJjb2xvciI6ICIjZDRkZDgwIiwgImRhc2hBcnJheSI6IG51bGwsICJkYXNoT2Zmc2V0IjogbnVsbCwgImZpbGwiOiB0cnVlLCAiZmlsbENvbG9yIjogIiNkNGRkODAiLCAiZmlsbE9wYWNpdHkiOiAwLjcsICJmaWxsUnVsZSI6ICJldmVub2RkIiwgImxpbmVDYXAiOiAicm91bmQiLCAibGluZUpvaW4iOiAicm91bmQiLCAib3BhY2l0eSI6IDEuMCwgInJhZGl1cyI6IDUsICJzdHJva2UiOiB0cnVlLCAid2VpZ2h0IjogM30KICAgICAgICAgICAgKS5hZGRUbyhtYXBfYTBhNTBkZmI2ZTJmNDMzZDkwNzI3ZTU1ZTJiYTM1MWQpOwogICAgICAgIAogICAgCiAgICAgICAgdmFyIHBvcHVwXzFlYzM5NTEwZDA5MDRmNzc4MGJlNmJkMzgxMTIyNmI0ID0gTC5wb3B1cCh7Im1heFdpZHRoIjogIjEwMCUifSk7CgogICAgICAgIAogICAgICAgICAgICB2YXIgaHRtbF82YjRhZTA5ZGI3MjE0MjgxYWExZDRjOTA5ODgwZjI0ZiA9ICQoYDxkaXYgaWQ9Imh0bWxfNmI0YWUwOWRiNzIxNDI4MWFhMWQ0YzkwOTg4MGYyNGYiIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPkNOIFRvd2VyLCBCYXRodXJzdCBRdWF5LCBJc2xhbmQgYWlycG9ydCwgSGFyYm91cmZyb250IFdlc3QsIEtpbmcgYW5kIFNwYWRpbmEsIFJhaWx3YXkgTGFuZHMsIFNvdXRoIE5pYWdhcmEgQ2x1c3RlciAzPC9kaXY+YClbMF07CiAgICAgICAgICAgIHBvcHVwXzFlYzM5NTEwZDA5MDRmNzc4MGJlNmJkMzgxMTIyNmI0LnNldENvbnRlbnQoaHRtbF82YjRhZTA5ZGI3MjE0MjgxYWExZDRjOTA5ODgwZjI0Zik7CiAgICAgICAgCgogICAgICAgIGNpcmNsZV9tYXJrZXJfNDliNGRkYWUzYWQzNGM1Y2FkZWNiYzhlMDEwZjI2YTguYmluZFBvcHVwKHBvcHVwXzFlYzM5NTEwZDA5MDRmNzc4MGJlNmJkMzgxMTIyNmI0KQogICAgICAgIDsKCiAgICAgICAgCiAgICAKICAgIAogICAgICAgICAgICB2YXIgY2lyY2xlX21hcmtlcl8xODYxZGZjZDBlZjg0YTViOWFhZWUwNjdjYmNkMTQ4NyA9IEwuY2lyY2xlTWFya2VyKAogICAgICAgICAgICAgICAgWzQzLjY2Nzk2NywgLTc5LjM2NzY3NTNdLAogICAgICAgICAgICAgICAgeyJidWJibGluZ01vdXNlRXZlbnRzIjogdHJ1ZSwgImNvbG9yIjogIiNkNGRkODAiLCAiZGFzaEFycmF5IjogbnVsbCwgImRhc2hPZmZzZXQiOiBudWxsLCAiZmlsbCI6IHRydWUsICJmaWxsQ29sb3IiOiAiI2Q0ZGQ4MCIsICJmaWxsT3BhY2l0eSI6IDAuNywgImZpbGxSdWxlIjogImV2ZW5vZGQiLCAibGluZUNhcCI6ICJyb3VuZCIsICJsaW5lSm9pbiI6ICJyb3VuZCIsICJvcGFjaXR5IjogMS4wLCAicmFkaXVzIjogNSwgInN0cm9rZSI6IHRydWUsICJ3ZWlnaHQiOiAzfQogICAgICAgICAgICApLmFkZFRvKG1hcF9hMGE1MGRmYjZlMmY0MzNkOTA3MjdlNTVlMmJhMzUxZCk7CiAgICAgICAgCiAgICAKICAgICAgICB2YXIgcG9wdXBfMWUzMjE3ZDJmMDZlNGM2ZTgwMDIzZTFmNDdjZDYwYWQgPSBMLnBvcHVwKHsibWF4V2lkdGgiOiAiMTAwJSJ9KTsKCiAgICAgICAgCiAgICAgICAgICAgIHZhciBodG1sXzg5ODQ0YzhkZjA0NTRkMzU5NTI4MWMxNDM1MjIzMDQ4ID0gJChgPGRpdiBpZD0iaHRtbF84OTg0NGM4ZGYwNDU0ZDM1OTUyODFjMTQzNTIyMzA0OCIgc3R5bGU9IndpZHRoOiAxMDAuMCU7IGhlaWdodDogMTAwLjAlOyI+Q2FiYmFnZXRvd24sIFN0LiBKYW1lcyBUb3duIENsdXN0ZXIgMzwvZGl2PmApWzBdOwogICAgICAgICAgICBwb3B1cF8xZTMyMTdkMmYwNmU0YzZlODAwMjNlMWY0N2NkNjBhZC5zZXRDb250ZW50KGh0bWxfODk4NDRjOGRmMDQ1NGQzNTk1MjgxYzE0MzUyMjMwNDgpOwogICAgICAgIAoKICAgICAgICBjaXJjbGVfbWFya2VyXzE4NjFkZmNkMGVmODRhNWI5YWFlZTA2N2NiY2QxNDg3LmJpbmRQb3B1cChwb3B1cF8xZTMyMTdkMmYwNmU0YzZlODAwMjNlMWY0N2NkNjBhZCkKICAgICAgICA7CgogICAgICAgIAogICAgCiAgICAKICAgICAgICAgICAgdmFyIGNpcmNsZV9tYXJrZXJfY2NlMWM0NDIxMGNkNDY3N2I0NjIwYzNjMWQ5ZjllZDQgPSBMLmNpcmNsZU1hcmtlcigKICAgICAgICAgICAgICAgIFs0My42NTc5NTI0LCAtNzkuMzg3MzgyNl0sCiAgICAgICAgICAgICAgICB7ImJ1YmJsaW5nTW91c2VFdmVudHMiOiB0cnVlLCAiY29sb3IiOiAiI2Q0ZGQ4MCIsICJkYXNoQXJyYXkiOiBudWxsLCAiZGFzaE9mZnNldCI6IG51bGwsICJmaWxsIjogdHJ1ZSwgImZpbGxDb2xvciI6ICIjZDRkZDgwIiwgImZpbGxPcGFjaXR5IjogMC43LCAiZmlsbFJ1bGUiOiAiZXZlbm9kZCIsICJsaW5lQ2FwIjogInJvdW5kIiwgImxpbmVKb2luIjogInJvdW5kIiwgIm9wYWNpdHkiOiAxLjAsICJyYWRpdXMiOiA1LCAic3Ryb2tlIjogdHJ1ZSwgIndlaWdodCI6IDN9CiAgICAgICAgICAgICkuYWRkVG8obWFwX2EwYTUwZGZiNmUyZjQzM2Q5MDcyN2U1NWUyYmEzNTFkKTsKICAgICAgICAKICAgIAogICAgICAgIHZhciBwb3B1cF81ZDAzMmQ2YzViNjU0MjRmOTU2NGNhOGNjNGE0MmE0NyA9IEwucG9wdXAoeyJtYXhXaWR0aCI6ICIxMDAlIn0pOwoKICAgICAgICAKICAgICAgICAgICAgdmFyIGh0bWxfNjQ2ZmFhZDQxZWNjNGQxN2FkOWVmZTNjMDA5ZWFkODQgPSAkKGA8ZGl2IGlkPSJodG1sXzY0NmZhYWQ0MWVjYzRkMTdhZDllZmUzYzAwOWVhZDg0IiBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij5DZW50cmFsIEJheSBTdHJlZXQgQ2x1c3RlciAzPC9kaXY+YClbMF07CiAgICAgICAgICAgIHBvcHVwXzVkMDMyZDZjNWI2NTQyNGY5NTY0Y2E4Y2M0YTQyYTQ3LnNldENvbnRlbnQoaHRtbF82NDZmYWFkNDFlY2M0ZDE3YWQ5ZWZlM2MwMDllYWQ4NCk7CiAgICAgICAgCgogICAgICAgIGNpcmNsZV9tYXJrZXJfY2NlMWM0NDIxMGNkNDY3N2I0NjIwYzNjMWQ5ZjllZDQuYmluZFBvcHVwKHBvcHVwXzVkMDMyZDZjNWI2NTQyNGY5NTY0Y2E4Y2M0YTQyYTQ3KQogICAgICAgIDsKCiAgICAgICAgCiAgICAKICAgIAogICAgICAgICAgICB2YXIgY2lyY2xlX21hcmtlcl8zODBhOGQwNmZiYWU0MjdhYWQxYjMyMWI5NGI1YTc2MiA9IEwuY2lyY2xlTWFya2VyKAogICAgICAgICAgICAgICAgWzQzLjY1MzIwNTcsIC03OS40MDAwNDkzXSwKICAgICAgICAgICAgICAgIHsiYnViYmxpbmdNb3VzZUV2ZW50cyI6IHRydWUsICJjb2xvciI6ICIjZDRkZDgwIiwgImRhc2hBcnJheSI6IG51bGwsICJkYXNoT2Zmc2V0IjogbnVsbCwgImZpbGwiOiB0cnVlLCAiZmlsbENvbG9yIjogIiNkNGRkODAiLCAiZmlsbE9wYWNpdHkiOiAwLjcsICJmaWxsUnVsZSI6ICJldmVub2RkIiwgImxpbmVDYXAiOiAicm91bmQiLCAibGluZUpvaW4iOiAicm91bmQiLCAib3BhY2l0eSI6IDEuMCwgInJhZGl1cyI6IDUsICJzdHJva2UiOiB0cnVlLCAid2VpZ2h0IjogM30KICAgICAgICAgICAgKS5hZGRUbyhtYXBfYTBhNTBkZmI2ZTJmNDMzZDkwNzI3ZTU1ZTJiYTM1MWQpOwogICAgICAgIAogICAgCiAgICAgICAgdmFyIHBvcHVwX2YzMTYwNjJhY2ZhMjQzZjViNWNhMzJjZWM5MzE1ZDQzID0gTC5wb3B1cCh7Im1heFdpZHRoIjogIjEwMCUifSk7CgogICAgICAgIAogICAgICAgICAgICB2YXIgaHRtbF85ZDIyZjY0YTVmNTI0YjA2OTQxYzM4NTQ4NTNkMzI1YSA9ICQoYDxkaXYgaWQ9Imh0bWxfOWQyMmY2NGE1ZjUyNGIwNjk0MWMzODU0ODUzZDMyNWEiIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPkNoaW5hdG93biwgR3JhbmdlIFBhcmssIEtlbnNpbmd0b24gTWFya2V0IENsdXN0ZXIgMzwvZGl2PmApWzBdOwogICAgICAgICAgICBwb3B1cF9mMzE2MDYyYWNmYTI0M2Y1YjVjYTMyY2VjOTMxNWQ0My5zZXRDb250ZW50KGh0bWxfOWQyMmY2NGE1ZjUyNGIwNjk0MWMzODU0ODUzZDMyNWEpOwogICAgICAgIAoKICAgICAgICBjaXJjbGVfbWFya2VyXzM4MGE4ZDA2ZmJhZTQyN2FhZDFiMzIxYjk0YjVhNzYyLmJpbmRQb3B1cChwb3B1cF9mMzE2MDYyYWNmYTI0M2Y1YjVjYTMyY2VjOTMxNWQ0MykKICAgICAgICA7CgogICAgICAgIAogICAgCiAgICAKICAgICAgICAgICAgdmFyIGNpcmNsZV9tYXJrZXJfMTk4MjdiNTNiZjNiNDdhNThiOTg1Yjc4ZmJlNjNmYzUgPSBMLmNpcmNsZU1hcmtlcigKICAgICAgICAgICAgICAgIFs0My42Njk1NDIsIC03OS40MjI1NjM3XSwKICAgICAgICAgICAgICAgIHsiYnViYmxpbmdNb3VzZUV2ZW50cyI6IHRydWUsICJjb2xvciI6ICIjZDRkZDgwIiwgImRhc2hBcnJheSI6IG51bGwsICJkYXNoT2Zmc2V0IjogbnVsbCwgImZpbGwiOiB0cnVlLCAiZmlsbENvbG9yIjogIiNkNGRkODAiLCAiZmlsbE9wYWNpdHkiOiAwLjcsICJmaWxsUnVsZSI6ICJldmVub2RkIiwgImxpbmVDYXAiOiAicm91bmQiLCAibGluZUpvaW4iOiAicm91bmQiLCAib3BhY2l0eSI6IDEuMCwgInJhZGl1cyI6IDUsICJzdHJva2UiOiB0cnVlLCAid2VpZ2h0IjogM30KICAgICAgICAgICAgKS5hZGRUbyhtYXBfYTBhNTBkZmI2ZTJmNDMzZDkwNzI3ZTU1ZTJiYTM1MWQpOwogICAgICAgIAogICAgCiAgICAgICAgdmFyIHBvcHVwXzQ3ODI0YjcwNzZkYjQwNjliYzMzNDQ2YTkyMzEzMmFmID0gTC5wb3B1cCh7Im1heFdpZHRoIjogIjEwMCUifSk7CgogICAgICAgIAogICAgICAgICAgICB2YXIgaHRtbF83Njc0NWI2MGQwN2Y0M2IyOWE3Y2NkYjBjYmNkOTgwNSA9ICQoYDxkaXYgaWQ9Imh0bWxfNzY3NDViNjBkMDdmNDNiMjlhN2NjZGIwY2JjZDk4MDUiIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPkNocmlzdGllIENsdXN0ZXIgMzwvZGl2PmApWzBdOwogICAgICAgICAgICBwb3B1cF80NzgyNGI3MDc2ZGI0MDY5YmMzMzQ0NmE5MjMxMzJhZi5zZXRDb250ZW50KGh0bWxfNzY3NDViNjBkMDdmNDNiMjlhN2NjZGIwY2JjZDk4MDUpOwogICAgICAgIAoKICAgICAgICBjaXJjbGVfbWFya2VyXzE5ODI3YjUzYmYzYjQ3YTU4Yjk4NWI3OGZiZTYzZmM1LmJpbmRQb3B1cChwb3B1cF80NzgyNGI3MDc2ZGI0MDY5YmMzMzQ0NmE5MjMxMzJhZikKICAgICAgICA7CgogICAgICAgIAogICAgCiAgICAKICAgICAgICAgICAgdmFyIGNpcmNsZV9tYXJrZXJfZjUwNDIxOWVhZGI3NDU2Y2E2NzcwYTc5NjZiNmYwZjggPSBMLmNpcmNsZU1hcmtlcigKICAgICAgICAgICAgICAgIFs0My42NjU4NTk5LCAtNzkuMzgzMTU5OTAwMDAwMDFdLAogICAgICAgICAgICAgICAgeyJidWJibGluZ01vdXNlRXZlbnRzIjogdHJ1ZSwgImNvbG9yIjogIiNkNGRkODAiLCAiZGFzaEFycmF5IjogbnVsbCwgImRhc2hPZmZzZXQiOiBudWxsLCAiZmlsbCI6IHRydWUsICJmaWxsQ29sb3IiOiAiI2Q0ZGQ4MCIsICJmaWxsT3BhY2l0eSI6IDAuNywgImZpbGxSdWxlIjogImV2ZW5vZGQiLCAibGluZUNhcCI6ICJyb3VuZCIsICJsaW5lSm9pbiI6ICJyb3VuZCIsICJvcGFjaXR5IjogMS4wLCAicmFkaXVzIjogNSwgInN0cm9rZSI6IHRydWUsICJ3ZWlnaHQiOiAzfQogICAgICAgICAgICApLmFkZFRvKG1hcF9hMGE1MGRmYjZlMmY0MzNkOTA3MjdlNTVlMmJhMzUxZCk7CiAgICAgICAgCiAgICAKICAgICAgICB2YXIgcG9wdXBfMjI5ZDk3Mjk4YTk0NGRhOWFmMWY2NmZhZmFiYTA0N2EgPSBMLnBvcHVwKHsibWF4V2lkdGgiOiAiMTAwJSJ9KTsKCiAgICAgICAgCiAgICAgICAgICAgIHZhciBodG1sXzQyZGM1MWZmMWJjNjQzYTZhZjdlMGQ5OTA4MTU1Y2MyID0gJChgPGRpdiBpZD0iaHRtbF80MmRjNTFmZjFiYzY0M2E2YWY3ZTBkOTkwODE1NWNjMiIgc3R5bGU9IndpZHRoOiAxMDAuMCU7IGhlaWdodDogMTAwLjAlOyI+Q2h1cmNoIGFuZCBXZWxsZXNsZXkgQ2x1c3RlciAzPC9kaXY+YClbMF07CiAgICAgICAgICAgIHBvcHVwXzIyOWQ5NzI5OGE5NDRkYTlhZjFmNjZmYWZhYmEwNDdhLnNldENvbnRlbnQoaHRtbF80MmRjNTFmZjFiYzY0M2E2YWY3ZTBkOTkwODE1NWNjMik7CiAgICAgICAgCgogICAgICAgIGNpcmNsZV9tYXJrZXJfZjUwNDIxOWVhZGI3NDU2Y2E2NzcwYTc5NjZiNmYwZjguYmluZFBvcHVwKHBvcHVwXzIyOWQ5NzI5OGE5NDRkYTlhZjFmNjZmYWZhYmEwNDdhKQogICAgICAgIDsKCiAgICAgICAgCiAgICAKICAgIAogICAgICAgICAgICB2YXIgY2lyY2xlX21hcmtlcl9lN2RmZTZiMjUxOTA0NTJkYWE5N2JlNWFkNTcyZGZhNiA9IEwuY2lyY2xlTWFya2VyKAogICAgICAgICAgICAgICAgWzQzLjY0ODE5ODUsIC03OS4zNzk4MTY5MDAwMDAwMV0sCiAgICAgICAgICAgICAgICB7ImJ1YmJsaW5nTW91c2VFdmVudHMiOiB0cnVlLCAiY29sb3IiOiAiI2Q0ZGQ4MCIsICJkYXNoQXJyYXkiOiBudWxsLCAiZGFzaE9mZnNldCI6IG51bGwsICJmaWxsIjogdHJ1ZSwgImZpbGxDb2xvciI6ICIjZDRkZDgwIiwgImZpbGxPcGFjaXR5IjogMC43LCAiZmlsbFJ1bGUiOiAiZXZlbm9kZCIsICJsaW5lQ2FwIjogInJvdW5kIiwgImxpbmVKb2luIjogInJvdW5kIiwgIm9wYWNpdHkiOiAxLjAsICJyYWRpdXMiOiA1LCAic3Ryb2tlIjogdHJ1ZSwgIndlaWdodCI6IDN9CiAgICAgICAgICAgICkuYWRkVG8obWFwX2EwYTUwZGZiNmUyZjQzM2Q5MDcyN2U1NWUyYmEzNTFkKTsKICAgICAgICAKICAgIAogICAgICAgIHZhciBwb3B1cF8zNzY2NWUxNWQ0M2I0MzNkOTQzMDk4MmI5ZjA0ZmJmOSA9IEwucG9wdXAoeyJtYXhXaWR0aCI6ICIxMDAlIn0pOwoKICAgICAgICAKICAgICAgICAgICAgdmFyIGh0bWxfNTcwNWIyZWY0MzdjNDUwNmIxZjMwZjkyYTFmOTA5N2EgPSAkKGA8ZGl2IGlkPSJodG1sXzU3MDViMmVmNDM3YzQ1MDZiMWYzMGY5MmExZjkwOTdhIiBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij5Db21tZXJjZSBDb3VydCwgVmljdG9yaWEgSG90ZWwgQ2x1c3RlciAzPC9kaXY+YClbMF07CiAgICAgICAgICAgIHBvcHVwXzM3NjY1ZTE1ZDQzYjQzM2Q5NDMwOTgyYjlmMDRmYmY5LnNldENvbnRlbnQoaHRtbF81NzA1YjJlZjQzN2M0NTA2YjFmMzBmOTJhMWY5MDk3YSk7CiAgICAgICAgCgogICAgICAgIGNpcmNsZV9tYXJrZXJfZTdkZmU2YjI1MTkwNDUyZGFhOTdiZTVhZDU3MmRmYTYuYmluZFBvcHVwKHBvcHVwXzM3NjY1ZTE1ZDQzYjQzM2Q5NDMwOTgyYjlmMDRmYmY5KQogICAgICAgIDsKCiAgICAgICAgCiAgICAKICAgIAogICAgICAgICAgICB2YXIgY2lyY2xlX21hcmtlcl83NTRjZDgzMjg4NDk0ZTAyOGQ4ZDZkZGIyZjQ4NDdiNiA9IEwuY2lyY2xlTWFya2VyKAogICAgICAgICAgICAgICAgWzQzLjcwNDMyNDQsIC03OS4zODg3OTAxXSwKICAgICAgICAgICAgICAgIHsiYnViYmxpbmdNb3VzZUV2ZW50cyI6IHRydWUsICJjb2xvciI6ICIjZDRkZDgwIiwgImRhc2hBcnJheSI6IG51bGwsICJkYXNoT2Zmc2V0IjogbnVsbCwgImZpbGwiOiB0cnVlLCAiZmlsbENvbG9yIjogIiNkNGRkODAiLCAiZmlsbE9wYWNpdHkiOiAwLjcsICJmaWxsUnVsZSI6ICJldmVub2RkIiwgImxpbmVDYXAiOiAicm91bmQiLCAibGluZUpvaW4iOiAicm91bmQiLCAib3BhY2l0eSI6IDEuMCwgInJhZGl1cyI6IDUsICJzdHJva2UiOiB0cnVlLCAid2VpZ2h0IjogM30KICAgICAgICAgICAgKS5hZGRUbyhtYXBfYTBhNTBkZmI2ZTJmNDMzZDkwNzI3ZTU1ZTJiYTM1MWQpOwogICAgICAgIAogICAgCiAgICAgICAgdmFyIHBvcHVwX2M3OTFlMGQ0Njk5NDRiYzk5ZjhlODEzMTRlMTc1YTUyID0gTC5wb3B1cCh7Im1heFdpZHRoIjogIjEwMCUifSk7CgogICAgICAgIAogICAgICAgICAgICB2YXIgaHRtbF9hNjIwM2MwODMzYjk0YzgwOGM2NTA0Y2M0YmFkMjQxOCA9ICQoYDxkaXYgaWQ9Imh0bWxfYTYyMDNjMDgzM2I5NGM4MDhjNjUwNGNjNGJhZDI0MTgiIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPkRhdmlzdmlsbGUgQ2x1c3RlciAzPC9kaXY+YClbMF07CiAgICAgICAgICAgIHBvcHVwX2M3OTFlMGQ0Njk5NDRiYzk5ZjhlODEzMTRlMTc1YTUyLnNldENvbnRlbnQoaHRtbF9hNjIwM2MwODMzYjk0YzgwOGM2NTA0Y2M0YmFkMjQxOCk7CiAgICAgICAgCgogICAgICAgIGNpcmNsZV9tYXJrZXJfNzU0Y2Q4MzI4ODQ5NGUwMjhkOGQ2ZGRiMmY0ODQ3YjYuYmluZFBvcHVwKHBvcHVwX2M3OTFlMGQ0Njk5NDRiYzk5ZjhlODEzMTRlMTc1YTUyKQogICAgICAgIDsKCiAgICAgICAgCiAgICAKICAgIAogICAgICAgICAgICB2YXIgY2lyY2xlX21hcmtlcl9mNjIwMTAzNmY0MWQ0ZmU1YWVlM2NkMjIwZGIyOWU2ZiA9IEwuY2lyY2xlTWFya2VyKAogICAgICAgICAgICAgICAgWzQzLjcxMjc1MTEsIC03OS4zOTAxOTc1XSwKICAgICAgICAgICAgICAgIHsiYnViYmxpbmdNb3VzZUV2ZW50cyI6IHRydWUsICJjb2xvciI6ICIjZDRkZDgwIiwgImRhc2hBcnJheSI6IG51bGwsICJkYXNoT2Zmc2V0IjogbnVsbCwgImZpbGwiOiB0cnVlLCAiZmlsbENvbG9yIjogIiNkNGRkODAiLCAiZmlsbE9wYWNpdHkiOiAwLjcsICJmaWxsUnVsZSI6ICJldmVub2RkIiwgImxpbmVDYXAiOiAicm91bmQiLCAibGluZUpvaW4iOiAicm91bmQiLCAib3BhY2l0eSI6IDEuMCwgInJhZGl1cyI6IDUsICJzdHJva2UiOiB0cnVlLCAid2VpZ2h0IjogM30KICAgICAgICAgICAgKS5hZGRUbyhtYXBfYTBhNTBkZmI2ZTJmNDMzZDkwNzI3ZTU1ZTJiYTM1MWQpOwogICAgICAgIAogICAgCiAgICAgICAgdmFyIHBvcHVwX2M5YzI4YjdkOWU2NTQ0ZDc4MGE0OTMxZTBjY2IwNGZmID0gTC5wb3B1cCh7Im1heFdpZHRoIjogIjEwMCUifSk7CgogICAgICAgIAogICAgICAgICAgICB2YXIgaHRtbF9mOTcwYjBkMDJkOWE0MmQ0OTIzMDEzYzA2MzA4ZTY0YyA9ICQoYDxkaXYgaWQ9Imh0bWxfZjk3MGIwZDAyZDlhNDJkNDkyMzAxM2MwNjMwOGU2NGMiIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPkRhdmlzdmlsbGUgTm9ydGggQ2x1c3RlciAzPC9kaXY+YClbMF07CiAgICAgICAgICAgIHBvcHVwX2M5YzI4YjdkOWU2NTQ0ZDc4MGE0OTMxZTBjY2IwNGZmLnNldENvbnRlbnQoaHRtbF9mOTcwYjBkMDJkOWE0MmQ0OTIzMDEzYzA2MzA4ZTY0Yyk7CiAgICAgICAgCgogICAgICAgIGNpcmNsZV9tYXJrZXJfZjYyMDEwMzZmNDFkNGZlNWFlZTNjZDIyMGRiMjllNmYuYmluZFBvcHVwKHBvcHVwX2M5YzI4YjdkOWU2NTQ0ZDc4MGE0OTMxZTBjY2IwNGZmKQogICAgICAgIDsKCiAgICAgICAgCiAgICAKICAgIAogICAgICAgICAgICB2YXIgY2lyY2xlX21hcmtlcl81MmM4NjIxYTY4Y2Y0N2UzOGM2NjcwMDYzMTZlMTRjNCA9IEwuY2lyY2xlTWFya2VyKAogICAgICAgICAgICAgICAgWzQzLjY4NjQxMjI5OTk5OTk5LCAtNzkuNDAwMDQ5M10sCiAgICAgICAgICAgICAgICB7ImJ1YmJsaW5nTW91c2VFdmVudHMiOiB0cnVlLCAiY29sb3IiOiAiI2Q0ZGQ4MCIsICJkYXNoQXJyYXkiOiBudWxsLCAiZGFzaE9mZnNldCI6IG51bGwsICJmaWxsIjogdHJ1ZSwgImZpbGxDb2xvciI6ICIjZDRkZDgwIiwgImZpbGxPcGFjaXR5IjogMC43LCAiZmlsbFJ1bGUiOiAiZXZlbm9kZCIsICJsaW5lQ2FwIjogInJvdW5kIiwgImxpbmVKb2luIjogInJvdW5kIiwgIm9wYWNpdHkiOiAxLjAsICJyYWRpdXMiOiA1LCAic3Ryb2tlIjogdHJ1ZSwgIndlaWdodCI6IDN9CiAgICAgICAgICAgICkuYWRkVG8obWFwX2EwYTUwZGZiNmUyZjQzM2Q5MDcyN2U1NWUyYmEzNTFkKTsKICAgICAgICAKICAgIAogICAgICAgIHZhciBwb3B1cF9hNjAxYjAwMjc0MDA0N2Y2YmZlZTFmZmI1MWQzYmRjYSA9IEwucG9wdXAoeyJtYXhXaWR0aCI6ICIxMDAlIn0pOwoKICAgICAgICAKICAgICAgICAgICAgdmFyIGh0bWxfMWUyOGE4NmM2NzhlNDQ1N2JjNjc3YmFmYjEzMmQxZmEgPSAkKGA8ZGl2IGlkPSJodG1sXzFlMjhhODZjNjc4ZTQ0NTdiYzY3N2JhZmIxMzJkMWZhIiBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij5EZWVyIFBhcmssIEZvcmVzdCBIaWxsIFNFLCBSYXRobmVsbHksIFNvdXRoIEhpbGwsIFN1bW1lcmhpbGwgV2VzdCBDbHVzdGVyIDM8L2Rpdj5gKVswXTsKICAgICAgICAgICAgcG9wdXBfYTYwMWIwMDI3NDAwNDdmNmJmZWUxZmZiNTFkM2JkY2Euc2V0Q29udGVudChodG1sXzFlMjhhODZjNjc4ZTQ0NTdiYzY3N2JhZmIxMzJkMWZhKTsKICAgICAgICAKCiAgICAgICAgY2lyY2xlX21hcmtlcl81MmM4NjIxYTY4Y2Y0N2UzOGM2NjcwMDYzMTZlMTRjNC5iaW5kUG9wdXAocG9wdXBfYTYwMWIwMDI3NDAwNDdmNmJmZWUxZmZiNTFkM2JkY2EpCiAgICAgICAgOwoKICAgICAgICAKICAgIAogICAgCiAgICAgICAgICAgIHZhciBjaXJjbGVfbWFya2VyX2JkZDU4MTA2OWI5YTQyNWFiMDFlZmNjZTQ2YjhiYmUwID0gTC5jaXJjbGVNYXJrZXIoCiAgICAgICAgICAgICAgICBbNDMuNjQ3MTc2OCwgLTc5LjM4MTU3NjQwMDAwMDAxXSwKICAgICAgICAgICAgICAgIHsiYnViYmxpbmdNb3VzZUV2ZW50cyI6IHRydWUsICJjb2xvciI6ICIjZDRkZDgwIiwgImRhc2hBcnJheSI6IG51bGwsICJkYXNoT2Zmc2V0IjogbnVsbCwgImZpbGwiOiB0cnVlLCAiZmlsbENvbG9yIjogIiNkNGRkODAiLCAiZmlsbE9wYWNpdHkiOiAwLjcsICJmaWxsUnVsZSI6ICJldmVub2RkIiwgImxpbmVDYXAiOiAicm91bmQiLCAibGluZUpvaW4iOiAicm91bmQiLCAib3BhY2l0eSI6IDEuMCwgInJhZGl1cyI6IDUsICJzdHJva2UiOiB0cnVlLCAid2VpZ2h0IjogM30KICAgICAgICAgICAgKS5hZGRUbyhtYXBfYTBhNTBkZmI2ZTJmNDMzZDkwNzI3ZTU1ZTJiYTM1MWQpOwogICAgICAgIAogICAgCiAgICAgICAgdmFyIHBvcHVwXzQzYzBlNzZjMDg3NjRjOTRhYzFmNTFlNGJkMTY0MGYyID0gTC5wb3B1cCh7Im1heFdpZHRoIjogIjEwMCUifSk7CgogICAgICAgIAogICAgICAgICAgICB2YXIgaHRtbF8wZTUyMWYxYzRhMTY0NGI2YmJiZThlYTZhOGY1NWE5NyA9ICQoYDxkaXYgaWQ9Imh0bWxfMGU1MjFmMWM0YTE2NDRiNmJiYmU4ZWE2YThmNTVhOTciIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPkRlc2lnbiBFeGNoYW5nZSwgVG9yb250byBEb21pbmlvbiBDZW50cmUgQ2x1c3RlciAzPC9kaXY+YClbMF07CiAgICAgICAgICAgIHBvcHVwXzQzYzBlNzZjMDg3NjRjOTRhYzFmNTFlNGJkMTY0MGYyLnNldENvbnRlbnQoaHRtbF8wZTUyMWYxYzRhMTY0NGI2YmJiZThlYTZhOGY1NWE5Nyk7CiAgICAgICAgCgogICAgICAgIGNpcmNsZV9tYXJrZXJfYmRkNTgxMDY5YjlhNDI1YWIwMWVmY2NlNDZiOGJiZTAuYmluZFBvcHVwKHBvcHVwXzQzYzBlNzZjMDg3NjRjOTRhYzFmNTFlNGJkMTY0MGYyKQogICAgICAgIDsKCiAgICAgICAgCiAgICAKICAgIAogICAgICAgICAgICB2YXIgY2lyY2xlX21hcmtlcl8yNTc1Njg5YzRkNzY0NGZiYmMxNTk3YmY1YTlmZGNlMyA9IEwuY2lyY2xlTWFya2VyKAogICAgICAgICAgICAgICAgWzQzLjY2OTAwNTEwMDAwMDAxLCAtNzkuNDQyMjU5M10sCiAgICAgICAgICAgICAgICB7ImJ1YmJsaW5nTW91c2VFdmVudHMiOiB0cnVlLCAiY29sb3IiOiAiI2Q0ZGQ4MCIsICJkYXNoQXJyYXkiOiBudWxsLCAiZGFzaE9mZnNldCI6IG51bGwsICJmaWxsIjogdHJ1ZSwgImZpbGxDb2xvciI6ICIjZDRkZDgwIiwgImZpbGxPcGFjaXR5IjogMC43LCAiZmlsbFJ1bGUiOiAiZXZlbm9kZCIsICJsaW5lQ2FwIjogInJvdW5kIiwgImxpbmVKb2luIjogInJvdW5kIiwgIm9wYWNpdHkiOiAxLjAsICJyYWRpdXMiOiA1LCAic3Ryb2tlIjogdHJ1ZSwgIndlaWdodCI6IDN9CiAgICAgICAgICAgICkuYWRkVG8obWFwX2EwYTUwZGZiNmUyZjQzM2Q5MDcyN2U1NWUyYmEzNTFkKTsKICAgICAgICAKICAgIAogICAgICAgIHZhciBwb3B1cF80MDBjN2IyY2E3ZDY0NThjYjI0MjIwYjM2OTRlYjYxZCA9IEwucG9wdXAoeyJtYXhXaWR0aCI6ICIxMDAlIn0pOwoKICAgICAgICAKICAgICAgICAgICAgdmFyIGh0bWxfYjljNTc4NmM5YWY5NGU5ODk3NTNjMzY1ODNlYzY5MTYgPSAkKGA8ZGl2IGlkPSJodG1sX2I5YzU3ODZjOWFmOTRlOTg5NzUzYzM2NTgzZWM2OTE2IiBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij5Eb3ZlcmNvdXJ0IFZpbGxhZ2UsIER1ZmZlcmluIENsdXN0ZXIgMzwvZGl2PmApWzBdOwogICAgICAgICAgICBwb3B1cF80MDBjN2IyY2E3ZDY0NThjYjI0MjIwYjM2OTRlYjYxZC5zZXRDb250ZW50KGh0bWxfYjljNTc4NmM5YWY5NGU5ODk3NTNjMzY1ODNlYzY5MTYpOwogICAgICAgIAoKICAgICAgICBjaXJjbGVfbWFya2VyXzI1NzU2ODljNGQ3NjQ0ZmJiYzE1OTdiZjVhOWZkY2UzLmJpbmRQb3B1cChwb3B1cF80MDBjN2IyY2E3ZDY0NThjYjI0MjIwYjM2OTRlYjYxZCkKICAgICAgICA7CgogICAgICAgIAogICAgCiAgICAKICAgICAgICAgICAgdmFyIGNpcmNsZV9tYXJrZXJfZWExZmI2NGI2ZWE4NDE2NWJhZWU4Yzk0MzdjNTBjZGUgPSBMLmNpcmNsZU1hcmtlcigKICAgICAgICAgICAgICAgIFs0My42NDg0MjkyLCAtNzkuMzgyMjgwMl0sCiAgICAgICAgICAgICAgICB7ImJ1YmJsaW5nTW91c2VFdmVudHMiOiB0cnVlLCAiY29sb3IiOiAiI2Q0ZGQ4MCIsICJkYXNoQXJyYXkiOiBudWxsLCAiZGFzaE9mZnNldCI6IG51bGwsICJmaWxsIjogdHJ1ZSwgImZpbGxDb2xvciI6ICIjZDRkZDgwIiwgImZpbGxPcGFjaXR5IjogMC43LCAiZmlsbFJ1bGUiOiAiZXZlbm9kZCIsICJsaW5lQ2FwIjogInJvdW5kIiwgImxpbmVKb2luIjogInJvdW5kIiwgIm9wYWNpdHkiOiAxLjAsICJyYWRpdXMiOiA1LCAic3Ryb2tlIjogdHJ1ZSwgIndlaWdodCI6IDN9CiAgICAgICAgICAgICkuYWRkVG8obWFwX2EwYTUwZGZiNmUyZjQzM2Q5MDcyN2U1NWUyYmEzNTFkKTsKICAgICAgICAKICAgIAogICAgICAgIHZhciBwb3B1cF80MWU0YTk0NGFmODM0ZTFlODZjMzBlMDY1ODE3ZTkxNSA9IEwucG9wdXAoeyJtYXhXaWR0aCI6ICIxMDAlIn0pOwoKICAgICAgICAKICAgICAgICAgICAgdmFyIGh0bWxfZWI3OTk1YTQxMjgwNGM5MTgwYzA4OTAwNGQxMjJmYjMgPSAkKGA8ZGl2IGlkPSJodG1sX2ViNzk5NWE0MTI4MDRjOTE4MGMwODkwMDRkMTIyZmIzIiBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij5GaXJzdCBDYW5hZGlhbiBQbGFjZSwgVW5kZXJncm91bmQgY2l0eSBDbHVzdGVyIDM8L2Rpdj5gKVswXTsKICAgICAgICAgICAgcG9wdXBfNDFlNGE5NDRhZjgzNGUxZTg2YzMwZTA2NTgxN2U5MTUuc2V0Q29udGVudChodG1sX2ViNzk5NWE0MTI4MDRjOTE4MGMwODkwMDRkMTIyZmIzKTsKICAgICAgICAKCiAgICAgICAgY2lyY2xlX21hcmtlcl9lYTFmYjY0YjZlYTg0MTY1YmFlZThjOTQzN2M1MGNkZS5iaW5kUG9wdXAocG9wdXBfNDFlNGE5NDRhZjgzNGUxZTg2YzMwZTA2NTgxN2U5MTUpCiAgICAgICAgOwoKICAgICAgICAKICAgIAogICAgCiAgICAgICAgICAgIHZhciBjaXJjbGVfbWFya2VyXzFjNjZmNWFmY2MxYjQyZjNhZGU5NmYzNWVkOWFiMzc4ID0gTC5jaXJjbGVNYXJrZXIoCiAgICAgICAgICAgICAgICBbNDMuNjk2OTQ3NiwgLTc5LjQxMTMwNzIwMDAwMDAxXSwKICAgICAgICAgICAgICAgIHsiYnViYmxpbmdNb3VzZUV2ZW50cyI6IHRydWUsICJjb2xvciI6ICIjODAwMGZmIiwgImRhc2hBcnJheSI6IG51bGwsICJkYXNoT2Zmc2V0IjogbnVsbCwgImZpbGwiOiB0cnVlLCAiZmlsbENvbG9yIjogIiM4MDAwZmYiLCAiZmlsbE9wYWNpdHkiOiAwLjcsICJmaWxsUnVsZSI6ICJldmVub2RkIiwgImxpbmVDYXAiOiAicm91bmQiLCAibGluZUpvaW4iOiAicm91bmQiLCAib3BhY2l0eSI6IDEuMCwgInJhZGl1cyI6IDUsICJzdHJva2UiOiB0cnVlLCAid2VpZ2h0IjogM30KICAgICAgICAgICAgKS5hZGRUbyhtYXBfYTBhNTBkZmI2ZTJmNDMzZDkwNzI3ZTU1ZTJiYTM1MWQpOwogICAgICAgIAogICAgCiAgICAgICAgdmFyIHBvcHVwX2Q4MzFiMzNkYjQ5MjRjOTc4ZjcyYTUwZjhmMGI4ZTE0ID0gTC5wb3B1cCh7Im1heFdpZHRoIjogIjEwMCUifSk7CgogICAgICAgIAogICAgICAgICAgICB2YXIgaHRtbF84MTFlNjk5MDk2ODc0NjlhYmI2YzdjNjU4ZThjOTQzZiA9ICQoYDxkaXYgaWQ9Imh0bWxfODExZTY5OTA5Njg3NDY5YWJiNmM3YzY1OGU4Yzk0M2YiIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPkZvcmVzdCBIaWxsIE5vcnRoLCBGb3Jlc3QgSGlsbCBXZXN0IENsdXN0ZXIgMTwvZGl2PmApWzBdOwogICAgICAgICAgICBwb3B1cF9kODMxYjMzZGI0OTI0Yzk3OGY3MmE1MGY4ZjBiOGUxNC5zZXRDb250ZW50KGh0bWxfODExZTY5OTA5Njg3NDY5YWJiNmM3YzY1OGU4Yzk0M2YpOwogICAgICAgIAoKICAgICAgICBjaXJjbGVfbWFya2VyXzFjNjZmNWFmY2MxYjQyZjNhZGU5NmYzNWVkOWFiMzc4LmJpbmRQb3B1cChwb3B1cF9kODMxYjMzZGI0OTI0Yzk3OGY3MmE1MGY4ZjBiOGUxNCkKICAgICAgICA7CgogICAgICAgIAogICAgCiAgICAKICAgICAgICAgICAgdmFyIGNpcmNsZV9tYXJrZXJfNTFjZmYyZTkxYzQ3NGQ4NWFlMTYxNTAxYzYzNjJhOTYgPSBMLmNpcmNsZU1hcmtlcigKICAgICAgICAgICAgICAgIFs0My42NjI2OTU2LCAtNzkuNDAwMDQ5M10sCiAgICAgICAgICAgICAgICB7ImJ1YmJsaW5nTW91c2VFdmVudHMiOiB0cnVlLCAiY29sb3IiOiAiI2Q0ZGQ4MCIsICJkYXNoQXJyYXkiOiBudWxsLCAiZGFzaE9mZnNldCI6IG51bGwsICJmaWxsIjogdHJ1ZSwgImZpbGxDb2xvciI6ICIjZDRkZDgwIiwgImZpbGxPcGFjaXR5IjogMC43LCAiZmlsbFJ1bGUiOiAiZXZlbm9kZCIsICJsaW5lQ2FwIjogInJvdW5kIiwgImxpbmVKb2luIjogInJvdW5kIiwgIm9wYWNpdHkiOiAxLjAsICJyYWRpdXMiOiA1LCAic3Ryb2tlIjogdHJ1ZSwgIndlaWdodCI6IDN9CiAgICAgICAgICAgICkuYWRkVG8obWFwX2EwYTUwZGZiNmUyZjQzM2Q5MDcyN2U1NWUyYmEzNTFkKTsKICAgICAgICAKICAgIAogICAgICAgIHZhciBwb3B1cF8zMDU3M2ZiNjNmMTY0NjYxYjBhOTRlYjEyYTMxMjIzNSA9IEwucG9wdXAoeyJtYXhXaWR0aCI6ICIxMDAlIn0pOwoKICAgICAgICAKICAgICAgICAgICAgdmFyIGh0bWxfMzBlYTBlMThlYzA3NDVhMjk2MDJlODY2NjA3ZGRjYWIgPSAkKGA8ZGl2IGlkPSJodG1sXzMwZWEwZTE4ZWMwNzQ1YTI5NjAyZTg2NjYwN2RkY2FiIiBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij5IYXJib3JkLCBVbml2ZXJzaXR5IG9mIFRvcm9udG8gQ2x1c3RlciAzPC9kaXY+YClbMF07CiAgICAgICAgICAgIHBvcHVwXzMwNTczZmI2M2YxNjQ2NjFiMGE5NGViMTJhMzEyMjM1LnNldENvbnRlbnQoaHRtbF8zMGVhMGUxOGVjMDc0NWEyOTYwMmU4NjY2MDdkZGNhYik7CiAgICAgICAgCgogICAgICAgIGNpcmNsZV9tYXJrZXJfNTFjZmYyZTkxYzQ3NGQ4NWFlMTYxNTAxYzYzNjJhOTYuYmluZFBvcHVwKHBvcHVwXzMwNTczZmI2M2YxNjQ2NjFiMGE5NGViMTJhMzEyMjM1KQogICAgICAgIDsKCiAgICAgICAgCiAgICAKICAgIAogICAgICAgICAgICB2YXIgY2lyY2xlX21hcmtlcl9mZjk1ODM3ZTVmMDg0YmEwOThiNDg5NDk4OGM5NjQzZCA9IEwuY2lyY2xlTWFya2VyKAogICAgICAgICAgICAgICAgWzQzLjY0MDgxNTcsIC03OS4zODE3NTIyOTk5OTk5OV0sCiAgICAgICAgICAgICAgICB7ImJ1YmJsaW5nTW91c2VFdmVudHMiOiB0cnVlLCAiY29sb3IiOiAiI2Q0ZGQ4MCIsICJkYXNoQXJyYXkiOiBudWxsLCAiZGFzaE9mZnNldCI6IG51bGwsICJmaWxsIjogdHJ1ZSwgImZpbGxDb2xvciI6ICIjZDRkZDgwIiwgImZpbGxPcGFjaXR5IjogMC43LCAiZmlsbFJ1bGUiOiAiZXZlbm9kZCIsICJsaW5lQ2FwIjogInJvdW5kIiwgImxpbmVKb2luIjogInJvdW5kIiwgIm9wYWNpdHkiOiAxLjAsICJyYWRpdXMiOiA1LCAic3Ryb2tlIjogdHJ1ZSwgIndlaWdodCI6IDN9CiAgICAgICAgICAgICkuYWRkVG8obWFwX2EwYTUwZGZiNmUyZjQzM2Q5MDcyN2U1NWUyYmEzNTFkKTsKICAgICAgICAKICAgIAogICAgICAgIHZhciBwb3B1cF80NDQ1NjNmNGQwZmE0ZjIzYjlmMThhNDUyMjRlN2M0OSA9IEwucG9wdXAoeyJtYXhXaWR0aCI6ICIxMDAlIn0pOwoKICAgICAgICAKICAgICAgICAgICAgdmFyIGh0bWxfYTk4NzViODJmN2UxNDEwYWE0YTFiZjI4MDI5N2UwYjAgPSAkKGA8ZGl2IGlkPSJodG1sX2E5ODc1YjgyZjdlMTQxMGFhNGExYmYyODAyOTdlMGIwIiBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij5IYXJib3VyZnJvbnQgRWFzdCwgVG9yb250byBJc2xhbmRzLCBVbmlvbiBTdGF0aW9uIENsdXN0ZXIgMzwvZGl2PmApWzBdOwogICAgICAgICAgICBwb3B1cF80NDQ1NjNmNGQwZmE0ZjIzYjlmMThhNDUyMjRlN2M0OS5zZXRDb250ZW50KGh0bWxfYTk4NzViODJmN2UxNDEwYWE0YTFiZjI4MDI5N2UwYjApOwogICAgICAgIAoKICAgICAgICBjaXJjbGVfbWFya2VyX2ZmOTU4MzdlNWYwODRiYTA5OGI0ODk0OTg4Yzk2NDNkLmJpbmRQb3B1cChwb3B1cF80NDQ1NjNmNGQwZmE0ZjIzYjlmMThhNDUyMjRlN2M0OSkKICAgICAgICA7CgogICAgICAgIAogICAgCiAgICAKICAgICAgICAgICAgdmFyIGNpcmNsZV9tYXJrZXJfYWU1YTZhZDdkMWIwNDc5NDljNGY3Yzc1MDk0N2NiNTMgPSBMLmNpcmNsZU1hcmtlcigKICAgICAgICAgICAgICAgIFs0My42NTQyNTk5LCAtNzkuMzYwNjM1OV0sCiAgICAgICAgICAgICAgICB7ImJ1YmJsaW5nTW91c2VFdmVudHMiOiB0cnVlLCAiY29sb3IiOiAiI2Q0ZGQ4MCIsICJkYXNoQXJyYXkiOiBudWxsLCAiZGFzaE9mZnNldCI6IG51bGwsICJmaWxsIjogdHJ1ZSwgImZpbGxDb2xvciI6ICIjZDRkZDgwIiwgImZpbGxPcGFjaXR5IjogMC43LCAiZmlsbFJ1bGUiOiAiZXZlbm9kZCIsICJsaW5lQ2FwIjogInJvdW5kIiwgImxpbmVKb2luIjogInJvdW5kIiwgIm9wYWNpdHkiOiAxLjAsICJyYWRpdXMiOiA1LCAic3Ryb2tlIjogdHJ1ZSwgIndlaWdodCI6IDN9CiAgICAgICAgICAgICkuYWRkVG8obWFwX2EwYTUwZGZiNmUyZjQzM2Q5MDcyN2U1NWUyYmEzNTFkKTsKICAgICAgICAKICAgIAogICAgICAgIHZhciBwb3B1cF8wMmU0ZmY5YTgyN2I0OGE5YTI5OTU5NzM2MThhZWVlYiA9IEwucG9wdXAoeyJtYXhXaWR0aCI6ICIxMDAlIn0pOwoKICAgICAgICAKICAgICAgICAgICAgdmFyIGh0bWxfOWM4MjU4Y2U3MjBlNGQ0YmJlZWI0NzdiZGRkNmFmOWMgPSAkKGA8ZGl2IGlkPSJodG1sXzljODI1OGNlNzIwZTRkNGJiZWViNDc3YmRkZDZhZjljIiBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij5IYXJib3VyZnJvbnQsIFJlZ2VudCBQYXJrIENsdXN0ZXIgMzwvZGl2PmApWzBdOwogICAgICAgICAgICBwb3B1cF8wMmU0ZmY5YTgyN2I0OGE5YTI5OTU5NzM2MThhZWVlYi5zZXRDb250ZW50KGh0bWxfOWM4MjU4Y2U3MjBlNGQ0YmJlZWI0NzdiZGRkNmFmOWMpOwogICAgICAgIAoKICAgICAgICBjaXJjbGVfbWFya2VyX2FlNWE2YWQ3ZDFiMDQ3OTQ5YzRmN2M3NTA5NDdjYjUzLmJpbmRQb3B1cChwb3B1cF8wMmU0ZmY5YTgyN2I0OGE5YTI5OTU5NzM2MThhZWVlYikKICAgICAgICA7CgogICAgICAgIAogICAgCiAgICAKICAgICAgICAgICAgdmFyIGNpcmNsZV9tYXJrZXJfYzE1MjgyMGY3ODhmNGIxNWI1YmI1MzQ2YWI2ZGU2MGMgPSBMLmNpcmNsZU1hcmtlcigKICAgICAgICAgICAgICAgIFs0My42NjE2MDgzLCAtNzkuNDY0NzYzMjk5OTk5OTldLAogICAgICAgICAgICAgICAgeyJidWJibGluZ01vdXNlRXZlbnRzIjogdHJ1ZSwgImNvbG9yIjogIiNkNGRkODAiLCAiZGFzaEFycmF5IjogbnVsbCwgImRhc2hPZmZzZXQiOiBudWxsLCAiZmlsbCI6IHRydWUsICJmaWxsQ29sb3IiOiAiI2Q0ZGQ4MCIsICJmaWxsT3BhY2l0eSI6IDAuNywgImZpbGxSdWxlIjogImV2ZW5vZGQiLCAibGluZUNhcCI6ICJyb3VuZCIsICJsaW5lSm9pbiI6ICJyb3VuZCIsICJvcGFjaXR5IjogMS4wLCAicmFkaXVzIjogNSwgInN0cm9rZSI6IHRydWUsICJ3ZWlnaHQiOiAzfQogICAgICAgICAgICApLmFkZFRvKG1hcF9hMGE1MGRmYjZlMmY0MzNkOTA3MjdlNTVlMmJhMzUxZCk7CiAgICAgICAgCiAgICAKICAgICAgICB2YXIgcG9wdXBfMTc1ODdjYjIwYTg3NDc5NjkyYmE5NTkyZmQ5MTRmMDAgPSBMLnBvcHVwKHsibWF4V2lkdGgiOiAiMTAwJSJ9KTsKCiAgICAgICAgCiAgICAgICAgICAgIHZhciBodG1sX2EyMWJmZDAyOWUwMzRmNTE5ZDU3OGJlOWVmYTFmNDU2ID0gJChgPGRpdiBpZD0iaHRtbF9hMjFiZmQwMjllMDM0ZjUxOWQ1NzhiZTllZmExZjQ1NiIgc3R5bGU9IndpZHRoOiAxMDAuMCU7IGhlaWdodDogMTAwLjAlOyI+SGlnaCBQYXJrLCBUaGUgSnVuY3Rpb24gU291dGggQ2x1c3RlciAzPC9kaXY+YClbMF07CiAgICAgICAgICAgIHBvcHVwXzE3NTg3Y2IyMGE4NzQ3OTY5MmJhOTU5MmZkOTE0ZjAwLnNldENvbnRlbnQoaHRtbF9hMjFiZmQwMjllMDM0ZjUxOWQ1NzhiZTllZmExZjQ1Nik7CiAgICAgICAgCgogICAgICAgIGNpcmNsZV9tYXJrZXJfYzE1MjgyMGY3ODhmNGIxNWI1YmI1MzQ2YWI2ZGU2MGMuYmluZFBvcHVwKHBvcHVwXzE3NTg3Y2IyMGE4NzQ3OTY5MmJhOTU5MmZkOTE0ZjAwKQogICAgICAgIDsKCiAgICAgICAgCiAgICAKICAgIAogICAgICAgICAgICB2YXIgY2lyY2xlX21hcmtlcl9iMjNmMWMzOTJjYzc0MWVhOWI3NmRlOTVmYTY5MjQxMSA9IEwuY2lyY2xlTWFya2VyKAogICAgICAgICAgICAgICAgWzQzLjcyODAyMDUsIC03OS4zODg3OTAxXSwKICAgICAgICAgICAgICAgIHsiYnViYmxpbmdNb3VzZUV2ZW50cyI6IHRydWUsICJjb2xvciI6ICIjZmYwMDAwIiwgImRhc2hBcnJheSI6IG51bGwsICJkYXNoT2Zmc2V0IjogbnVsbCwgImZpbGwiOiB0cnVlLCAiZmlsbENvbG9yIjogIiNmZjAwMDAiLCAiZmlsbE9wYWNpdHkiOiAwLjcsICJmaWxsUnVsZSI6ICJldmVub2RkIiwgImxpbmVDYXAiOiAicm91bmQiLCAibGluZUpvaW4iOiAicm91bmQiLCAib3BhY2l0eSI6IDEuMCwgInJhZGl1cyI6IDUsICJzdHJva2UiOiB0cnVlLCAid2VpZ2h0IjogM30KICAgICAgICAgICAgKS5hZGRUbyhtYXBfYTBhNTBkZmI2ZTJmNDMzZDkwNzI3ZTU1ZTJiYTM1MWQpOwogICAgICAgIAogICAgCiAgICAgICAgdmFyIHBvcHVwXzY5NDQ5MzdhOWUxNjQzOTQ5Y2ZkMzQ2ZjcxODljMzk1ID0gTC5wb3B1cCh7Im1heFdpZHRoIjogIjEwMCUifSk7CgogICAgICAgIAogICAgICAgICAgICB2YXIgaHRtbF9hYTdhNTM1ODc0MTc0OWFlOGY5MjQyNTU4OTBmMGVmZiA9ICQoYDxkaXYgaWQ9Imh0bWxfYWE3YTUzNTg3NDE3NDlhZThmOTI0MjU1ODkwZjBlZmYiIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPkxhd3JlbmNlIFBhcmsgQ2x1c3RlciAwPC9kaXY+YClbMF07CiAgICAgICAgICAgIHBvcHVwXzY5NDQ5MzdhOWUxNjQzOTQ5Y2ZkMzQ2ZjcxODljMzk1LnNldENvbnRlbnQoaHRtbF9hYTdhNTM1ODc0MTc0OWFlOGY5MjQyNTU4OTBmMGVmZik7CiAgICAgICAgCgogICAgICAgIGNpcmNsZV9tYXJrZXJfYjIzZjFjMzkyY2M3NDFlYTliNzZkZTk1ZmE2OTI0MTEuYmluZFBvcHVwKHBvcHVwXzY5NDQ5MzdhOWUxNjQzOTQ5Y2ZkMzQ2ZjcxODljMzk1KQogICAgICAgIDsKCiAgICAgICAgCiAgICAKICAgIAogICAgICAgICAgICB2YXIgY2lyY2xlX21hcmtlcl9kMmFiNThiYjAyZmI0YWZmOThmZmNmMjZlY2M5NTczYSA9IEwuY2lyY2xlTWFya2VyKAogICAgICAgICAgICAgICAgWzQzLjY0NzkyNjcwMDAwMDAwNiwgLTc5LjQxOTc0OTddLAogICAgICAgICAgICAgICAgeyJidWJibGluZ01vdXNlRXZlbnRzIjogdHJ1ZSwgImNvbG9yIjogIiNkNGRkODAiLCAiZGFzaEFycmF5IjogbnVsbCwgImRhc2hPZmZzZXQiOiBudWxsLCAiZmlsbCI6IHRydWUsICJmaWxsQ29sb3IiOiAiI2Q0ZGQ4MCIsICJmaWxsT3BhY2l0eSI6IDAuNywgImZpbGxSdWxlIjogImV2ZW5vZGQiLCAibGluZUNhcCI6ICJyb3VuZCIsICJsaW5lSm9pbiI6ICJyb3VuZCIsICJvcGFjaXR5IjogMS4wLCAicmFkaXVzIjogNSwgInN0cm9rZSI6IHRydWUsICJ3ZWlnaHQiOiAzfQogICAgICAgICAgICApLmFkZFRvKG1hcF9hMGE1MGRmYjZlMmY0MzNkOTA3MjdlNTVlMmJhMzUxZCk7CiAgICAgICAgCiAgICAKICAgICAgICB2YXIgcG9wdXBfYThmM2MxMTY1M2Q1NGQzYWFjNzlmODJiNGE5N2EyMzggPSBMLnBvcHVwKHsibWF4V2lkdGgiOiAiMTAwJSJ9KTsKCiAgICAgICAgCiAgICAgICAgICAgIHZhciBodG1sXzg4MGQ3ZGFhNTI1NTQwNjU5ZWFkZTBhYzc3NzE5M2FjID0gJChgPGRpdiBpZD0iaHRtbF84ODBkN2RhYTUyNTU0MDY1OWVhZGUwYWM3NzcxOTNhYyIgc3R5bGU9IndpZHRoOiAxMDAuMCU7IGhlaWdodDogMTAwLjAlOyI+TGl0dGxlIFBvcnR1Z2FsLCBUcmluaXR5IENsdXN0ZXIgMzwvZGl2PmApWzBdOwogICAgICAgICAgICBwb3B1cF9hOGYzYzExNjUzZDU0ZDNhYWM3OWY4MmI0YTk3YTIzOC5zZXRDb250ZW50KGh0bWxfODgwZDdkYWE1MjU1NDA2NTllYWRlMGFjNzc3MTkzYWMpOwogICAgICAgIAoKICAgICAgICBjaXJjbGVfbWFya2VyX2QyYWI1OGJiMDJmYjRhZmY5OGZmY2YyNmVjYzk1NzNhLmJpbmRQb3B1cChwb3B1cF9hOGYzYzExNjUzZDU0ZDNhYWM3OWY4MmI0YTk3YTIzOCkKICAgICAgICA7CgogICAgICAgIAogICAgCiAgICAKICAgICAgICAgICAgdmFyIGNpcmNsZV9tYXJrZXJfMDFiOGFjNGM4MzNlNGUxYWFjNzg2YzZkNDU3NTY1OGUgPSBMLmNpcmNsZU1hcmtlcigKICAgICAgICAgICAgICAgIFs0My42ODk1NzQzLCAtNzkuMzgzMTU5OTAwMDAwMDFdLAogICAgICAgICAgICAgICAgeyJidWJibGluZ01vdXNlRXZlbnRzIjogdHJ1ZSwgImNvbG9yIjogIiNkNGRkODAiLCAiZGFzaEFycmF5IjogbnVsbCwgImRhc2hPZmZzZXQiOiBudWxsLCAiZmlsbCI6IHRydWUsICJmaWxsQ29sb3IiOiAiI2Q0ZGQ4MCIsICJmaWxsT3BhY2l0eSI6IDAuNywgImZpbGxSdWxlIjogImV2ZW5vZGQiLCAibGluZUNhcCI6ICJyb3VuZCIsICJsaW5lSm9pbiI6ICJyb3VuZCIsICJvcGFjaXR5IjogMS4wLCAicmFkaXVzIjogNSwgInN0cm9rZSI6IHRydWUsICJ3ZWlnaHQiOiAzfQogICAgICAgICAgICApLmFkZFRvKG1hcF9hMGE1MGRmYjZlMmY0MzNkOTA3MjdlNTVlMmJhMzUxZCk7CiAgICAgICAgCiAgICAKICAgICAgICB2YXIgcG9wdXBfY2I3MTBjNTc3N2ZmNDY1NTlkZGExOTE4YmE4OWYyMTQgPSBMLnBvcHVwKHsibWF4V2lkdGgiOiAiMTAwJSJ9KTsKCiAgICAgICAgCiAgICAgICAgICAgIHZhciBodG1sX2VhMGFmOWJmZmM4NTRhMTA4OGFmNjBlMmIxODdjZmQxID0gJChgPGRpdiBpZD0iaHRtbF9lYTBhZjliZmZjODU0YTEwODhhZjYwZTJiMTg3Y2ZkMSIgc3R5bGU9IndpZHRoOiAxMDAuMCU7IGhlaWdodDogMTAwLjAlOyI+TW9vcmUgUGFyaywgU3VtbWVyaGlsbCBFYXN0IENsdXN0ZXIgMzwvZGl2PmApWzBdOwogICAgICAgICAgICBwb3B1cF9jYjcxMGM1Nzc3ZmY0NjU1OWRkYTE5MThiYTg5ZjIxNC5zZXRDb250ZW50KGh0bWxfZWEwYWY5YmZmYzg1NGExMDg4YWY2MGUyYjE4N2NmZDEpOwogICAgICAgIAoKICAgICAgICBjaXJjbGVfbWFya2VyXzAxYjhhYzRjODMzZTRlMWFhYzc4NmM2ZDQ1NzU2NThlLmJpbmRQb3B1cChwb3B1cF9jYjcxMGM1Nzc3ZmY0NjU1OWRkYTE5MThiYTg5ZjIxNCkKICAgICAgICA7CgogICAgICAgIAogICAgCiAgICAKICAgICAgICAgICAgdmFyIGNpcmNsZV9tYXJrZXJfMDgxZTg3MzZjNGFkNDQxYWExNzQ4N2IyNzVkOTYwNTIgPSBMLmNpcmNsZU1hcmtlcigKICAgICAgICAgICAgICAgIFs0My43MTUzODM0LCAtNzkuNDA1Njc4NDAwMDAwMDFdLAogICAgICAgICAgICAgICAgeyJidWJibGluZ01vdXNlRXZlbnRzIjogdHJ1ZSwgImNvbG9yIjogIiNkNGRkODAiLCAiZGFzaEFycmF5IjogbnVsbCwgImRhc2hPZmZzZXQiOiBudWxsLCAiZmlsbCI6IHRydWUsICJmaWxsQ29sb3IiOiAiI2Q0ZGQ4MCIsICJmaWxsT3BhY2l0eSI6IDAuNywgImZpbGxSdWxlIjogImV2ZW5vZGQiLCAibGluZUNhcCI6ICJyb3VuZCIsICJsaW5lSm9pbiI6ICJyb3VuZCIsICJvcGFjaXR5IjogMS4wLCAicmFkaXVzIjogNSwgInN0cm9rZSI6IHRydWUsICJ3ZWlnaHQiOiAzfQogICAgICAgICAgICApLmFkZFRvKG1hcF9hMGE1MGRmYjZlMmY0MzNkOTA3MjdlNTVlMmJhMzUxZCk7CiAgICAgICAgCiAgICAKICAgICAgICB2YXIgcG9wdXBfMmU2ZTk5YzJiMDA5NGFhN2EzNmM5YjVhODFmMDA0NmEgPSBMLnBvcHVwKHsibWF4V2lkdGgiOiAiMTAwJSJ9KTsKCiAgICAgICAgCiAgICAgICAgICAgIHZhciBodG1sXzg5MjJiMDM2OGFlNTRhNDU5MTZkYzQ3OTU5YjBkZTFiID0gJChgPGRpdiBpZD0iaHRtbF84OTIyYjAzNjhhZTU0YTQ1OTE2ZGM0Nzk1OWIwZGUxYiIgc3R5bGU9IndpZHRoOiAxMDAuMCU7IGhlaWdodDogMTAwLjAlOyI+Tm9ydGggVG9yb250byBXZXN0IENsdXN0ZXIgMzwvZGl2PmApWzBdOwogICAgICAgICAgICBwb3B1cF8yZTZlOTljMmIwMDk0YWE3YTM2YzliNWE4MWYwMDQ2YS5zZXRDb250ZW50KGh0bWxfODkyMmIwMzY4YWU1NGE0NTkxNmRjNDc5NTliMGRlMWIpOwogICAgICAgIAoKICAgICAgICBjaXJjbGVfbWFya2VyXzA4MWU4NzM2YzRhZDQ0MWFhMTc0ODdiMjc1ZDk2MDUyLmJpbmRQb3B1cChwb3B1cF8yZTZlOTljMmIwMDk0YWE3YTM2YzliNWE4MWYwMDQ2YSkKICAgICAgICA7CgogICAgICAgIAogICAgCiAgICAKICAgICAgICAgICAgdmFyIGNpcmNsZV9tYXJrZXJfODY2MTk0Yzg3OGM5NDQ1MGEyZjkyYWYzZDY2MDQ4OTYgPSBMLmNpcmNsZU1hcmtlcigKICAgICAgICAgICAgICAgIFs0My42NDg5NTk3LCAtNzkuNDU2MzI1XSwKICAgICAgICAgICAgICAgIHsiYnViYmxpbmdNb3VzZUV2ZW50cyI6IHRydWUsICJjb2xvciI6ICIjZDRkZDgwIiwgImRhc2hBcnJheSI6IG51bGwsICJkYXNoT2Zmc2V0IjogbnVsbCwgImZpbGwiOiB0cnVlLCAiZmlsbENvbG9yIjogIiNkNGRkODAiLCAiZmlsbE9wYWNpdHkiOiAwLjcsICJmaWxsUnVsZSI6ICJldmVub2RkIiwgImxpbmVDYXAiOiAicm91bmQiLCAibGluZUpvaW4iOiAicm91bmQiLCAib3BhY2l0eSI6IDEuMCwgInJhZGl1cyI6IDUsICJzdHJva2UiOiB0cnVlLCAid2VpZ2h0IjogM30KICAgICAgICAgICAgKS5hZGRUbyhtYXBfYTBhNTBkZmI2ZTJmNDMzZDkwNzI3ZTU1ZTJiYTM1MWQpOwogICAgICAgIAogICAgCiAgICAgICAgdmFyIHBvcHVwXzYzNzc5YjJhYjVlZTQ5ZGM4MjdiZGYwMWIzZjFhYjM0ID0gTC5wb3B1cCh7Im1heFdpZHRoIjogIjEwMCUifSk7CgogICAgICAgIAogICAgICAgICAgICB2YXIgaHRtbF81OTIyZjk5ZjUzMDk0YWNmYThiNWExODNlOTNlYTM4YSA9ICQoYDxkaXYgaWQ9Imh0bWxfNTkyMmY5OWY1MzA5NGFjZmE4YjVhMTgzZTkzZWEzOGEiIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPlBhcmtkYWxlLCBSb25jZXN2YWxsZXMgQ2x1c3RlciAzPC9kaXY+YClbMF07CiAgICAgICAgICAgIHBvcHVwXzYzNzc5YjJhYjVlZTQ5ZGM4MjdiZGYwMWIzZjFhYjM0LnNldENvbnRlbnQoaHRtbF81OTIyZjk5ZjUzMDk0YWNmYThiNWExODNlOTNlYTM4YSk7CiAgICAgICAgCgogICAgICAgIGNpcmNsZV9tYXJrZXJfODY2MTk0Yzg3OGM5NDQ1MGEyZjkyYWYzZDY2MDQ4OTYuYmluZFBvcHVwKHBvcHVwXzYzNzc5YjJhYjVlZTQ5ZGM4MjdiZGYwMWIzZjFhYjM0KQogICAgICAgIDsKCiAgICAgICAgCiAgICAKICAgIAogICAgICAgICAgICB2YXIgY2lyY2xlX21hcmtlcl81ODZkMzIzZDEwZTc0NzAyYmY4NjAyMWJjYmYzZjIwNiA9IEwuY2lyY2xlTWFya2VyKAogICAgICAgICAgICAgICAgWzQzLjY3OTU2MjYsIC03OS4zNzc1Mjk0MDAwMDAwMV0sCiAgICAgICAgICAgICAgICB7ImJ1YmJsaW5nTW91c2VFdmVudHMiOiB0cnVlLCAiY29sb3IiOiAiIzgwMDBmZiIsICJkYXNoQXJyYXkiOiBudWxsLCAiZGFzaE9mZnNldCI6IG51bGwsICJmaWxsIjogdHJ1ZSwgImZpbGxDb2xvciI6ICIjODAwMGZmIiwgImZpbGxPcGFjaXR5IjogMC43LCAiZmlsbFJ1bGUiOiAiZXZlbm9kZCIsICJsaW5lQ2FwIjogInJvdW5kIiwgImxpbmVKb2luIjogInJvdW5kIiwgIm9wYWNpdHkiOiAxLjAsICJyYWRpdXMiOiA1LCAic3Ryb2tlIjogdHJ1ZSwgIndlaWdodCI6IDN9CiAgICAgICAgICAgICkuYWRkVG8obWFwX2EwYTUwZGZiNmUyZjQzM2Q5MDcyN2U1NWUyYmEzNTFkKTsKICAgICAgICAKICAgIAogICAgICAgIHZhciBwb3B1cF8xNTEyNDBjZjY4ODk0ODVkODg2YWJkZjRkOWZlZGY5ZSA9IEwucG9wdXAoeyJtYXhXaWR0aCI6ICIxMDAlIn0pOwoKICAgICAgICAKICAgICAgICAgICAgdmFyIGh0bWxfNTkxZTViNzdlZmM3NGM4OWIwMTkzYmNlZmI5MDhlNDYgPSAkKGA8ZGl2IGlkPSJodG1sXzU5MWU1Yjc3ZWZjNzRjODliMDE5M2JjZWZiOTA4ZTQ2IiBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij5Sb3NlZGFsZSBDbHVzdGVyIDE8L2Rpdj5gKVswXTsKICAgICAgICAgICAgcG9wdXBfMTUxMjQwY2Y2ODg5NDg1ZDg4NmFiZGY0ZDlmZWRmOWUuc2V0Q29udGVudChodG1sXzU5MWU1Yjc3ZWZjNzRjODliMDE5M2JjZWZiOTA4ZTQ2KTsKICAgICAgICAKCiAgICAgICAgY2lyY2xlX21hcmtlcl81ODZkMzIzZDEwZTc0NzAyYmY4NjAyMWJjYmYzZjIwNi5iaW5kUG9wdXAocG9wdXBfMTUxMjQwY2Y2ODg5NDg1ZDg4NmFiZGY0ZDlmZWRmOWUpCiAgICAgICAgOwoKICAgICAgICAKICAgIAogICAgCiAgICAgICAgICAgIHZhciBjaXJjbGVfbWFya2VyX2JjMjU2MWJhMTlhMDQwZTM5ZGNmYTVhZWRmNTkxZDllID0gTC5jaXJjbGVNYXJrZXIoCiAgICAgICAgICAgICAgICBbNDMuNzExNjk0OCwgLTc5LjQxNjkzNTU5OTk5OTk5XSwKICAgICAgICAgICAgICAgIHsiYnViYmxpbmdNb3VzZUV2ZW50cyI6IHRydWUsICJjb2xvciI6ICIjMmFkZGRkIiwgImRhc2hBcnJheSI6IG51bGwsICJkYXNoT2Zmc2V0IjogbnVsbCwgImZpbGwiOiB0cnVlLCAiZmlsbENvbG9yIjogIiMyYWRkZGQiLCAiZmlsbE9wYWNpdHkiOiAwLjcsICJmaWxsUnVsZSI6ICJldmVub2RkIiwgImxpbmVDYXAiOiAicm91bmQiLCAibGluZUpvaW4iOiAicm91bmQiLCAib3BhY2l0eSI6IDEuMCwgInJhZGl1cyI6IDUsICJzdHJva2UiOiB0cnVlLCAid2VpZ2h0IjogM30KICAgICAgICAgICAgKS5hZGRUbyhtYXBfYTBhNTBkZmI2ZTJmNDMzZDkwNzI3ZTU1ZTJiYTM1MWQpOwogICAgICAgIAogICAgCiAgICAgICAgdmFyIHBvcHVwX2YwMTVmYmFjMmI3OTQ1MzZhNDBhZmM2YzY2MTY4MTg2ID0gTC5wb3B1cCh7Im1heFdpZHRoIjogIjEwMCUifSk7CgogICAgICAgIAogICAgICAgICAgICB2YXIgaHRtbF81MTU0Y2NiNjdjMDg0YTg0YjhmMDIwOWY5NzI5ZDQ0YiA9ICQoYDxkaXYgaWQ9Imh0bWxfNTE1NGNjYjY3YzA4NGE4NGI4ZjAyMDlmOTcyOWQ0NGIiIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPlJvc2VsYXduIENsdXN0ZXIgMjwvZGl2PmApWzBdOwogICAgICAgICAgICBwb3B1cF9mMDE1ZmJhYzJiNzk0NTM2YTQwYWZjNmM2NjE2ODE4Ni5zZXRDb250ZW50KGh0bWxfNTE1NGNjYjY3YzA4NGE4NGI4ZjAyMDlmOTcyOWQ0NGIpOwogICAgICAgIAoKICAgICAgICBjaXJjbGVfbWFya2VyX2JjMjU2MWJhMTlhMDQwZTM5ZGNmYTVhZWRmNTkxZDllLmJpbmRQb3B1cChwb3B1cF9mMDE1ZmJhYzJiNzk0NTM2YTQwYWZjNmM2NjE2ODE4NikKICAgICAgICA7CgogICAgICAgIAogICAgCiAgICAKICAgICAgICAgICAgdmFyIGNpcmNsZV9tYXJrZXJfOTI5ZjdiODg3YTAzNGYyMmEzM2NmMDFjYTY1NTlkNmEgPSBMLmNpcmNsZU1hcmtlcigKICAgICAgICAgICAgICAgIFs0My42NTE1NzA2LCAtNzkuNDg0NDQ5OV0sCiAgICAgICAgICAgICAgICB7ImJ1YmJsaW5nTW91c2VFdmVudHMiOiB0cnVlLCAiY29sb3IiOiAiI2Q0ZGQ4MCIsICJkYXNoQXJyYXkiOiBudWxsLCAiZGFzaE9mZnNldCI6IG51bGwsICJmaWxsIjogdHJ1ZSwgImZpbGxDb2xvciI6ICIjZDRkZDgwIiwgImZpbGxPcGFjaXR5IjogMC43LCAiZmlsbFJ1bGUiOiAiZXZlbm9kZCIsICJsaW5lQ2FwIjogInJvdW5kIiwgImxpbmVKb2luIjogInJvdW5kIiwgIm9wYWNpdHkiOiAxLjAsICJyYWRpdXMiOiA1LCAic3Ryb2tlIjogdHJ1ZSwgIndlaWdodCI6IDN9CiAgICAgICAgICAgICkuYWRkVG8obWFwX2EwYTUwZGZiNmUyZjQzM2Q5MDcyN2U1NWUyYmEzNTFkKTsKICAgICAgICAKICAgIAogICAgICAgIHZhciBwb3B1cF8wM2MzNDIwYmRlYmQ0MGE3ODBiZDcxZjUxNTk5OWYxYyA9IEwucG9wdXAoeyJtYXhXaWR0aCI6ICIxMDAlIn0pOwoKICAgICAgICAKICAgICAgICAgICAgdmFyIGh0bWxfMWZhOWUyOGZiNjY3NDUyYjhiYTVlMjBhN2FjODNiYjcgPSAkKGA8ZGl2IGlkPSJodG1sXzFmYTllMjhmYjY2NzQ1MmI4YmE1ZTIwYTdhYzgzYmI3IiBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij5SdW5ueW1lZGUsIFN3YW5zZWEgQ2x1c3RlciAzPC9kaXY+YClbMF07CiAgICAgICAgICAgIHBvcHVwXzAzYzM0MjBiZGViZDQwYTc4MGJkNzFmNTE1OTk5ZjFjLnNldENvbnRlbnQoaHRtbF8xZmE5ZTI4ZmI2Njc0NTJiOGJhNWUyMGE3YWM4M2JiNyk7CiAgICAgICAgCgogICAgICAgIGNpcmNsZV9tYXJrZXJfOTI5ZjdiODg3YTAzNGYyMmEzM2NmMDFjYTY1NTlkNmEuYmluZFBvcHVwKHBvcHVwXzAzYzM0MjBiZGViZDQwYTc4MGJkNzFmNTE1OTk5ZjFjKQogICAgICAgIDsKCiAgICAgICAgCiAgICAKICAgIAogICAgICAgICAgICB2YXIgY2lyY2xlX21hcmtlcl84Y2EyODU5MmJhYTk0YmI4YjQ0ZjUxYTMxZDU2Mzk2MSA9IEwuY2lyY2xlTWFya2VyKAogICAgICAgICAgICAgICAgWzQzLjY1NzE2MTgsIC03OS4zNzg5MzcwOTk5OTk5OV0sCiAgICAgICAgICAgICAgICB7ImJ1YmJsaW5nTW91c2VFdmVudHMiOiB0cnVlLCAiY29sb3IiOiAiI2Q0ZGQ4MCIsICJkYXNoQXJyYXkiOiBudWxsLCAiZGFzaE9mZnNldCI6IG51bGwsICJmaWxsIjogdHJ1ZSwgImZpbGxDb2xvciI6ICIjZDRkZDgwIiwgImZpbGxPcGFjaXR5IjogMC43LCAiZmlsbFJ1bGUiOiAiZXZlbm9kZCIsICJsaW5lQ2FwIjogInJvdW5kIiwgImxpbmVKb2luIjogInJvdW5kIiwgIm9wYWNpdHkiOiAxLjAsICJyYWRpdXMiOiA1LCAic3Ryb2tlIjogdHJ1ZSwgIndlaWdodCI6IDN9CiAgICAgICAgICAgICkuYWRkVG8obWFwX2EwYTUwZGZiNmUyZjQzM2Q5MDcyN2U1NWUyYmEzNTFkKTsKICAgICAgICAKICAgIAogICAgICAgIHZhciBwb3B1cF80ZjViMWNkMWEyN2Y0ZjM1ODc1YzY3OWNkMmRiNWQ5MiA9IEwucG9wdXAoeyJtYXhXaWR0aCI6ICIxMDAlIn0pOwoKICAgICAgICAKICAgICAgICAgICAgdmFyIGh0bWxfNzllMGZjZWNlZjNkNDE4YmEzMmU3MGE3YzAzYTZmZGEgPSAkKGA8ZGl2IGlkPSJodG1sXzc5ZTBmY2VjZWYzZDQxOGJhMzJlNzBhN2MwM2E2ZmRhIiBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij5SeWVyc29uLCBHYXJkZW4gRGlzdHJpY3QgQ2x1c3RlciAzPC9kaXY+YClbMF07CiAgICAgICAgICAgIHBvcHVwXzRmNWIxY2QxYTI3ZjRmMzU4NzVjNjc5Y2QyZGI1ZDkyLnNldENvbnRlbnQoaHRtbF83OWUwZmNlY2VmM2Q0MThiYTMyZTcwYTdjMDNhNmZkYSk7CiAgICAgICAgCgogICAgICAgIGNpcmNsZV9tYXJrZXJfOGNhMjg1OTJiYWE5NGJiOGI0NGY1MWEzMWQ1NjM5NjEuYmluZFBvcHVwKHBvcHVwXzRmNWIxY2QxYTI3ZjRmMzU4NzVjNjc5Y2QyZGI1ZDkyKQogICAgICAgIDsKCiAgICAgICAgCiAgICAKICAgIAogICAgICAgICAgICB2YXIgY2lyY2xlX21hcmtlcl8xMGRhZDIyZmI2ODg0NzVkOWFiY2UyYmU3YzY0MDcwMyA9IEwuY2lyY2xlTWFya2VyKAogICAgICAgICAgICAgICAgWzQzLjY1MTQ5MzksIC03OS4zNzU0MTc5XSwKICAgICAgICAgICAgICAgIHsiYnViYmxpbmdNb3VzZUV2ZW50cyI6IHRydWUsICJjb2xvciI6ICIjZDRkZDgwIiwgImRhc2hBcnJheSI6IG51bGwsICJkYXNoT2Zmc2V0IjogbnVsbCwgImZpbGwiOiB0cnVlLCAiZmlsbENvbG9yIjogIiNkNGRkODAiLCAiZmlsbE9wYWNpdHkiOiAwLjcsICJmaWxsUnVsZSI6ICJldmVub2RkIiwgImxpbmVDYXAiOiAicm91bmQiLCAibGluZUpvaW4iOiAicm91bmQiLCAib3BhY2l0eSI6IDEuMCwgInJhZGl1cyI6IDUsICJzdHJva2UiOiB0cnVlLCAid2VpZ2h0IjogM30KICAgICAgICAgICAgKS5hZGRUbyhtYXBfYTBhNTBkZmI2ZTJmNDMzZDkwNzI3ZTU1ZTJiYTM1MWQpOwogICAgICAgIAogICAgCiAgICAgICAgdmFyIHBvcHVwXzM5MTE2ZThmODQ3MTRhN2I4ZDJjN2ZhMmJhMjVmODk5ID0gTC5wb3B1cCh7Im1heFdpZHRoIjogIjEwMCUifSk7CgogICAgICAgIAogICAgICAgICAgICB2YXIgaHRtbF9mMGJmNjU1ODViZjU0NDA5OTk3ZmQzNDRmMmRmMzg2ZiA9ICQoYDxkaXYgaWQ9Imh0bWxfZjBiZjY1NTg1YmY1NDQwOTk5N2ZkMzQ0ZjJkZjM4NmYiIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPlN0LiBKYW1lcyBUb3duIENsdXN0ZXIgMzwvZGl2PmApWzBdOwogICAgICAgICAgICBwb3B1cF8zOTExNmU4Zjg0NzE0YTdiOGQyYzdmYTJiYTI1Zjg5OS5zZXRDb250ZW50KGh0bWxfZjBiZjY1NTg1YmY1NDQwOTk5N2ZkMzQ0ZjJkZjM4NmYpOwogICAgICAgIAoKICAgICAgICBjaXJjbGVfbWFya2VyXzEwZGFkMjJmYjY4ODQ3NWQ5YWJjZTJiZTdjNjQwNzAzLmJpbmRQb3B1cChwb3B1cF8zOTExNmU4Zjg0NzE0YTdiOGQyYzdmYTJiYTI1Zjg5OSkKICAgICAgICA7CgogICAgICAgIAogICAgCiAgICAKICAgICAgICAgICAgdmFyIGNpcmNsZV9tYXJrZXJfMDI3ZGFmMzk5NDY3NDM1NTgxYmYzNjkxZGM5OGI5ZmQgPSBMLmNpcmNsZU1hcmtlcigKICAgICAgICAgICAgICAgIFs0My42NDY0MzUyLCAtNzkuMzc0ODQ1OTk5OTk5OTldLAogICAgICAgICAgICAgICAgeyJidWJibGluZ01vdXNlRXZlbnRzIjogdHJ1ZSwgImNvbG9yIjogIiNkNGRkODAiLCAiZGFzaEFycmF5IjogbnVsbCwgImRhc2hPZmZzZXQiOiBudWxsLCAiZmlsbCI6IHRydWUsICJmaWxsQ29sb3IiOiAiI2Q0ZGQ4MCIsICJmaWxsT3BhY2l0eSI6IDAuNywgImZpbGxSdWxlIjogImV2ZW5vZGQiLCAibGluZUNhcCI6ICJyb3VuZCIsICJsaW5lSm9pbiI6ICJyb3VuZCIsICJvcGFjaXR5IjogMS4wLCAicmFkaXVzIjogNSwgInN0cm9rZSI6IHRydWUsICJ3ZWlnaHQiOiAzfQogICAgICAgICAgICApLmFkZFRvKG1hcF9hMGE1MGRmYjZlMmY0MzNkOTA3MjdlNTVlMmJhMzUxZCk7CiAgICAgICAgCiAgICAKICAgICAgICB2YXIgcG9wdXBfMjhiOWMzNjZkMjYwNDVjZjhjODU5OWRmYjhlNmRkMWMgPSBMLnBvcHVwKHsibWF4V2lkdGgiOiAiMTAwJSJ9KTsKCiAgICAgICAgCiAgICAgICAgICAgIHZhciBodG1sXzJkYjc1OTM0ZWE2ZjRjNGY5YWNhOTcwMGYzYTc3NzM3ID0gJChgPGRpdiBpZD0iaHRtbF8yZGI3NTkzNGVhNmY0YzRmOWFjYTk3MDBmM2E3NzczNyIgc3R5bGU9IndpZHRoOiAxMDAuMCU7IGhlaWdodDogMTAwLjAlOyI+U3RuIEEgUE8gQm94ZXMgMjUgVGhlIEVzcGxhbmFkZSBDbHVzdGVyIDM8L2Rpdj5gKVswXTsKICAgICAgICAgICAgcG9wdXBfMjhiOWMzNjZkMjYwNDVjZjhjODU5OWRmYjhlNmRkMWMuc2V0Q29udGVudChodG1sXzJkYjc1OTM0ZWE2ZjRjNGY5YWNhOTcwMGYzYTc3NzM3KTsKICAgICAgICAKCiAgICAgICAgY2lyY2xlX21hcmtlcl8wMjdkYWYzOTk0Njc0MzU1ODFiZjM2OTFkYzk4YjlmZC5iaW5kUG9wdXAocG9wdXBfMjhiOWMzNjZkMjYwNDVjZjhjODU5OWRmYjhlNmRkMWMpCiAgICAgICAgOwoKICAgICAgICAKICAgIAogICAgCiAgICAgICAgICAgIHZhciBjaXJjbGVfbWFya2VyX2FjYTFlODQ4N2VhYzQ0NDc4Mzg2Zjc3ODg2ZDFjMzJmID0gTC5jaXJjbGVNYXJrZXIoCiAgICAgICAgICAgICAgICBbNDMuNjU5NTI1NSwgLTc5LjM0MDkyM10sCiAgICAgICAgICAgICAgICB7ImJ1YmJsaW5nTW91c2VFdmVudHMiOiB0cnVlLCAiY29sb3IiOiAiI2Q0ZGQ4MCIsICJkYXNoQXJyYXkiOiBudWxsLCAiZGFzaE9mZnNldCI6IG51bGwsICJmaWxsIjogdHJ1ZSwgImZpbGxDb2xvciI6ICIjZDRkZDgwIiwgImZpbGxPcGFjaXR5IjogMC43LCAiZmlsbFJ1bGUiOiAiZXZlbm9kZCIsICJsaW5lQ2FwIjogInJvdW5kIiwgImxpbmVKb2luIjogInJvdW5kIiwgIm9wYWNpdHkiOiAxLjAsICJyYWRpdXMiOiA1LCAic3Ryb2tlIjogdHJ1ZSwgIndlaWdodCI6IDN9CiAgICAgICAgICAgICkuYWRkVG8obWFwX2EwYTUwZGZiNmUyZjQzM2Q5MDcyN2U1NWUyYmEzNTFkKTsKICAgICAgICAKICAgIAogICAgICAgIHZhciBwb3B1cF8xMWI2OTMzYmM5YjQ0YjgyYTBhZmZlNzhiYjhkZDJmYyA9IEwucG9wdXAoeyJtYXhXaWR0aCI6ICIxMDAlIn0pOwoKICAgICAgICAKICAgICAgICAgICAgdmFyIGh0bWxfMmYwNmQwYmQ5NTg1NDI0ZWJmMGE1MjdjNzdkODhjYjMgPSAkKGA8ZGl2IGlkPSJodG1sXzJmMDZkMGJkOTU4NTQyNGViZjBhNTI3Yzc3ZDg4Y2IzIiBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij5TdHVkaW8gRGlzdHJpY3QgQ2x1c3RlciAzPC9kaXY+YClbMF07CiAgICAgICAgICAgIHBvcHVwXzExYjY5MzNiYzliNDRiODJhMGFmZmU3OGJiOGRkMmZjLnNldENvbnRlbnQoaHRtbF8yZjA2ZDBiZDk1ODU0MjRlYmYwYTUyN2M3N2Q4OGNiMyk7CiAgICAgICAgCgogICAgICAgIGNpcmNsZV9tYXJrZXJfYWNhMWU4NDg3ZWFjNDQ0NzgzODZmNzc4ODZkMWMzMmYuYmluZFBvcHVwKHBvcHVwXzExYjY5MzNiYzliNDRiODJhMGFmZmU3OGJiOGRkMmZjKQogICAgICAgIDsKCiAgICAgICAgCiAgICAKICAgIAogICAgICAgICAgICB2YXIgY2lyY2xlX21hcmtlcl80NjlhYmY2ZDNlMmY0ODE3YTJiOTYzZjY1MGYyZDVhZiA9IEwuY2lyY2xlTWFya2VyKAogICAgICAgICAgICAgICAgWzQzLjY3MjcwOTcsIC03OS40MDU2Nzg0MDAwMDAwMV0sCiAgICAgICAgICAgICAgICB7ImJ1YmJsaW5nTW91c2VFdmVudHMiOiB0cnVlLCAiY29sb3IiOiAiI2Q0ZGQ4MCIsICJkYXNoQXJyYXkiOiBudWxsLCAiZGFzaE9mZnNldCI6IG51bGwsICJmaWxsIjogdHJ1ZSwgImZpbGxDb2xvciI6ICIjZDRkZDgwIiwgImZpbGxPcGFjaXR5IjogMC43LCAiZmlsbFJ1bGUiOiAiZXZlbm9kZCIsICJsaW5lQ2FwIjogInJvdW5kIiwgImxpbmVKb2luIjogInJvdW5kIiwgIm9wYWNpdHkiOiAxLjAsICJyYWRpdXMiOiA1LCAic3Ryb2tlIjogdHJ1ZSwgIndlaWdodCI6IDN9CiAgICAgICAgICAgICkuYWRkVG8obWFwX2EwYTUwZGZiNmUyZjQzM2Q5MDcyN2U1NWUyYmEzNTFkKTsKICAgICAgICAKICAgIAogICAgICAgIHZhciBwb3B1cF8zMjlhNWM0ODQ1ZGY0NjA2OGY2NGRlZDI1YTg3NDI2MSA9IEwucG9wdXAoeyJtYXhXaWR0aCI6ICIxMDAlIn0pOwoKICAgICAgICAKICAgICAgICAgICAgdmFyIGh0bWxfMGQ5Y2Q3ZGNmNTJmNDQ5Yjg4Y2YyNzU2MTI1MWRhOGUgPSAkKGA8ZGl2IGlkPSJodG1sXzBkOWNkN2RjZjUyZjQ0OWI4OGNmMjc1NjEyNTFkYThlIiBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij5UaGUgQW5uZXgsIE5vcnRoIE1pZHRvd24sIFlvcmt2aWxsZSBDbHVzdGVyIDM8L2Rpdj5gKVswXTsKICAgICAgICAgICAgcG9wdXBfMzI5YTVjNDg0NWRmNDYwNjhmNjRkZWQyNWE4NzQyNjEuc2V0Q29udGVudChodG1sXzBkOWNkN2RjZjUyZjQ0OWI4OGNmMjc1NjEyNTFkYThlKTsKICAgICAgICAKCiAgICAgICAgY2lyY2xlX21hcmtlcl80NjlhYmY2ZDNlMmY0ODE3YTJiOTYzZjY1MGYyZDVhZi5iaW5kUG9wdXAocG9wdXBfMzI5YTVjNDg0NWRmNDYwNjhmNjRkZWQyNWE4NzQyNjEpCiAgICAgICAgOwoKICAgICAgICAKICAgIAogICAgCiAgICAgICAgICAgIHZhciBjaXJjbGVfbWFya2VyX2FmZDllNzYzMTIxNDQxN2ViMDkzOWU2MTYzYWMxYmQxID0gTC5jaXJjbGVNYXJrZXIoCiAgICAgICAgICAgICAgICBbNDMuNjc2MzU3Mzk5OTk5OTksIC03OS4yOTMwMzEyXSwKICAgICAgICAgICAgICAgIHsiYnViYmxpbmdNb3VzZUV2ZW50cyI6IHRydWUsICJjb2xvciI6ICIjODAwMGZmIiwgImRhc2hBcnJheSI6IG51bGwsICJkYXNoT2Zmc2V0IjogbnVsbCwgImZpbGwiOiB0cnVlLCAiZmlsbENvbG9yIjogIiM4MDAwZmYiLCAiZmlsbE9wYWNpdHkiOiAwLjcsICJmaWxsUnVsZSI6ICJldmVub2RkIiwgImxpbmVDYXAiOiAicm91bmQiLCAibGluZUpvaW4iOiAicm91bmQiLCAib3BhY2l0eSI6IDEuMCwgInJhZGl1cyI6IDUsICJzdHJva2UiOiB0cnVlLCAid2VpZ2h0IjogM30KICAgICAgICAgICAgKS5hZGRUbyhtYXBfYTBhNTBkZmI2ZTJmNDMzZDkwNzI3ZTU1ZTJiYTM1MWQpOwogICAgICAgIAogICAgCiAgICAgICAgdmFyIHBvcHVwX2U1YjU4ZTQ2ODRlYjQ5YTY4OWI5OTBmNWZkMzQ5MjYyID0gTC5wb3B1cCh7Im1heFdpZHRoIjogIjEwMCUifSk7CgogICAgICAgIAogICAgICAgICAgICB2YXIgaHRtbF9kMjEzZmE5YzJhMjU0ZDM2OWFhNWRkMmI4OWQ5MGU4NyA9ICQoYDxkaXYgaWQ9Imh0bWxfZDIxM2ZhOWMyYTI1NGQzNjlhYTVkZDJiODlkOTBlODciIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPlRoZSBCZWFjaGVzIENsdXN0ZXIgMTwvZGl2PmApWzBdOwogICAgICAgICAgICBwb3B1cF9lNWI1OGU0Njg0ZWI0OWE2ODliOTkwZjVmZDM0OTI2Mi5zZXRDb250ZW50KGh0bWxfZDIxM2ZhOWMyYTI1NGQzNjlhYTVkZDJiODlkOTBlODcpOwogICAgICAgIAoKICAgICAgICBjaXJjbGVfbWFya2VyX2FmZDllNzYzMTIxNDQxN2ViMDkzOWU2MTYzYWMxYmQxLmJpbmRQb3B1cChwb3B1cF9lNWI1OGU0Njg0ZWI0OWE2ODliOTkwZjVmZDM0OTI2MikKICAgICAgICA7CgogICAgICAgIAogICAgCiAgICAKICAgICAgICAgICAgdmFyIGNpcmNsZV9tYXJrZXJfNTEwMzAxM2U4MmYxNGIyOWE3Y2NhNzJlNzk0YjU4Y2IgPSBMLmNpcmNsZU1hcmtlcigKICAgICAgICAgICAgICAgIFs0My42Njg5OTg1LCAtNzkuMzE1NTcxNTk5OTk5OThdLAogICAgICAgICAgICAgICAgeyJidWJibGluZ01vdXNlRXZlbnRzIjogdHJ1ZSwgImNvbG9yIjogIiNkNGRkODAiLCAiZGFzaEFycmF5IjogbnVsbCwgImRhc2hPZmZzZXQiOiBudWxsLCAiZmlsbCI6IHRydWUsICJmaWxsQ29sb3IiOiAiI2Q0ZGQ4MCIsICJmaWxsT3BhY2l0eSI6IDAuNywgImZpbGxSdWxlIjogImV2ZW5vZGQiLCAibGluZUNhcCI6ICJyb3VuZCIsICJsaW5lSm9pbiI6ICJyb3VuZCIsICJvcGFjaXR5IjogMS4wLCAicmFkaXVzIjogNSwgInN0cm9rZSI6IHRydWUsICJ3ZWlnaHQiOiAzfQogICAgICAgICAgICApLmFkZFRvKG1hcF9hMGE1MGRmYjZlMmY0MzNkOTA3MjdlNTVlMmJhMzUxZCk7CiAgICAgICAgCiAgICAKICAgICAgICB2YXIgcG9wdXBfY2Y3NmFjZTQ1ZTExNGYxY2E1ZDJhODhjMDgxMTNkMGYgPSBMLnBvcHVwKHsibWF4V2lkdGgiOiAiMTAwJSJ9KTsKCiAgICAgICAgCiAgICAgICAgICAgIHZhciBodG1sXzNlZDQ0MzRhNTg0ZTQzOGI4OWUzNjAxZjc5ZGQ5MDg0ID0gJChgPGRpdiBpZD0iaHRtbF8zZWQ0NDM0YTU4NGU0MzhiODllMzYwMWY3OWRkOTA4NCIgc3R5bGU9IndpZHRoOiAxMDAuMCU7IGhlaWdodDogMTAwLjAlOyI+VGhlIEJlYWNoZXMgV2VzdCwgSW5kaWEgQmF6YWFyIENsdXN0ZXIgMzwvZGl2PmApWzBdOwogICAgICAgICAgICBwb3B1cF9jZjc2YWNlNDVlMTE0ZjFjYTVkMmE4OGMwODExM2QwZi5zZXRDb250ZW50KGh0bWxfM2VkNDQzNGE1ODRlNDM4Yjg5ZTM2MDFmNzlkZDkwODQpOwogICAgICAgIAoKICAgICAgICBjaXJjbGVfbWFya2VyXzUxMDMwMTNlODJmMTRiMjlhN2NjYTcyZTc5NGI1OGNiLmJpbmRQb3B1cChwb3B1cF9jZjc2YWNlNDVlMTE0ZjFjYTVkMmE4OGMwODExM2QwZikKICAgICAgICA7CgogICAgICAgIAogICAgCiAgICAKICAgICAgICAgICAgdmFyIGNpcmNsZV9tYXJrZXJfZWE2ZmY0M2Q4MWM4NDQ4ZDkwZDJkZmNkMTI0MWNmYjUgPSBMLmNpcmNsZU1hcmtlcigKICAgICAgICAgICAgICAgIFs0My42Nzk1NTcxLCAtNzkuMzUyMTg4XSwKICAgICAgICAgICAgICAgIHsiYnViYmxpbmdNb3VzZUV2ZW50cyI6IHRydWUsICJjb2xvciI6ICIjZDRkZDgwIiwgImRhc2hBcnJheSI6IG51bGwsICJkYXNoT2Zmc2V0IjogbnVsbCwgImZpbGwiOiB0cnVlLCAiZmlsbENvbG9yIjogIiNkNGRkODAiLCAiZmlsbE9wYWNpdHkiOiAwLjcsICJmaWxsUnVsZSI6ICJldmVub2RkIiwgImxpbmVDYXAiOiAicm91bmQiLCAibGluZUpvaW4iOiAicm91bmQiLCAib3BhY2l0eSI6IDEuMCwgInJhZGl1cyI6IDUsICJzdHJva2UiOiB0cnVlLCAid2VpZ2h0IjogM30KICAgICAgICAgICAgKS5hZGRUbyhtYXBfYTBhNTBkZmI2ZTJmNDMzZDkwNzI3ZTU1ZTJiYTM1MWQpOwogICAgICAgIAogICAgCiAgICAgICAgdmFyIHBvcHVwXzZjY2VjYTNkOTk2YTQwMmY5YjM2NDNmODRkNzI2YTNhID0gTC5wb3B1cCh7Im1heFdpZHRoIjogIjEwMCUifSk7CgogICAgICAgIAogICAgICAgICAgICB2YXIgaHRtbF81NzVlZDdkNDM5NDQ0MzMzODBjZTU0MWY0OTM3ODkwMSA9ICQoYDxkaXYgaWQ9Imh0bWxfNTc1ZWQ3ZDQzOTQ0NDMzMzgwY2U1NDFmNDkzNzg5MDEiIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPlRoZSBEYW5mb3J0aCBXZXN0LCBSaXZlcmRhbGUgQ2x1c3RlciAzPC9kaXY+YClbMF07CiAgICAgICAgICAgIHBvcHVwXzZjY2VjYTNkOTk2YTQwMmY5YjM2NDNmODRkNzI2YTNhLnNldENvbnRlbnQoaHRtbF81NzVlZDdkNDM5NDQ0MzMzODBjZTU0MWY0OTM3ODkwMSk7CiAgICAgICAgCgogICAgICAgIGNpcmNsZV9tYXJrZXJfZWE2ZmY0M2Q4MWM4NDQ4ZDkwZDJkZmNkMTI0MWNmYjUuYmluZFBvcHVwKHBvcHVwXzZjY2VjYTNkOTk2YTQwMmY5YjM2NDNmODRkNzI2YTNhKQogICAgICAgIDsKCiAgICAgICAgCiAgICAKPC9zY3JpcHQ+" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe></div></div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="-Exploring-Clusters-"><span style="color:darkred"> Exploring Clusters </span><a class="anchor-link" href="#-Exploring-Clusters-">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[100]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Checking most frequent venues in Cluster 1</span>
+<span class="n">df_venue</span> <span class="o">&gt;&gt;</span> <span class="n">mask</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">Clusters</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">select</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">Venue_Category</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">distinct</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">Venue_Category</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[100]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Venue_Category</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>215</th>
+      <td>Bus Line</td>
+    </tr>
+    <tr>
+      <th>216</th>
+      <td>Park</td>
+    </tr>
+    <tr>
+      <th>217</th>
+      <td>Swim School</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[101]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Checking most frequent venues in Cluster 2</span>
+<span class="n">df_venue</span> <span class="o">&gt;&gt;</span> <span class="n">mask</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">Clusters</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">select</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">Venue_Category</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">distinct</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">Venue_Category</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[101]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Venue_Category</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>170</th>
+      <td>Bus Line</td>
+    </tr>
+    <tr>
+      <th>171</th>
+      <td>Jewelry Store</td>
+    </tr>
+    <tr>
+      <th>172</th>
+      <td>Park</td>
+    </tr>
+    <tr>
+      <th>173</th>
+      <td>Sushi Restaurant</td>
+    </tr>
+    <tr>
+      <th>174</th>
+      <td>Trail</td>
+    </tr>
+    <tr>
+      <th>253</th>
+      <td>Building</td>
+    </tr>
+    <tr>
+      <th>254</th>
+      <td>Playground</td>
+    </tr>
+    <tr>
+      <th>318</th>
+      <td>Health Food Store</td>
+    </tr>
+    <tr>
+      <th>319</th>
+      <td>Neighborhood</td>
+    </tr>
+    <tr>
+      <th>320</th>
+      <td>Other Great Outdoors</td>
+    </tr>
+    <tr>
+      <th>321</th>
+      <td>Pub</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[102]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Checking most frequent venues in Cluster 3</span>
+<span class="n">df_venue</span> <span class="o">&gt;&gt;</span> <span class="n">mask</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">Clusters</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">select</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">Venue_Category</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">distinct</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">Venue_Category</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[102]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Venue_Category</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>256</th>
+      <td>Garden</td>
+    </tr>
+    <tr>
+      <th>257</th>
+      <td>Home Service</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[103]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Checking most frequent venues in Cluster 4</span>
+<span class="n">df_venue</span> <span class="o">&gt;&gt;</span> <span class="n">mask</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">Clusters</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">select</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">Venue_Category</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">distinct</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">Venue_Category</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[103]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Venue_Category</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Coffee Shop</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Café</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Bar</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Thai Restaurant</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>American Restaurant</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Asian Restaurant</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Burger Joint</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Hotel</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Restaurant</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Steakhouse</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Cocktail Bar</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Bakery</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Beer Bar</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Cheese Shop</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Farmers Market</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Seafood Restaurant</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>Art Gallery</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>Breakfast Spot</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>Yoga Studio</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>Burrito Place</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>Caribbean Restaurant</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>Climbing Gym</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>Convenience Store</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>Light Rail Station</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>Auto Workshop</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>Brewery</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>Butcher</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>Comic Shop</td>
+    </tr>
+    <tr>
+      <th>37</th>
+      <td>Fast Food Restaurant</td>
+    </tr>
+    <tr>
+      <th>38</th>
+      <td>Garden</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>151</th>
+      <td>Pharmacy</td>
+    </tr>
+    <tr>
+      <th>152</th>
+      <td>Supermarket</td>
+    </tr>
+    <tr>
+      <th>158</th>
+      <td>Gym / Fitness Center</td>
+    </tr>
+    <tr>
+      <th>159</th>
+      <td>Middle Eastern Restaurant</td>
+    </tr>
+    <tr>
+      <th>178</th>
+      <td>Bookstore</td>
+    </tr>
+    <tr>
+      <th>186</th>
+      <td>Aquarium</td>
+    </tr>
+    <tr>
+      <th>192</th>
+      <td>Scenic Lookout</td>
+    </tr>
+    <tr>
+      <th>203</th>
+      <td>Theater</td>
+    </tr>
+    <tr>
+      <th>204</th>
+      <td>Antique Shop</td>
+    </tr>
+    <tr>
+      <th>212</th>
+      <td>Cajun / Creole Restaurant</td>
+    </tr>
+    <tr>
+      <th>214</th>
+      <td>Discount Store</td>
+    </tr>
+    <tr>
+      <th>220</th>
+      <td>Men's Store</td>
+    </tr>
+    <tr>
+      <th>224</th>
+      <td>French Restaurant</td>
+    </tr>
+    <tr>
+      <th>225</th>
+      <td>New American Restaurant</td>
+    </tr>
+    <tr>
+      <th>229</th>
+      <td>Playground</td>
+    </tr>
+    <tr>
+      <th>231</th>
+      <td>Tennis Court</td>
+    </tr>
+    <tr>
+      <th>233</th>
+      <td>Sporting Goods Shop</td>
+    </tr>
+    <tr>
+      <th>241</th>
+      <td>Metro Station</td>
+    </tr>
+    <tr>
+      <th>243</th>
+      <td>Gift Shop</td>
+    </tr>
+    <tr>
+      <th>248</th>
+      <td>Cuban Restaurant</td>
+    </tr>
+    <tr>
+      <th>250</th>
+      <td>Dog Run</td>
+    </tr>
+    <tr>
+      <th>251</th>
+      <td>Eastern European Restaurant</td>
+    </tr>
+    <tr>
+      <th>270</th>
+      <td>Cosmetics Shop</td>
+    </tr>
+    <tr>
+      <th>312</th>
+      <td>BBQ Joint</td>
+    </tr>
+    <tr>
+      <th>315</th>
+      <td>History Museum</td>
+    </tr>
+    <tr>
+      <th>316</th>
+      <td>Indian Restaurant</td>
+    </tr>
+    <tr>
+      <th>317</th>
+      <td>Jewish Restaurant</td>
+    </tr>
+    <tr>
+      <th>328</th>
+      <td>Fish &amp; Chips Shop</td>
+    </tr>
+    <tr>
+      <th>333</th>
+      <td>Greek Restaurant</td>
+    </tr>
+    <tr>
+      <th>337</th>
+      <td>Furniture / Home Store</td>
+    </tr>
+  </tbody>
+</table>
+<p>103 rows × 1 columns</p>
 </div>
 </div>
 

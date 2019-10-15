@@ -5,7 +5,7 @@
 
 # ### <span style="color:darkred">Importing packages</span>
 
-# In[2]:
+# In[1]:
 
 
 # Importing general packages
@@ -28,7 +28,7 @@ import requests
 from bs4 import BeautifulSoup
 
 
-# In[88]:
+# In[2]:
 
 
 html = requests.get('https://en.wikipedia.org/wiki/List_of_postal_codes_of_Canada:_M')
@@ -37,7 +37,7 @@ html = requests.get('https://en.wikipedia.org/wiki/List_of_postal_codes_of_Canad
 bs = BeautifulSoup(html.text, 'lxml')
 
 
-# In[164]:
+# In[3]:
 
 
 #Defining customized replace function
@@ -98,7 +98,7 @@ df_n = df_n.reset_index(drop=True)
 df_n
 
 
-# In[162]:
+# In[4]:
 
 
 print(df_n.shape)

@@ -5,7 +5,7 @@
 
 # ### <span style="color:darkred">Importing packages</span>
 
-# In[17]:
+# In[1]:
 
 
 # Importing general packages
@@ -17,6 +17,8 @@ import numpy as np
 
 # Importing packages for vizualization
 import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+import matplotlib.colors as colors
 get_ipython().run_line_magic('matplotlib', 'inline')
 import seaborn as sns
 
@@ -31,6 +33,9 @@ from bs4 import BeautifulSoup
 # Importing packages for handling gespatial data
 #!conda install -c conda-forge geocoder --yes 
 import geocoder
+#!conda install -c conda-forge geopy --yes 
+from geopy.geocoders import Nominatim
+import folium # map rendering library
 
 # Packages for hiding sensitive data
 from IPython.display import HTML
@@ -38,6 +43,8 @@ from IPython.display import HTML
 # Importing k-means from clustering stage
 from sklearn.cluster import KMeans
 
+
+# ### <span style="color:darkred">Scraping wiki page for data about Canada's Borough/span>
 
 # In[2]:
 
@@ -115,9 +122,12 @@ df_n
 print(df_n.shape)
 
 
+# ### <span style="color:darkred">Adding geospatial data</span>
+
 # In[5]:
 
 
+# Reading Lat and Long for Postcodes
 df_gsp = pd.read_csv('http://cocl.us/Geospatial_data')
 df_gsp = df_gsp.rename(columns={"Postal Code": "Postcode"})
 df_gsp.head()
@@ -126,6 +136,7 @@ df_gsp.head()
 # In[6]:
 
 
+# Adding Lat and Long to df
 df_n = df_n >> left_join(df_gsp, by = "Postcode")
 df_n
 
@@ -135,6 +146,7 @@ df_n
 # In[7]:
 
 
+# Adding credentials for using Foursquare
 import getpass
 
 CLIENT_ID = getpass.getpass('Enter your Foursquare CLIENT_ID')
@@ -150,6 +162,7 @@ print('Your credentials are stored')
 # In[8]:
 
 
+### <span style="color:darkred"> Filtering neighbourhoods that belongs to Toronto </span># Filtering neighbourhoods
 df_n_tor = df_n >> mask(X.Borough.str.contains('Toronto') == True)
 df_n_tor
 
@@ -157,6 +170,7 @@ df_n_tor
 # In[9]:
 
 
+#Definging function for using API of Foursquare
 def getNearbyVenues(names, latitudes, longitudes, radius=500):
     
     venues_list=[]
@@ -201,12 +215,15 @@ def getNearbyVenues(names, latitudes, longitudes, radius=500):
 # In[10]:
 
 
+# Creating Df by adding vanues to df of Toronto's Boroughs
 df_Tor_venues = getNearbyVenues(df_n_tor['Neighbourhood'], df_n_tor['Latitude'], df_n_tor['Longitude'], 500)
 
 df_Tor_venues.head(10)
 
 
-# In[11]:
+# ### <span style="color:darkred"> Encoding df containing info about nearby venues </span>
+
+# In[89]:
 
 
 # One hot encoding for calculating frequency
@@ -222,15 +239,9 @@ toronto_grouped = toronto_onehot.groupby('Neighbourhood').mean().reset_index()
 toronto_grouped
 
 
-# In[105]:
+# ### <span style="color:darkred"> Checking the most frequent venues by Neigbourhoods </span>
 
-
-fuck = pd.DataFrame(toronto_grouped.iloc[0,:])
-fuck = fuck.iloc[1:,:]
-fuck.sort_values(by=0, ascending=False)
-
-
-# In[12]:
+# In[90]:
 
 
 df_Tor_venues_grouped = df_Tor_venues >> group_by(X.Neighbourhood, X.Venue_Category) >> summarize(Count = X.Venue_Category.count()) >> select(X.Neighbourhood, X.Venue_Category, X.Count)
@@ -238,11 +249,10 @@ df_Tor_venues_grouped = df_Tor_venues_grouped.sort_values(by=['Neighbourhood','C
 df_Tor_venues_grouped
 
 
-# #### <span style="color:lightgrey"> Selecting the first 10 most frequent Vanue Category by Neighbourhood</span>
-
-# In[14]:
+# In[91]:
 
 
+# Selecting the first 10 most frequent Vanue Category by Neighbourhood
 df_venue = pd.DataFrame() #creates a new dataframe that's empty
 
 for element in df_Tor_venues_grouped.Neighbourhood.unique():
@@ -254,7 +264,7 @@ for element in df_Tor_venues_grouped.Neighbourhood.unique():
 df_venue
 
 
-# In[15]:
+# In[92]:
 
 
 # Adding geo data to the data frame
@@ -262,11 +272,17 @@ df_venue = df_venue >> left_join(df_n, by="Neighbourhood")
 df_venue
 
 
-# In[32]:
+# In[93]:
+
+
+### <span style="color:darkred"> Clustering neighbourhoods based on most frequent venue types </span>
+
+
+# In[94]:
 
 
 # set number of clusters
-kclusters = 6
+kclusters = 4
 
 toronto_grouped_clustering = toronto_grouped.drop('Neighbourhood', 1)
 
@@ -277,7 +293,7 @@ kmeans = KMeans(n_clusters=kclusters, random_state=0).fit(toronto_grouped_cluste
 kmeans.labels_[0:100]
 
 
-# In[38]:
+# In[95]:
 
 
 # Creating dataframe for storing cluster label of Neighbourhoods
@@ -285,10 +301,92 @@ toronto_clusters = toronto_grouped >> mutate(Clusters = kmeans.labels_) >> selec
 toronto_clusters
 
 
-# In[42]:
+# In[96]:
 
 
 # Adding clusters to Df venue
 df_venue = df_venue >> left_join(toronto_clusters, by="Neighbourhood")
 df_venue
+
+
+# In[97]:
+
+
+# Creating data_frame for mapping
+df_toronto = df_venue >> drop(X.Venue_Category, X.Count) >> distinct(X.Neighbourhood)
+df_toronto = df_toronto.reset_index(drop=True)
+df_toronto
+
+
+# ### <span style="color:darkred"> Mapping clusters </span>
+
+# In[98]:
+
+
+# Finding geospatial data of Toronto
+address = 'Toronto, CA'
+
+geolocator = Nominatim(user_agent="tor_explorer")
+location = geolocator.geocode(address)
+latitude = location.latitude
+longitude = location.longitude
+print('The geograpical coordinate of Toronot are {}, {}.'.format(latitude, longitude))
+
+
+# In[99]:
+
+
+# create map
+map_clusters = folium.Map(location=[latitude, longitude], zoom_start=11)
+
+# set color scheme for the clusters
+x = np.arange(kclusters)
+ys = [i + x + (i*x)**2 for i in range(kclusters)]
+colors_array = cm.rainbow(np.linspace(0, 1, len(ys)))
+rainbow = [colors.rgb2hex(i) for i in colors_array]
+
+# add markers to the map
+markers_colors = []
+for lat, lon, poi, cluster in zip(df_toronto['Latitude'], df_toronto['Longitude'], df_toronto['Neighbourhood'], df_toronto['Clusters']):
+    label = folium.Popup(str(poi) + ' Cluster ' + str(cluster), parse_html=True)
+    folium.CircleMarker(
+        [lat, lon],
+        radius=5,
+        popup=label,
+        color=rainbow[cluster-1],
+        fill=True,
+        fill_color=rainbow[cluster-1],
+        fill_opacity=0.7).add_to(map_clusters)
+       
+map_clusters
+
+
+# ### <span style="color:darkred"> Exploring Clusters </span>
+
+# In[100]:
+
+
+# Checking most frequent venues in Cluster 1
+df_venue >> mask(X.Clusters == 0) >> select(X.Venue_Category) >> distinct(X.Venue_Category)
+
+
+# In[101]:
+
+
+# Checking most frequent venues in Cluster 2
+df_venue >> mask(X.Clusters == 1) >> select(X.Venue_Category) >> distinct(X.Venue_Category)
+
+
+# In[102]:
+
+
+# Checking most frequent venues in Cluster 3
+df_venue >> mask(X.Clusters == 2) >> select(X.Venue_Category) >> distinct(X.Venue_Category)
+
+
+# In[103]:
+
+
+# Checking most frequent venues in Cluster 4
+df_venue >> mask(X.Clusters == 3) >> select(X.Venue_Category) >> distinct(X.Venue_Category)
 
